@@ -8,14 +8,17 @@ const paths = {
 
 module.exports = (env, argv) => {
   const isDevelopment = argv.mode === 'development';
-  console.log(paths.html, path.resolve(paths.public, 'favicon.ico'));
 
   return {
     mode: isDevelopment ? 'development' : 'production',
     entry: './src/index.tsx',
     output: {
+      publicPath: '/',
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js',
+    },
+    devServer: {
+      historyApiFallback: true,
     },
     module: {
       rules: [
