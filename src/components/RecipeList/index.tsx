@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { RecipeItem } from '../RecipeItem/index';
-import Loader from '../Loader';
+import RecipeItem from '@components/RecipeItem';
+import Loader from '@components/Loader';
 import { ListWrapper, LoadMoreButton } from './index.styled';
-import { API_BASE_URL, API_ID, API_KEY } from '../../constants/config';
+import { API_BASE_URL, API_ID, API_KEY } from '@constants/config';
 
 interface IRecipe {
   recipe: {

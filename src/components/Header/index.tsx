@@ -1,6 +1,6 @@
 import React from 'react';
+import { ReactComponent as ModsenIcon } from '@assets/icons/modsen.svg';
 import { StyledHeader, HeaderContent, ModsenWrapper, ModsenTitle } from './index.styled';
-import { ReactComponent as ModsenIcon } from '../../assets/icons/modsen.svg';
 
 const Header: React.FC = () => {
   return (

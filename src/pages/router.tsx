@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomePage from './HomePage';
-import RecipeDetailsPage from './RecipeDetailsPage';
-import NotFoundPage from './NotFoundPage';
-import { GlobalStyles, AppWrapper } from '../components/App.styled';
+import HomePage from '@pages/HomePage';
+import RecipeDetailsPage from '@pages/RecipeDetailsPage';
+import NotFoundPage from '@pages/NotFoundPage';
+import { GlobalStyles, AppWrapper } from '@components/App.styled';
 
 const AppRouter: React.FC = () => {
   return (

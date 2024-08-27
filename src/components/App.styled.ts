@@ -1,9 +1,9 @@
 import { styled, createGlobalStyle } from 'styled-components';
-import InterRegular from '../assets/fonts/Inter/Regular/Inter_18pt-Regular.ttf';
-import InterMedium from '../assets/fonts/Inter/Medium/Inter_18pt-Medium.ttf';
-import InterBold from '../assets/fonts/Inter/Bold/Inter_18pt-Bold.ttf';
-import RobotoRegular from '../assets/fonts/Roboto/Regular/Roboto-Regular.ttf';
-import SpaceGroteskMedium from '../assets/fonts/SpaceGrotesk/Medium/SpaceGrotesk-Medium.ttf';
+import InterRegular from '@assets/fonts/Inter/Regular/Inter_18pt-Regular.ttf';
+import InterMedium from '@assets/fonts/Inter/Medium/Inter_18pt-Medium.ttf';
+import InterBold from '@assets/fonts/Inter/Bold/Inter_18pt-Bold.ttf';
+import RobotoRegular from '@assets/fonts/Roboto/Regular/Roboto-Regular.ttf';
+import SpaceGroteskMedium from '@assets/fonts/SpaceGrotesk/Medium/SpaceGrotesk-Medium.ttf';
 
 export const GlobalStyles = createGlobalStyle`
 body, html, #root {

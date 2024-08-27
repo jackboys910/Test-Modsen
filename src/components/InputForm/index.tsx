@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { StyledField, StyledError, SearchButton, FieldWrapper } from './index.styled';
-import { ReactComponent as SearchIcon } from '../../assets/icons/search.svg';
+import { ReactComponent as SearchIcon } from '@assets/icons/search.svg';
 
 const validationSchema = Yup.object({
   inputField: Yup.string()

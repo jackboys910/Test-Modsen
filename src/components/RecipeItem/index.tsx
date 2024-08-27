@@ -7,7 +7,7 @@ interface IRecipeItemProps {
   onClick: () => void;
 }
 
-export const RecipeItem: React.FC<IRecipeItemProps> = ({ image, label, onClick }) => {
+const RecipeItem: React.FC<IRecipeItemProps> = ({ image, label, onClick }) => {
   return (
     <ItemWrapper onClick={onClick}>
       <RecipeImage src={image} alt={label} />
@@ -15,3 +15,5 @@ export const RecipeItem: React.FC<IRecipeItemProps> = ({ image, label, onClick }
     </ItemWrapper>
   );
 };
+
+export default RecipeItem;

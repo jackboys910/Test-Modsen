@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
-import InputForm from '../../components/InputForm';
-import FilterList from '../../components/FilterList';
-import RecipeList from '../../components/RecipeList';
+import Header from '@components/Header';
+import Footer from '@components/Footer';
+import InputForm from '@components/InputForm';
+import FilterList from '@components/FilterList';
+import RecipeList from '@components/RecipeList';
 import { BodyWrapper, FiltersWrapper, MainTitle, SectionWrapper, BorderLine, SectionTitle } from './index.styled';
 
 const dietOptions = ['Balanced', 'High-fiber', 'High-protein', 'Low-carb'];
