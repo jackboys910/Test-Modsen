@@ -1,5 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
+
+const env = dotenv.config().parsed;
+
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 const paths = {
   html: path.resolve(__dirname, 'public', 'index.html'),
@@ -32,6 +41,11 @@ module.exports = (env, argv) => {
           test: /\.ico$/,
           use: 'file-loader',
         },
+        {
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          type: 'asset/resource',
+        },
+        { test: /\.svg$/, use: ['@svgr/webpack', 'file-loader'] },
       ],
     },
     resolve: {
@@ -42,6 +56,7 @@ module.exports = (env, argv) => {
         template: paths.html,
         favicon: path.resolve(paths.public, 'favicon.png'),
       }),
+      new webpack.DefinePlugin(envKeys),
     ],
   };
 };

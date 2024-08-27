@@ -5,6 +5,7 @@ const StyledFooter = styled.footer`
   background-color: ${COLORS.COLOR_MAIN_BLUE};
   width: 100%;
   height: 160px;
+  margin-top: auto;
 `;
 
 export default StyledFooter;

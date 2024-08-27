@@ -1,8 +1,18 @@
 import React from 'react';
-import StyledHeader from './index.styled';
+import { StyledHeader, HeaderContent, ModsenWrapper, ModsenTitle } from './index.styled';
+import { ReactComponent as ModsenIcon } from '../../assets/icons/modsen.svg';
 
-const Footer: React.FC = () => {
-  return <StyledHeader></StyledHeader>;
+const Header: React.FC = () => {
+  return (
+    <StyledHeader>
+      <HeaderContent>
+        <ModsenWrapper>
+          <ModsenIcon />
+          <ModsenTitle>Modsen recipe</ModsenTitle>
+        </ModsenWrapper>
+      </HeaderContent>
+    </StyledHeader>
+  );
 };
 
-export default Footer;
+export default Header;
