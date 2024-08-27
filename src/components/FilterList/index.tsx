@@ -16,8 +16,9 @@ const FilterList: React.FC<IFilterListProps> = ({ title, options, onSelect }) =>
   };
 
   const handleSelect = (option: string) => {
-    setSelectedOption(option);
-    onSelect(option);
+    const newSelection = selectedOption === option ? null : option;
+    setSelectedOption(newSelection);
+    onSelect(newSelection || '');
   };
 
   const handleItemClick = (option: string) => {
