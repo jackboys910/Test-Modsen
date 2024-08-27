@@ -34,3 +34,7 @@ export const LoadMoreButton = styled.button`
     background-color: #0056b3;
   }
 `;
+
+export const NoButtonWrapper = styled.div`
+  margin-bottom: 125px;
+`;
