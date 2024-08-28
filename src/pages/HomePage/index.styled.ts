@@ -1,14 +1,14 @@
 import styled from 'styled-components';
 import { COLORS } from '../../constants/styles/mainColors';
 
-const BodyWrapper = styled.main`
+export const BodyWrapper = styled.main`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
 `;
 
-const MainTitle = styled.h1`
+export const MainTitle = styled.h1`
   font-family: 'InterRegular';
   font-weight: 400;
   color: ${COLORS.COLOR_TITLE_VIOLET};
@@ -50,5 +50,3 @@ export const SectionTitle = styled.h2`
   font-size: 40px;
   line-height: 48.41px;
 `;
-
-export { BodyWrapper, MainTitle };

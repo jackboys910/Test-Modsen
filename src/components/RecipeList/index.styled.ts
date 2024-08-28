@@ -22,7 +22,7 @@ export const LoadMoreButton = styled.button`
   width: 250px;
   height: 50px;
   background: linear-gradient(180deg, ${COLORS.COLOR_BUTTON_BACKGROUND_BLUE} 100%, ${COLORS.COLOR_BUTTON_BACKGROUND_BLUE} 100%);
-  box-shadow: 0 4px 20px 0 ${COLORS.COLOR_BUTTON_SHADOW_VIOLET};
+  box-shadow: 0 4px 20px 0 ${COLORS.COLOR_BACKBUTTON_SHADOW_GREEN};
 
   margin: 56px auto 108px;
   padding: 10px 20px;

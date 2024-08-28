@@ -2,7 +2,11 @@ import React from 'react';
 import { ReactComponent as ModsenIcon } from '@assets/icons/modsen.svg';
 import { StyledHeader, HeaderContent, ModsenWrapper, ModsenTitle } from './index.styled';
 
-const Header: React.FC = () => {
+interface IHeaderProps {
+  children?: React.ReactNode;
+}
+
+const Header: React.FC<IHeaderProps> = ({ children }) => {
   return (
     <StyledHeader>
       <HeaderContent>
@@ -10,6 +14,7 @@ const Header: React.FC = () => {
           <ModsenIcon />
           <ModsenTitle>Modsen recipe</ModsenTitle>
         </ModsenWrapper>
+        {children}
       </HeaderContent>
     </StyledHeader>
   );

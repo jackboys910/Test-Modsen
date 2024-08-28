@@ -15,6 +15,7 @@ export const HeaderContent = styled.div`
   height: 95px;
   margin-left: 220px;
   margin-top: 28px;
+  position: relative;
 `;
 
 export const ModsenWrapper = styled.div`
