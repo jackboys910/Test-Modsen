@@ -22,17 +22,13 @@ export const LoadMoreButton = styled.button`
   width: 250px;
   height: 50px;
   background: linear-gradient(180deg, ${COLORS.COLOR_BUTTON_BACKGROUND_BLUE} 100%, ${COLORS.COLOR_BUTTON_BACKGROUND_BLUE} 100%);
-  box-shadow: 0 4px 20px 0 ${COLORS.COLOR_BACKBUTTON_SHADOW_GREEN};
+  box-shadow: 0 4px 20px 0 ${COLORS.COLOR_BUTTON_SHADOW_VIOLET};
 
   margin: 56px auto 108px;
   padding: 10px 20px;
   border: none;
   border-radius: 25px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
 `;
 
 export const NoButtonWrapper = styled.div`

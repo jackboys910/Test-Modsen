@@ -8,9 +8,7 @@ const NotFoundPage: React.FC = () => {
   return (
     <div>
       <Header>
-        <StyledLink to='/' style={{ color: '#FFFDFB', textDecoration: 'none' }}>
-          Home
-        </StyledLink>
+        <StyledLink to='/'>Home</StyledLink>
       </Header>
       <BodyWrapper>
         <NotFoundContainer>

@@ -48,7 +48,7 @@ export const BackButton = styled.button`
   border: none;
   border-radius: 24px;
   background-color: ${COLORS.COLOR_BACKBUTTON_BACKGROUND_GREEN};
-  box-shadow: 0 8px 16px 0 ${COLORS.COLOR_BUTTON_SHADOW_VIOLET};
+  box-shadow: 0 8px 16px 0 ${COLORS.COLOR_BACKBUTTON_SHADOW_GREEN};
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
@@ -58,7 +58,7 @@ export const BackButton = styled.button`
   margin-right: 13%;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #00a86b; /* Изменение цвета при наведении */
   }
 `;
 
@@ -71,6 +71,7 @@ export const StyledLink = styled(Link)`
   position: absolute;
   right: 0;
   top: 23%;
+  text-decoration: none;
 `;
 
 export const ErrorCode = styled.h1`

@@ -10,6 +10,10 @@ interface IRecipe {
     uri: string;
     image: string;
     label: string;
+    ingredients: {
+      text: string;
+      image: string;
+    }[];
   };
 }
 
@@ -59,14 +63,14 @@ const RecipeList: React.FC<IRecipeListProps> = ({ searchQuery, dietFilter, dishT
     if (searchQuery) fetchRecipes(initialUrl);
   }, [triggerSearch, searchQuery, dietFilter, dishTypeFilter]);
 
-  const handleRecipeClick = (uri: string) => {
-    const encodedUri = encodeURIComponent(uri);
-    navigate(`/${encodedUri}`);
+  const handleRecipeClick = (recipe: IRecipe, index: number) => {
+    localStorage.setItem('selectedRecipe', JSON.stringify(recipe.recipe));
+    navigate(`/recipe/${index}`, { state: { recipe: recipe.recipe } });
   };
 
-  const handleRecipeItemClick = (uri: string) => {
+  const handleRecipeItemClick = (recipe: IRecipe, index: number) => {
     return () => {
-      handleRecipeClick(uri);
+      handleRecipeClick(recipe, index);
     };
   };
 
@@ -75,12 +79,12 @@ const RecipeList: React.FC<IRecipeListProps> = ({ searchQuery, dietFilter, dishT
       {loading && <Loader />}
       <ListWrapper>
         {recipes.length > 0
-          ? recipes.map((recipe: IRecipe) => (
+          ? recipes.map((recipe: IRecipe, index: number) => (
               <RecipeItem
                 key={recipe.recipe.uri}
                 image={recipe.recipe.image}
                 label={recipe.recipe.label}
-                onClick={handleRecipeItemClick(recipe.recipe.uri)}
+                onClick={handleRecipeItemClick(recipe, index)}
               />
             ))
           : !loading && <p>No recipes found. Try a different search.</p>}

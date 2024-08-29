@@ -12,7 +12,7 @@ const AppRouter: React.FC = () => {
         <GlobalStyles />
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/:recipeId' element={<RecipeDetailsPage />} />
+          <Route path='/recipe/:recipeId' element={<RecipeDetailsPage />} />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </AppWrapper>
