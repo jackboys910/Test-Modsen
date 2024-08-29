@@ -4,6 +4,7 @@ import Footer from '@components/Footer';
 import InputForm from '@components/InputForm';
 import FilterList from '@components/FilterList';
 import RecipeList from '@components/RecipeList';
+import ErrorBoundary from '@components/ErrorBoundary';
 import { BodyWrapper, FiltersWrapper, MainTitle, SectionWrapper, BorderLine, SectionTitle } from './index.styled';
 
 const dietOptions = ['Balanced', 'High-fiber', 'High-protein', 'Low-carb'];
@@ -51,7 +52,9 @@ const HomePage: React.FC = () => {
           <BorderLine />
           <SectionTitle>Founded dishes</SectionTitle>
         </SectionWrapper>
-        <RecipeList searchQuery={searchQuery} dietFilter={dietFilter} dishTypeFilter={dishTypeFilter} triggerSearch={triggerSearch} />
+        <ErrorBoundary>
+          <RecipeList searchQuery={searchQuery} dietFilter={dietFilter} dishTypeFilter={dishTypeFilter} triggerSearch={triggerSearch} />
+        </ErrorBoundary>
       </BodyWrapper>
       <Footer />
     </>
