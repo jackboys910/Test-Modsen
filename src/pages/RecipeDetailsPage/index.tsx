@@ -79,7 +79,8 @@ const RecipeDetailsPage: React.FC = () => {
               <ul>
                 {recipe.ingredientLines.slice(0, 5).map((ingredient: string, index: number) => (
                   <li key={index}>
-                    <EllipseIcon /> {ingredient}
+                    <EllipseIcon />
+                    {ingredient.length > 58 ? `${ingredient.slice(0, 58)}...` : ingredient}
                   </li>
                 ))}
               </ul>

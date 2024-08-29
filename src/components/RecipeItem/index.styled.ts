@@ -26,4 +26,9 @@ export const RecipeLabel = styled.div`
   line-height: 26.63px;
   color: ${COLORS.COLOR_TITLE_VIOLET};
   padding-top: 24px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

@@ -94,6 +94,7 @@ export const IngredientsSection = styled.div`
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
+    height: 30px;
     color: ${COLORS.COLOR_INGREDIENTS_GREY};
     display: flex;
     align-items: center;
@@ -131,9 +132,14 @@ export const RecipeTitle = styled.h2`
   font-size: 40px;
   line-height: 53.32px;
   color: white;
-  height: 95px;
+  height: 97px;
   margin-bottom: 10px;
   margin-top: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ProductsTitle = styled.h2`
