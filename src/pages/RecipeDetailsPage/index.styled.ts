@@ -30,7 +30,8 @@ export const ImageWrapper = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-bottom: 250px;
 
   img {
     max-width: 549px;

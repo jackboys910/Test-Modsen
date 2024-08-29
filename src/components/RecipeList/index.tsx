@@ -14,6 +14,11 @@ interface IRecipe {
       text: string;
       image: string;
     }[];
+    images?: {
+      LARGE?: {
+        url: string;
+      };
+    };
   };
 }
 
@@ -64,8 +69,10 @@ const RecipeList: React.FC<IRecipeListProps> = ({ searchQuery, dietFilter, dishT
   }, [triggerSearch, searchQuery, dietFilter, dishTypeFilter]);
 
   const handleRecipeClick = (recipe: IRecipe, index: number) => {
-    localStorage.setItem('selectedRecipe', JSON.stringify(recipe.recipe));
-    navigate(`/recipe/${index}`, { state: { recipe: recipe.recipe } });
+    const imageUrl = recipe.recipe.images?.LARGE?.url || recipe.recipe.image;
+    const updatedRecipe = { ...recipe.recipe, image: imageUrl };
+    localStorage.setItem('selectedRecipe', JSON.stringify(updatedRecipe));
+    navigate(`/recipe/${index}`, { state: { recipe: updatedRecipe } });
   };
 
   const handleRecipeItemClick = (recipe: IRecipe, index: number) => {
