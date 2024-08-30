@@ -547,6 +547,10 @@
     flex-direction: column;
     align-items: flex-start;
   }
+
+  @media (max-width: 445px) {
+    width: 300px;
+  }
 `,ps=hr.div`
   display: flex;
   height: 24px;
@@ -887,6 +891,7 @@
   @media (max-width: 530px) {
     font-size: 40px;
     margin-left: 95px;
+    width: 200px;
   }
 `,Vs=()=>{const[e,n]=(0,t.useState)(window.innerWidth);(0,t.useEffect)((()=>{const e=()=>{n(window.innerWidth)};return window.addEventListener("resize",e),()=>{window.removeEventListener("resize",e)}}),[]);const r=e>=390&&e<=768;return t.createElement("div",null,t.createElement(Cr,null,r?t.createElement(os,null):t.createElement(Ls,{to:"/"},"Home")),t.createElement(Ns,null,t.createElement(As,null,t.createElement(Us,null,"404"),t.createElement(Is,null,"OOOps! Page Not Found"),t.createElement(Ds,null,"This page doesn't exist or was removed! We suggest you back to home"),t.createElement(Ms,{as:ge,to:"/"},"Back to homepage"))),t.createElement(Fr,null))},Bs=(function(e){for(var n=[],r=1;r<arguments.length;r++)n[r-1]=arguments[r];var a=fr.apply(void 0,_e([e],n,!1)),i="sc-global-".concat(Kt(JSON.stringify(a))),o=new mr(a,i),l=function(e){var n=Yn(),r=t.useContext(or),a=t.useRef(n.styleSheet.allocateGSInstance(i)).current;return n.styleSheet.server&&u(a,e,n.styleSheet,r,n.stylis),t.useLayoutEffect((function(){if(!n.styleSheet.server)return u(a,e,n.styleSheet,r,n.stylis),function(){return o.removeStyles(a,n.styleSheet)}}),[a,e,n.styleSheet,r,n.stylis]),null};function u(e,t,n,r,a){if(o.isStatic)o.renderStyles(e,Rt,n,a);else{var i=Ee(Ee({},t),{theme:It(t,r,l.defaultProps)});o.renderStyles(e,i,n,a)}}return t.memo(l)})`
 body, html, #root {
