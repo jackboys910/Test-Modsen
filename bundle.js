@@ -548,8 +548,8 @@
     align-items: flex-start;
   }
 
-  @media (max-width: 445px) {
-    width: 300px;
+  @media (max-width: 520px) {
+    width: 250px;
   }
 `,ps=hr.div`
   display: flex;
