@@ -1,4 +1,5 @@
 import globals from 'globals';
+import eslintReact from 'eslint-plugin-react';
 import tseslint from 'typescript-eslint';
 import prettierPlugin from 'eslint-plugin-prettier';
 
@@ -7,6 +8,7 @@ export default tseslint.config(
   {
     plugins: {
       '@typescript-eslint': tseslint.plugin,
+      react: eslintReact,
       prettier: prettierPlugin,
     },
   },

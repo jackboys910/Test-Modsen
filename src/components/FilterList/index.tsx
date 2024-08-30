@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Section, Header, Content, Item } from './index.styled';
 
 interface IFilterListProps {
@@ -11,21 +11,27 @@ const FilterList: React.FC<IFilterListProps> = ({ title, options, onSelect }) =>
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  const handleToggle = () => {
+  const handleToggle = useCallback(() => {
     setIsOpen(!isOpen);
-  };
+  }, [isOpen]);
 
-  const handleSelect = (option: string) => {
-    const newSelection = selectedOption === option ? null : option;
-    setSelectedOption(newSelection);
-    onSelect(newSelection || '');
-  };
+  const handleSelect = useCallback(
+    (option: string) => {
+      const newSelection = selectedOption === option ? null : option;
+      setSelectedOption(newSelection);
+      onSelect(newSelection || '');
+    },
+    [selectedOption, onSelect],
+  );
 
-  const handleItemClick = (option: string) => {
-    return () => {
-      handleSelect(option);
-    };
-  };
+  const handleItemClick = useCallback(
+    (option: string) => {
+      return () => {
+        handleSelect(option);
+      };
+    },
+    [handleSelect],
+  );
 
   return (
     <Section>
