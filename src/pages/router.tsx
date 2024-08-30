@@ -7,7 +7,7 @@ import { GlobalStyles, AppWrapper } from '@components/App.styled';
 
 const AppRouter: React.FC = () => {
   return (
-    <Router>
+    <Router basename='/Test-Modsen/'>
       <AppWrapper>
         <GlobalStyles />
         <Routes>

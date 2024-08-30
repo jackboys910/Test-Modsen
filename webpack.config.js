@@ -22,7 +22,6 @@ module.exports = (env, argv) => {
     mode: isDevelopment ? 'development' : 'production',
     entry: './src/index.tsx',
     output: {
-      publicPath: '/Test-Modsen/',
       path: path.resolve(__dirname, 'dist'),
       filename: 'bundle.js',
     },
@@ -60,7 +59,6 @@ module.exports = (env, argv) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: paths.html,
-        base: '/Test-Modsen/',
         favicon: path.resolve(paths.public, 'favicon.png'),
       }),
       new webpack.DefinePlugin(envKeys),
