@@ -952,4 +952,4 @@ box-sizing: border-box;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-`,Hs=document.getElementById("root");if(!Hs)throw new Error("root not found");(0,r.H)(Hs).render(t.createElement((()=>t.createElement(he,{basename:"/Test-Modsen/"},t.createElement(Ws,null,t.createElement(Bs,null),t.createElement(se,null,t.createElement(le,{path:"/",element:t.createElement(Ju,null)}),t.createElement(le,{path:"/recipe/:recipeId",element:t.createElement(Rs,null)}),t.createElement(le,{path:"*",element:t.createElement(Vs,null)}))))),null))})()})();
+`,Hs=document.getElementById("root");if(!Hs)throw new Error("root not found");(0,r.H)(Hs).render(t.createElement((()=>t.createElement(he,{basename:"/Test-Modsen/"},t.createElement(Ws,null,t.createElement(Bs,null),t.createElement(Wu,null,t.createElement(se,null,t.createElement(le,{path:"/",element:t.createElement(Ju,null)}),t.createElement(le,{path:"/recipe/:recipeId",element:t.createElement(Rs,null)}),t.createElement(le,{path:"*",element:t.createElement(Vs,null)})))))),null))})()})();
