@@ -138,5 +138,6 @@ export const ErrorCode = styled.h1`
   @media (max-width: 530px) {
     font-size: 40px;
     margin-left: 95px;
+    width: 200px;
   }
 `;

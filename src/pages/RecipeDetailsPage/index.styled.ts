@@ -111,6 +111,10 @@ export const TypeSection = styled.div`
     flex-direction: column;
     align-items: flex-start;
   }
+
+  @media (max-width: 445px) {
+    width: 300px;
+  }
 `;
 
 export const TypeSectionPart = styled.div`
