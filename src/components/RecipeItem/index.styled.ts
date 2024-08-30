@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../constants/styles/mainColors';
+import { resolution } from '@constants/resolutions';
 
 export const ItemWrapper = styled.div`
   width: 293px;
@@ -10,6 +11,11 @@ export const ItemWrapper = styled.div`
   text-align: center;
   background-color: ${COLORS.COLOR_BACKGROUND_GREY};
   cursor: pointer;
+
+  @media (${resolution.mobile}) {
+    width: 350px;
+    height: 372px;
+  }
 `;
 
 export const RecipeImage = styled.img`
@@ -17,6 +23,12 @@ export const RecipeImage = styled.img`
   height: 321px;
   object-fit: cover;
   border-radius: 18px 18px 0 0;
+
+  @media (${resolution.mobile}) {
+    width: 350px;
+    height: 298px;
+    border-radius: 19px 19px 0 0;
+  }
 `;
 
 export const RecipeLabel = styled.div`
@@ -31,4 +43,11 @@ export const RecipeLabel = styled.div`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (${resolution.mobile}) {
+    line-height: 21.78px;
+    font-size: 18px;
+    text-align: left;
+    padding-left: 10px;
+  }
 `;

@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import arrowIcon from '../../assets/icons/arrow.svg';
 import { COLORS } from '../../constants/styles/mainColors';
+import { resolution } from '@constants/resolutions';
 
 export const Section = styled.section`
   width: 322px;
@@ -9,6 +10,18 @@ export const Section = styled.section`
   font-size: 16px;
   font-weight: 400;
   letter-spacing: 0.01em;
+
+  @media (${resolution.laptop}) {
+    width: 25vw;
+  }
+
+  @media (${resolution.mobile}) {
+    width: 80vw;
+  }
+
+  @media (max-width: 550px) {
+    width: 85vw;
+  }
 `;
 
 export const Header = styled.div`
@@ -30,6 +43,10 @@ export const Header = styled.div`
     right: 16px;
     transition: transform 0.3s ease;
   }
+
+  @media (${resolution.mobile}) {
+    height: 55px;
+  }
 `;
 
 export const Content = styled.div<{ $isOpen: boolean }>`
@@ -43,6 +60,18 @@ export const Content = styled.div<{ $isOpen: boolean }>`
   width: 331px;
   margin-top: -1px;
   color: ${COLORS.COLOR_OPTION_DARKGREY};
+
+  @media (${resolution.laptop}) {
+    width: 25vw;
+  }
+
+  @media (${resolution.mobile}) {
+    width: 80vw;
+  }
+
+  @media (max-width: 550px) {
+    width: 85vw;
+  }
 `;
 
 export const Item = styled.div`

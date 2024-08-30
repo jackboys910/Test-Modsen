@@ -11,17 +11,24 @@ export const StyledHeader = styled.header`
 `;
 
 export const HeaderContent = styled.div`
-  width: 1440px;
+  width: 100%;
+  max-width: 1440px;
   height: 95px;
-  margin-left: 220px;
+  margin-left: 11.5vw;
   margin-top: 28px;
   position: relative;
+  margin-right: 100px;
+
+  @media (max-width: 630px) {
+    margin-left: 0;
+    margin-right: 30px;
+  }
 `;
 
 export const ModsenWrapper = styled.div`
   width: 232px;
   height: 48px;
-  margin-left: 33px;
+  margin-left: 1.7vw;
   padding-top: 23px;
   display: flex;
   align-items: center;

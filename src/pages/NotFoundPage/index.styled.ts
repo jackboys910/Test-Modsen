@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { COLORS } from '@constants/styles/mainColors';
+import { resolution } from '@constants/resolutions';
 
 export const BodyWrapper = styled.main`
   display: flex;
@@ -11,11 +12,15 @@ export const BodyWrapper = styled.main`
 `;
 
 export const NotFoundContainer = styled.div`
-  margin-top: 245px;
-  margin-left: 583px;
-  width: 865px;
+  margin-top: 12.8vw;
+  margin-left: 30.3vw;
+  width: 45vw;
   height: 391px;
   text-align: center;
+
+  @media (max-width: 530px) {
+    margin-left: 22px;
+  }
 `;
 
 export const ErrorMessage = styled.h2`
@@ -26,6 +31,23 @@ export const ErrorMessage = styled.h2`
   margin: 20px 0;
   text-align: left;
   margin-left: 11%;
+
+  @media (${resolution.laptop}) {
+    font-size: 38px;
+    margin: 15px;
+  }
+
+  @media (${resolution.mobile}) {
+    font-size: 32px;
+    margin: 10px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 24px;
+    line-height: 29.05px;
+    margin-left: 20px;
+    width: 70vw;
+  }
 `;
 
 export const ErrorParagraph = styled.p`
@@ -36,6 +58,10 @@ export const ErrorParagraph = styled.p`
   line-height: 25.41px;
   color: ${COLORS.COLOR_ERROR_PARAGRAPH_GREY};
   text-align: left;
+
+  @media (max-width: 530px) {
+    width: 350px;
+  }
 `;
 
 export const BackButton = styled.button`
@@ -60,6 +86,20 @@ export const BackButton = styled.button`
   &:hover {
     background-color: #00a86b; /* Изменение цвета при наведении */
   }
+
+  @media (${resolution.laptop}) {
+    width: 200px;
+  }
+
+  @media (${resolution.mobile}) {
+    width: 180px;
+  }
+
+  @media (max-width: 530px) {
+    width: 165.87px;
+    margin-right: 0;
+    margin-left: 20vw;
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -75,14 +115,28 @@ export const StyledLink = styled(Link)`
 `;
 
 export const ErrorCode = styled.h1`
-  width: 421.96px;
+  width: 280px;
   height: 148px;
   text-align: left;
   margin: 0 auto;
+  margin-left: 12vw;
   font-family: 'InterBold';
   font-weight: 700;
   font-size: 122px;
   line-height: 147.65px;
   color: ${COLORS.COLOR_ERROR_ORANGE};
-  padding-left: 20px;
+
+  @media (${resolution.laptop}) {
+    font-size: 80px;
+    height: 100px;
+  }
+
+  @media (${resolution.mobile}) {
+    font-size: 60px;
+  }
+
+  @media (max-width: 530px) {
+    font-size: 40px;
+    margin-left: 95px;
+  }
 `;

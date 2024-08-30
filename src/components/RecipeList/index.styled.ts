@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { COLORS } from '../../constants/styles/mainColors';
+import { resolution } from '@constants/resolutions';
 
 export const ListWrapper = styled.div`
   display: flex;
@@ -8,8 +9,8 @@ export const ListWrapper = styled.div`
   padding: 16px;
   justify-content: center;
   margin-top: 32px;
-  margin-left: 205px;
-  margin-right: 196px;
+  margin-left: 10.6vw;
+  margin-right: 10.2vw;
 `;
 
 export const LoadMoreButton = styled.button`
@@ -33,4 +34,12 @@ export const LoadMoreButton = styled.button`
 
 export const NoButtonWrapper = styled.div`
   margin-bottom: 125px;
+`;
+
+export const NoRecipes = styled.p`
+  font-size: 30px;
+
+  @media (${resolution.mobile}) {
+    font-size: 20px;
+  }
 `;

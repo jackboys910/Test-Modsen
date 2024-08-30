@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import RecipeItem from '@components/RecipeItem';
 import Loader from '@components/Loader';
-import { ListWrapper, LoadMoreButton, NoButtonWrapper } from './index.styled';
+import { ListWrapper, LoadMoreButton, NoButtonWrapper, NoRecipes } from './index.styled';
 import { API_BASE_URL, API_ID, API_KEY } from '@constants/config';
 
 interface IRecipe {
@@ -88,13 +88,13 @@ const RecipeList: React.FC<IRecipeListProps> = ({ searchQuery, dietFilter, dishT
         {recipes.length > 0
           ? recipes.map((recipe: IRecipe, index: number) => (
               <RecipeItem
-                key={recipe.recipe.uri}
+                key={`${recipe.recipe.uri}-${index}`}
                 image={recipe.recipe.image}
                 label={recipe.recipe.label}
                 onClick={handleRecipeItemClick(recipe, index)}
               />
             ))
-          : !loading && <p>No recipes found. Try a different search.</p>}
+          : !loading && <NoRecipes>No recipes found. Try a different search.</NoRecipes>}
       </ListWrapper>
       {recipes.length > 0 && nextUrl ? (
         <LoadMoreButton onClick={handleFetchRecipes(nextUrl)} disabled={loading}>

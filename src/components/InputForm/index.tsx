@@ -30,7 +30,8 @@ const InputForm: React.FC<IInputFormProps> = ({ onSearch }) => {
       initialValues={{ inputField: '' }}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        onSearch(values.inputField);
+        const query = values.inputField.trim() ? values.inputField : 'chicken';
+        onSearch(query);
       }}
     >
       {() => (
