@@ -2,12 +2,14 @@
   "name": "modsen-test",
   "version": "1.0.0",
   "main": "index.tsx",
+  "homepage": "https://jackboys910.github.io/Test-Modsen",
   "repository": "https://github.com/jackboys910/Test-Modsen",
   "license": "MIT",
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
     "dotenv": "^16.4.5",
     "formik": "^2.4.6",
+    "gh-pages": "^6.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.1",
@@ -54,7 +56,8 @@
     "type-check": "npx tsc --noEmit",
     "precommit": "lint-staged",
     "start": "webpack serve --mode development",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "deploy": "gh-pages -d dist"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
