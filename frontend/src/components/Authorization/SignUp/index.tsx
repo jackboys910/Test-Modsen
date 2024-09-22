@@ -24,6 +24,7 @@ const validationSchema = Yup.object({
   copyPassword: Yup.string()
     .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
     .required('Required'),
+  nickname: Yup.string().required('Required'),
 });
 
 interface SignUpProps {
@@ -34,6 +35,7 @@ interface FormValues {
   email: string;
   password: string;
   copyPassword: string;
+  nickname: string;
 }
 
 const SignUp: React.FC<SignUpProps> = ({ toggleAuthType }) => {
@@ -47,6 +49,7 @@ const SignUp: React.FC<SignUpProps> = ({ toggleAuthType }) => {
       await axios.post('http://localhost:3001/register', {
         email: values.email,
         password: values.password,
+        nickname: values.nickname,
       });
       setError('');
       setSuccess('Registration successful!');
@@ -54,7 +57,7 @@ const SignUp: React.FC<SignUpProps> = ({ toggleAuthType }) => {
       setTimeout(() => toggleAuthType(), 2000);
     } catch (error: any) {
       if (error.response && error.response.status === 409) {
-        setError('Email already registered');
+        setError('Email or nickname already registered');
       } else {
         setError('Registration failed');
       }
@@ -76,10 +79,17 @@ const SignUp: React.FC<SignUpProps> = ({ toggleAuthType }) => {
       <IconWrapper>
         <ModsenIcon />
       </IconWrapper>
-      <Formik initialValues={{ email: '', password: '', copyPassword: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+      <Formik
+        initialValues={{ nickname: '', email: '', password: '', copyPassword: '' }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
         {({ isSubmitting }) => (
           <Form>
             <div>
+              <StyledErrorMessageWrapper>
+                <StyledField type='text' name='nickname' placeholder='Please enter your nickname' />
+              </StyledErrorMessageWrapper>
               <StyledField type='email' name='email' placeholder='Please enter your email' />
               <StyledErrorMessageWrapper>
                 <StyledErrorMessage name='email' component='div' />

@@ -1,3 +1,5 @@
 node_modules
 .env
 recipesearchimages-firebase-adminsdk-waphq-ea27a61edd.json
+ratingController.js
+StarRating

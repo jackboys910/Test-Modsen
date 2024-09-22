@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
@@ -40,9 +40,16 @@ interface IRecipe {
   ingredients: IIngredient[];
 }
 
+interface IUser {
+  nickname: string;
+  profilePicture: string;
+}
+
 const RecipeDetailsPage: React.FC = () => {
   const { recipeId } = useParams<{ recipeId: string }>();
   const [recipe, setRecipe] = useState<IRecipe | null>(null);
+  const [usersWhoTried, setUsersWhoTried] = useState<IUser[]>([]);
+  const [hasTried, setHasTried] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -51,6 +58,65 @@ const RecipeDetailsPage: React.FC = () => {
       const parsedRecipe: IRecipe = JSON.parse(storedRecipe);
       setRecipe(parsedRecipe);
     }
+
+    const fetchUsersWhoTried = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${recipeId}`);
+        if (!response.ok) throw new Error('Failed to fetch users');
+        const data = await response.json();
+        setUsersWhoTried(data);
+      } catch (error) {
+        console.error('Error fetching users who tried:', error);
+      }
+    };
+
+    // const fetchUsersWhoTried = async () => {
+    //   try {
+    //     if (!recipe) return;
+    //     const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${encodeURIComponent(recipe.url)}`);
+    //     if (!response.ok) throw new Error('Failed to fetch users');
+    //     const data = await response.json();
+    //     setUsersWhoTried(data);
+    //   } catch (error) {
+    //     console.error('Error fetching users who tried:', error);
+    //   }
+    // };
+
+    if (recipeId) {
+      fetchUsersWhoTried();
+    } else {
+      console.error('Recipe ID is not defined');
+    }
+
+    const checkIfUserTried = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const response = await fetch(`http://localhost:3001/hasUserTriedRecipe/${recipeId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setHasTried(data.hasTried);
+      } catch (error) {
+        console.error('Error checking if user tried recipe:', error);
+      }
+      // try {
+      //   const response = await fetch(`http://localhost:3001/hasUserTriedRecipe/${encodeURIComponent(recipe.url)}`, {
+      //     headers: {
+      //       Authorization: `Bearer ${token}`,
+      //     },
+      //   });
+      //   const data = await response.json();
+      //   setHasTried(data.hasTried);
+      // } catch (error) {
+      //   console.error('Error checking if user tried recipe:', error);
+      // }
+    };
+
+    checkIfUserTried();
 
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -62,6 +128,30 @@ const RecipeDetailsPage: React.FC = () => {
       window.removeEventListener('resize', handleResize);
     };
   }, [recipeId]);
+
+  const handleMarkAsTried = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !recipe) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/markAsTried/${recipeId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        // body: JSON.stringify({ recipeUrl: recipe.url }),
+      });
+
+      if (!response.ok) throw new Error('Failed to mark as tried');
+
+      setHasTried(true);
+    } catch (error) {
+      console.error('Error marking as tried:', error);
+    }
+  };
+
+  const token = localStorage.getItem('token');
 
   if (!recipe) return null;
 
@@ -120,6 +210,32 @@ const RecipeDetailsPage: React.FC = () => {
                 Recipe link
               </a>
             </LinkWrapper>
+            {recipe && (
+              <>
+                {token && (
+                  <button onClick={handleMarkAsTried} disabled={hasTried}>
+                    {hasTried ? `You've tried this!` : `Mark as Tried`}
+                  </button>
+                )}
+                <h3>Users who tried this recipe:</h3>
+                <ul>
+                  {usersWhoTried.map((user, index) => (
+                    <li key={index}>
+                      <Link to={`/${user.nickname}`}>
+                        <img
+                          src={`http://localhost:3001/assets/images/${user.profilePicture}`}
+                          alt={user.nickname}
+                          // onError={(e) => {
+                          //   e.currentTarget.src = 'http://localhost:3001/assets/images/defaultUser.png';
+                          // }}
+                        />
+                        <span>{user.nickname}</span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
           </InfoWrapper>
           {!isMobile && (
             <ImageWrapper>
