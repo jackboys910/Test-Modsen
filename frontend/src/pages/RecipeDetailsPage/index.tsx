@@ -19,8 +19,12 @@ import {
   Data,
   LinkWrapper,
   StyledLink,
+  StyledMarkButton,
   StyledUsersMessage,
+  StyledUserImage,
   StyledNickname,
+  UsersList,
+  UserListItem,
 } from './index.styled';
 import { ReactComponent as LightningIcon } from '@assets/icons/lightning.svg';
 import { ReactComponent as MedalIcon } from '@assets/icons/medal.svg';
@@ -71,7 +75,11 @@ const RecipeDetailsPage: React.FC = () => {
         const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${encodeURIComponent(recipe.uri)}`);
         if (!response.ok) throw new Error('Failed to fetch users');
         const data = await response.json();
-        setUsersWhoTried(data);
+        const formattedData = data.map((user: any) => ({
+          nickname: user.nickname,
+          profilePicture: user.profile_picture || 'defaultUser.png',
+        }));
+        setUsersWhoTried(formattedData);
       } catch (error) {
         console.error('Error fetching users who tried:', error);
       }
@@ -187,27 +195,27 @@ const RecipeDetailsPage: React.FC = () => {
             {recipe && (
               <>
                 {token && (
-                  <button onClick={handleMarkAsTried} disabled={hasTried}>
+                  <StyledMarkButton onClick={handleMarkAsTried} disabled={hasTried} $hasTried={hasTried}>
                     {hasTried ? `You've tried this!` : `Mark as Tried`}
-                  </button>
+                  </StyledMarkButton>
                 )}
                 <StyledUsersMessage>Users who tried this recipe:</StyledUsersMessage>
-                <ul>
+                <UsersList>
                   {usersWhoTried.map((user, index) => (
-                    <li key={index}>
+                    <UserListItem key={index}>
                       <Link to={`/${user.nickname}`}>
-                        <img
+                        <StyledUserImage
                           src={`http://localhost:3001/assets/images/${user.profilePicture}`}
                           alt={user.nickname}
-                          // onError={(e) => {
-                          //   e.currentTarget.src = 'http://localhost:3001/assets/images/defaultUser.png';
-                          // }}
+                          onError={(e) => {
+                            e.currentTarget.src = 'http://localhost:3001/assets/images/defaultUser.png';
+                          }}
                         />
                         <StyledNickname>{user.nickname}</StyledNickname>
                       </Link>
-                    </li>
+                    </UserListItem>
                   ))}
-                </ul>
+                </UsersList>
               </>
             )}
             <LinkWrapper>

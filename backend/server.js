@@ -57,23 +57,10 @@ class Server {
       AuthMiddleware.authenticateJWT,
       UserController.hasUserTriedRecipe
     )
-    this.app.get('/getProfileByNickname/:nickname', async (req, res) => {
-      const { nickname } = req.params
-      try {
-        const result = await db.query(
-          `SELECT * FROM user_profiles WHERE nickname = $1`,
-          [nickname]
-        )
-
-        if (result.rows.length > 0) {
-          res.json(result.rows[0])
-        } else {
-          res.status(404).send('Profile not found')
-        }
-      } catch (error) {
-        res.status(400).send(error.message)
-      }
-    })
+    this.app.get(
+      '/getProfileByNickname/:nickname',
+      UserController.getProfileByNickname
+    )
   }
 
   start() {

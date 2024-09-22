@@ -15,7 +15,7 @@ export const BodyWrapper = styled.main`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  height: 1734px;
+  height: 1900px;
   margin: 0;
 
   @media (${resolution.mobile}) {
@@ -49,6 +49,10 @@ export const InfoWrapper = styled.div<{ $ingredientsCount: number }>`
   border-radius: 28px;
   background-color: ${COLORS.COLOR_MAIN_BLUE};
   position: relative;
+
+  @media (max-width: 1914px) {
+    height: 1400px;
+  }
 
   @media (${resolution.laptop}) {
     width: 760px;
@@ -340,6 +344,20 @@ export const LinkWrapper = styled.div`
   }
 `;
 
+export const StyledMarkButton = styled.button<{ $hasTried: boolean }>`
+  background-color: ${({ $hasTried }) => ($hasTried ? 'grey' : COLORS.COLOR_MARK_BUTTON_GREEN)};
+  color: white;
+  padding: 10px 20px;
+  margin-top: 40px;
+  border: none;
+  border-radius: 5px;
+  cursor: ${({ $hasTried }) => ($hasTried ? 'auto' : 'pointer')};
+
+  &:hover {
+    background-color: ${({ $hasTried }) => ($hasTried ? 'grey' : COLORS.COLOR_MARK_BUTTON_HOVER_DARKGREEN)};
+  }
+`;
+
 export const StyledUsersMessage = styled.p`
   font-family: 'SpaceGroteskMedium';
   font-weight: 400;
@@ -347,7 +365,15 @@ export const StyledUsersMessage = styled.p`
   color: white;
 `;
 
+export const StyledUserImage = styled.img`
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+`;
+
 export const StyledNickname = styled.p`
+  font-family: 'SpaceGroteskMedium';
+  font-weight: 300;
   margin: 0;
   color: white;
 `;
@@ -362,4 +388,24 @@ export const StyledLink = styled(Link)`
   right: 0;
   top: 23%;
   text-decoration: none;
+`;
+
+export const UsersList = styled.ul`
+  display: flex;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+
+  a {
+    text-decoration: none;
+  }
+`;
+
+export const UserListItem = styled.li`
+  margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 `;

@@ -159,6 +159,24 @@ class UserController {
     }
   }
 
+  async getProfileByNickname(req, res) {
+    const { nickname } = req.params
+    try {
+      const result = await db.query(
+        `SELECT profile_picture, description, phone_number, location, nickname, cuisine, registered_at, last_online FROM user_profiles WHERE nickname = $1`,
+        [nickname]
+      )
+
+      if (result.rows.length > 0) {
+        res.json(result.rows[0])
+      } else {
+        res.status(404).send('Profile not found')
+      }
+    } catch (error) {
+      res.status(400).send(error.message)
+    }
+  }
+
   async markAsTried(req, res) {
     const userId = req.user.userId
     const { recipeUri } = req.params
