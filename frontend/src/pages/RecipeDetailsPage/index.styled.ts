@@ -44,7 +44,7 @@ export const RecipeWrapper = styled.div`
 
 export const InfoWrapper = styled.div<{ $ingredientsCount: number }>`
   width: 39.6vw;
-  height: 1035px;
+  height: 1300px;
   padding: 75px 4.95vw 0 4.95vw;
   border-radius: 28px;
   background-color: ${COLORS.COLOR_MAIN_BLUE};
@@ -338,6 +338,18 @@ export const LinkWrapper = styled.div`
     position: absolute;
     bottom: 15px;
   }
+`;
+
+export const StyledUsersMessage = styled.p`
+  font-family: 'SpaceGroteskMedium';
+  font-weight: 400;
+  font-size: 20px;
+  color: white;
+`;
+
+export const StyledNickname = styled.p`
+  margin: 0;
+  color: white;
 `;
 
 export const StyledLink = styled(Link)`

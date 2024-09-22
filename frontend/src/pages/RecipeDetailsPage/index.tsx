@@ -19,6 +19,8 @@ import {
   Data,
   LinkWrapper,
   StyledLink,
+  StyledUsersMessage,
+  StyledNickname,
 } from './index.styled';
 import { ReactComponent as LightningIcon } from '@assets/icons/lightning.svg';
 import { ReactComponent as MedalIcon } from '@assets/icons/medal.svg';
@@ -182,11 +184,6 @@ const RecipeDetailsPage: React.FC = () => {
                   .slice(0, 3)
                   .map((ingredient: IIngredient, index: number) => <img key={index} src={ingredient.image} alt={ingredient.text} />)}
             </ProductsSection>
-            <LinkWrapper>
-              <a href={recipe.url} target='_blank' rel='noopener noreferrer'>
-                Recipe link
-              </a>
-            </LinkWrapper>
             {recipe && (
               <>
                 {token && (
@@ -194,7 +191,7 @@ const RecipeDetailsPage: React.FC = () => {
                     {hasTried ? `You've tried this!` : `Mark as Tried`}
                   </button>
                 )}
-                <h3>Users who tried this recipe:</h3>
+                <StyledUsersMessage>Users who tried this recipe:</StyledUsersMessage>
                 <ul>
                   {usersWhoTried.map((user, index) => (
                     <li key={index}>
@@ -206,13 +203,18 @@ const RecipeDetailsPage: React.FC = () => {
                           //   e.currentTarget.src = 'http://localhost:3001/assets/images/defaultUser.png';
                           // }}
                         />
-                        <span>{user.nickname}</span>
+                        <StyledNickname>{user.nickname}</StyledNickname>
                       </Link>
                     </li>
                   ))}
                 </ul>
               </>
             )}
+            <LinkWrapper>
+              <a href={recipe.url} target='_blank' rel='noopener noreferrer'>
+                Recipe link
+              </a>
+            </LinkWrapper>
           </InfoWrapper>
           {!isMobile && (
             <ImageWrapper>
