@@ -38,6 +38,7 @@ interface IRecipe {
   url: string;
   image: string;
   ingredients: IIngredient[];
+  uri: string;
 }
 
 interface IUser {
@@ -58,10 +59,14 @@ const RecipeDetailsPage: React.FC = () => {
       const parsedRecipe: IRecipe = JSON.parse(storedRecipe);
       setRecipe(parsedRecipe);
     }
+  }, []);
+
+  useEffect(() => {
+    if (!recipe) return;
 
     const fetchUsersWhoTried = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${recipeId}`);
+        const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${encodeURIComponent(recipe.uri)}`);
         if (!response.ok) throw new Error('Failed to fetch users');
         const data = await response.json();
         setUsersWhoTried(data);
@@ -70,30 +75,12 @@ const RecipeDetailsPage: React.FC = () => {
       }
     };
 
-    // const fetchUsersWhoTried = async () => {
-    //   try {
-    //     if (!recipe) return;
-    //     const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${encodeURIComponent(recipe.url)}`);
-    //     if (!response.ok) throw new Error('Failed to fetch users');
-    //     const data = await response.json();
-    //     setUsersWhoTried(data);
-    //   } catch (error) {
-    //     console.error('Error fetching users who tried:', error);
-    //   }
-    // };
-
-    if (recipeId) {
-      fetchUsersWhoTried();
-    } else {
-      console.error('Recipe ID is not defined');
-    }
-
     const checkIfUserTried = async () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
       try {
-        const response = await fetch(`http://localhost:3001/hasUserTriedRecipe/${recipeId}`, {
+        const response = await fetch(`http://localhost:3001/hasUserTriedRecipe/${encodeURIComponent(recipe.uri)}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -103,44 +90,34 @@ const RecipeDetailsPage: React.FC = () => {
       } catch (error) {
         console.error('Error checking if user tried recipe:', error);
       }
-      // try {
-      //   const response = await fetch(`http://localhost:3001/hasUserTriedRecipe/${encodeURIComponent(recipe.url)}`, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   });
-      //   const data = await response.json();
-      //   setHasTried(data.hasTried);
-      // } catch (error) {
-      //   console.error('Error checking if user tried recipe:', error);
-      // }
     };
 
+    fetchUsersWhoTried();
     checkIfUserTried();
+  }, [recipe]);
 
+  useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
 
     window.addEventListener('resize', handleResize);
-
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [recipeId]);
+  }, []);
 
   const handleMarkAsTried = async () => {
     const token = localStorage.getItem('token');
     if (!token || !recipe) return;
-
+    1;
     try {
-      const response = await fetch(`http://localhost:3001/markAsTried/${recipeId}`, {
+      const response = await fetch(`http://localhost:3001/markAsTried/${encodeURIComponent(recipe.uri)}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
-        // body: JSON.stringify({ recipeUrl: recipe.url }),
       });
 
       if (!response.ok) throw new Error('Failed to mark as tried');
