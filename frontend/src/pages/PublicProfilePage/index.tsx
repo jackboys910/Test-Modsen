@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
+import PublicProfileInfo from '@components/PublicProfileInfo';
+import PublicProfileDescription from '@components/PublicProfileDescription';
+import PublicProfileContacts from '@components/PublicProfileContacts';
 import { BodyWrapper, ProfileWrapper } from '../ProfilePage/index.styled';
+import { StyledContainer } from './index.styled';
 
 const PublicProfilePage: React.FC = () => {
   const { nickname } = useParams<{ nickname: string }>();
@@ -46,13 +50,17 @@ const PublicProfilePage: React.FC = () => {
       <Header />
       <BodyWrapper>
         <ProfileWrapper>
-          <img src={`http://localhost:3001/assets/images/${profile.profilePicture}`} alt='Profile' />
-          <h1>{profile.nickname}</h1>
-          <p>Description: {profile.description}</p>
-          <p>Location: {profile.location}</p>
-          <p>Cuisine: {profile.cuisine}</p>
-          <p>Registered at: {profile.registeredAt}</p>
-          <p>Last online: {profile.lastOnline}</p>
+          <StyledContainer>
+            <PublicProfileInfo
+              profilePicture={profile.profilePicture}
+              phoneNumber={profile.phoneNumber}
+              location={profile.location}
+              registeredAt={profile.registeredAt}
+              lastOnline={profile.lastOnline}
+            />
+            <PublicProfileDescription description={profile.description} nickname={profile.nickname} cuisine={profile.cuisine} />
+            <PublicProfileContacts />
+          </StyledContainer>
         </ProfileWrapper>
       </BodyWrapper>
       <Footer />

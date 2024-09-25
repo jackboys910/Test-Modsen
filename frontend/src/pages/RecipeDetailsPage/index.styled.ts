@@ -348,7 +348,7 @@ export const StyledMarkButton = styled.button<{ $hasTried: boolean }>`
   background-color: ${({ $hasTried }) => ($hasTried ? 'grey' : COLORS.COLOR_MARK_BUTTON_GREEN)};
   color: white;
   padding: 10px 20px;
-  margin-top: 40px;
+  margin-top: 50px;
   border: none;
   border-radius: 5px;
   cursor: ${({ $hasTried }) => ($hasTried ? 'auto' : 'pointer')};

@@ -1,4 +1,9 @@
 import React, { useRef } from 'react';
+import { FaCamera } from 'react-icons/fa';
+import { BsTelephoneFill } from 'react-icons/bs';
+import { FaLocationDot } from 'react-icons/fa6';
+import { LuClock4 } from 'react-icons/lu';
+import { GoDotFill } from 'react-icons/go';
 import {
   ProfileInfoWrapper,
   ImageWrapper,
@@ -9,11 +14,6 @@ import {
   StyledInfoInput,
   StyledTime,
 } from './index.styled';
-import { FaCamera } from 'react-icons/fa';
-import { BsTelephoneFill } from 'react-icons/bs';
-import { FaLocationDot } from 'react-icons/fa6';
-import { LuClock4 } from 'react-icons/lu';
-import { GoDotFill } from 'react-icons/go';
 
 interface ProfileInfoProps {
   profilePicture: string;
@@ -60,8 +60,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
       {/* <input type='file' name='profilePicture' accept='image/*' onChange={handleFileChange} /> */}
       {pictureErrorMessage && <p>{pictureErrorMessage}</p>}
       <AboutWrapper>
-        <DataWrapper>
-          <BsTelephoneFill color='grey' />
+        <DataWrapper style={{ position: 'relative' }}>
+          <BsTelephoneFill color='grey' style={{ position: 'absolute', top: '5px' }} />
           <StyledInfoInput
             type='text'
             name='phoneNumber'
@@ -70,8 +70,8 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             placeholder='Phone number'
           />
         </DataWrapper>
-        <DataWrapper>
-          <FaLocationDot color='grey' />
+        <DataWrapper style={{ position: 'relative' }}>
+          <FaLocationDot color='grey' style={{ position: 'absolute', top: '5px' }} />
           <StyledInfoInput
             type='text'
             name='location'

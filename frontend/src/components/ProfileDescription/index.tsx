@@ -1,6 +1,15 @@
 import React from 'react';
-import { ProfileDescriptionWrapper, StyledNickname, InfoWrapper, StyledCuisine, StyledInfo, StyledDescription } from './index.styled';
 import { BiSolidDish } from 'react-icons/bi';
+import {
+  ProfileDescriptionWrapper,
+  StyledNickname,
+  StyledNickkname,
+  InfoWrapper,
+  StyledAbout,
+  StyledCuisine,
+  StyledInfo,
+  StyledDescription,
+} from './index.styled';
 
 interface ProfileDescriptionProps {
   description: string;
@@ -12,28 +21,30 @@ interface ProfileDescriptionProps {
 const ProfileDescription: React.FC<ProfileDescriptionProps> = ({ description, nickname, cuisine, onChange }) => {
   return (
     <ProfileDescriptionWrapper>
-      <StyledNickname
+      {/* <StyledNickname
         type='text'
         name='nickname'
         value={nickname}
         onChange={(e) => onChange('nickname', e.target.value)}
         placeholder='Nickname'
-      />
+      /> */}
+      <StyledNickkname>{nickname}</StyledNickkname>
       <InfoWrapper>
-        <BiSolidDish color='grey' />
-        <StyledCuisine>Cuisine Type - </StyledCuisine>
+        <BiSolidDish color='grey' style={{ marginTop: '5px' }} />
+        <StyledCuisine>Favorite cuisine type - </StyledCuisine>
         <StyledInfo
-          name='description'
-          value={description}
-          onChange={(e) => onChange('description', e.target.value)}
-          placeholder='About you'
+          name='cuisine'
+          value={cuisine}
+          onChange={(e) => onChange('cuisine', e.target.value)}
+          placeholder='Your favorite cuisine type'
         />
       </InfoWrapper>
+      <StyledAbout>About you</StyledAbout>
       <StyledDescription
-        name='cuisine'
-        value={cuisine}
-        onChange={(e) => onChange('cuisine', e.target.value)}
-        placeholder='Favorite cuisine type'
+        name='description'
+        value={description}
+        onChange={(e) => onChange('description', e.target.value)}
+        placeholder='Here you can tell about you'
       />
     </ProfileDescriptionWrapper>
   );

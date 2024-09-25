@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { COLORS } from '@constants/styles/mainColors';
 
 export const ProfileInfoWrapper = styled.div`
   width: 25%;
@@ -53,8 +54,19 @@ export const DataWrapper = styled.div`
 `;
 
 export const StyledInfoInput = styled.input`
-  width: 150x;
+  font-family: 'RobotoRegular';
+  width: 200px;
   margin-bottom: 10px;
+  border-radius: 5px;
+  border: 2px solid grey;
+  height: 30px;
+  margin-left: 20px;
+
+  // &:focus {
+  //   outline-style: solid;
+  //   outline-width: 4px;
+  //   outline-color: ${COLORS.COLOR_MAIN_BLUE};
+  // }
 `;
 
 export const StyledTime = styled.p`
