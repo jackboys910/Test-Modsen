@@ -302,6 +302,30 @@ class UserController {
       res.status(500).send(error.message)
     }
   }
+
+  async getRecipeRatingInfo(req, res) {
+    const { recipeUri } = req.params
+
+    try {
+      const result = await db.query(
+        `SELECT AVG(rating) AS average_rating, COUNT(rating) AS rating_count 
+         FROM user_recipe_ratings 
+         WHERE recipe_uri = $1`,
+        [recipeUri]
+      )
+
+      if (result.rows.length > 0) {
+        res.json({
+          averageRating: parseFloat(result.rows[0].average_rating).toFixed(2),
+          ratingCount: result.rows[0].rating_count,
+        })
+      } else {
+        res.json({ averageRating: null, ratingCount: 0 })
+      }
+    } catch (error) {
+      res.status(500).send(error.message)
+    }
+  }
 }
 
 module.exports = new UserController()

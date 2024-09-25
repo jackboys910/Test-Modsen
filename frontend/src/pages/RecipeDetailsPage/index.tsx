@@ -60,6 +60,8 @@ const RecipeDetailsPage: React.FC = () => {
   const [usersWhoTried, setUsersWhoTried] = useState<IUser[]>([]);
   const [hasTried, setHasTried] = useState(false);
   const [userRating, setUserRating] = useState<number | null>(null);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
+  const [ratingCount, setRatingCount] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -122,9 +124,22 @@ const RecipeDetailsPage: React.FC = () => {
       }
     };
 
+    const fetchRecipeRatingInfo = async () => {
+      try {
+        const response = await fetch(`http://localhost:3001/recipeRatingInfo/${encodeURIComponent(recipe.uri)}`);
+        if (!response.ok) throw new Error('Failed to fetch recipe rating info');
+        const data = await response.json();
+        setAverageRating(data.averageRating);
+        setRatingCount(data.ratingCount);
+      } catch (error) {
+        console.error('Error fetching recipe rating info:', error);
+      }
+    };
+
     fetchUsersWhoTried();
     checkIfUserTried();
     fetchUserRating();
+    fetchRecipeRatingInfo();
   }, [recipe]);
 
   useEffect(() => {
@@ -212,7 +227,9 @@ const RecipeDetailsPage: React.FC = () => {
                 <Data>Cuisine Type - {lastCuisineWord.charAt(0).toUpperCase() + lastCuisineWord.slice(1)}</Data>
               </TypeSectionPart>
             </TypeSection>
-            <StarRatingWrapper>{token && <StarRating rating={userRating} onRate={handleStarClick} />}</StarRatingWrapper>
+            <StarRatingWrapper>
+              {token && <StarRating rating={userRating} onRate={handleStarClick} averageRating={averageRating} ratingCount={ratingCount} />}
+            </StarRatingWrapper>
             <IngredientsSection>
               <IngredientsTitle>Ingredients</IngredientsTitle>
               <ul>

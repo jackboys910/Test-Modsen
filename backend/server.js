@@ -71,6 +71,10 @@ class Server {
       AuthMiddleware.authenticateJWT,
       UserController.getUserRating
     )
+    this.app.get(
+      '/recipeRatingInfo/:recipeUri',
+      UserController.getRecipeRatingInfo
+    )
   }
 
   start() {
