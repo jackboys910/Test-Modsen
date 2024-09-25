@@ -15,8 +15,10 @@ export const StyledAbout = styled.p`
 export const StyledDescription = styled.p`
   font-family: 'RobotoRegular';
   font-size: 18px;
-  margin: 20px 0 0 10px;
+  margin: 20px 0 0 0;
   width: 100%;
   height: 250px;
   text-align: start;
+  padding-left: 10px;
+  border-left: 1px solid purple;
 `;

@@ -61,6 +61,16 @@ class Server {
       '/getProfileByNickname/:nickname',
       UserController.getProfileByNickname
     )
+    this.app.post(
+      '/rateRecipe/:recipeUri',
+      AuthMiddleware.authenticateJWT,
+      UserController.rateRecipe
+    )
+    this.app.get(
+      '/getUserRating/:recipeUri',
+      AuthMiddleware.authenticateJWT,
+      UserController.getUserRating
+    )
   }
 
   start() {

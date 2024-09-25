@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
+import StarRating from '@components/StarRating';
 import {
   BodyWrapper,
   RecipeWrapper,
@@ -11,6 +12,7 @@ import {
   MealSection,
   TypeSection,
   TypeSectionPart,
+  StarRatingWrapper,
   IngredientsSection,
   IngredientsTitle,
   ProductsTitle,
@@ -57,6 +59,7 @@ const RecipeDetailsPage: React.FC = () => {
   const [recipe, setRecipe] = useState<IRecipe | null>(null);
   const [usersWhoTried, setUsersWhoTried] = useState<IUser[]>([]);
   const [hasTried, setHasTried] = useState(false);
+  const [userRating, setUserRating] = useState<number | null>(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -102,8 +105,26 @@ const RecipeDetailsPage: React.FC = () => {
       }
     };
 
+    const fetchUserRating = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+
+      try {
+        const response = await fetch(`http://localhost:3001/getUserRating/${encodeURIComponent(recipe.uri)}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+        setUserRating(data.rating);
+      } catch (error) {
+        console.error('Error fetching user rating:', error);
+      }
+    };
+
     fetchUsersWhoTried();
     checkIfUserTried();
+    fetchUserRating();
   }, [recipe]);
 
   useEffect(() => {
@@ -138,6 +159,28 @@ const RecipeDetailsPage: React.FC = () => {
     }
   };
 
+  const handleStarClick = async (rating: number) => {
+    const token = localStorage.getItem('token');
+    if (!token || !recipe) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/rateRecipe/${encodeURIComponent(recipe.uri)}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ rating }),
+      });
+
+      if (!response.ok) throw new Error('Failed to rate recipe');
+
+      setUserRating(rating);
+    } catch (error) {
+      console.error('Error rating recipe:', error);
+    }
+  };
+
   const token = localStorage.getItem('token');
 
   if (!recipe) return null;
@@ -169,6 +212,7 @@ const RecipeDetailsPage: React.FC = () => {
                 <Data>Cuisine Type - {lastCuisineWord.charAt(0).toUpperCase() + lastCuisineWord.slice(1)}</Data>
               </TypeSectionPart>
             </TypeSection>
+            <StarRatingWrapper>{token && <StarRating rating={userRating} onRate={handleStarClick} />}</StarRatingWrapper>
             <IngredientsSection>
               <IngredientsTitle>Ingredients</IngredientsTitle>
               <ul>

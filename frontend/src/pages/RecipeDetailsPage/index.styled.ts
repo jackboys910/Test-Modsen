@@ -18,6 +18,10 @@ export const BodyWrapper = styled.main`
   height: 1900px;
   margin: 0;
 
+  @media (max-width: 1914px) {
+    height: 2000px;
+  }
+
   @media (${resolution.mobile}) {
     height: 2300px;
   }
@@ -44,14 +48,14 @@ export const RecipeWrapper = styled.div`
 
 export const InfoWrapper = styled.div<{ $ingredientsCount: number }>`
   width: 39.6vw;
-  height: 1300px;
+  height: 1400px;
   padding: 75px 4.95vw 0 4.95vw;
   border-radius: 28px;
   background-color: ${COLORS.COLOR_MAIN_BLUE};
   position: relative;
 
   @media (max-width: 1914px) {
-    height: 1400px;
+    height: 1500px;
   }
 
   @media (${resolution.laptop}) {
@@ -133,6 +137,10 @@ export const TypeSectionPart = styled.div`
   svg {
     margin-right: 15px;
   }
+`;
+
+export const StarRatingWrapper = styled.div`
+  margin-top: 40px;
 `;
 
 export const IngredientsSection = styled.div`

@@ -257,6 +257,51 @@ class UserController {
       res.status(400).send(error.message)
     }
   }
+
+  async rateRecipe(req, res) {
+    const userId = req.user.userId
+    const { recipeUri } = req.params
+    const { rating } = req.body
+
+    if (rating < 1 || rating > 5) {
+      return res.status(400).send('Rating must be between 1 and 5')
+    }
+
+    try {
+      await db.query(
+        `INSERT INTO user_recipe_ratings (user_id, recipe_uri, rating)
+         VALUES ($1, $2, $3)
+         ON CONFLICT (user_id, recipe_uri)
+         DO UPDATE SET rating = EXCLUDED.rating`,
+        [userId, recipeUri, rating]
+      )
+
+      res.status(200).send('Rating submitted')
+    } catch (error) {
+      res.status(500).send(error.message)
+    }
+  }
+
+  async getUserRating(req, res) {
+    const userId = req.user.userId
+    const { recipeUri } = req.params
+
+    try {
+      const result = await db.query(
+        `SELECT rating FROM user_recipe_ratings
+         WHERE user_id = $1 AND recipe_uri = $2`,
+        [userId, recipeUri]
+      )
+
+      if (result.rows.length > 0) {
+        res.json({ rating: result.rows[0].rating })
+      } else {
+        res.json({ rating: null })
+      }
+    } catch (error) {
+      res.status(500).send(error.message)
+    }
+  }
 }
 
 module.exports = new UserController()
