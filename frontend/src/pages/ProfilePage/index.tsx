@@ -23,6 +23,12 @@ const ProfilePage: React.FC = () => {
   });
   const [newProfilePicture, setNewProfilePicture] = useState<File | null>(null);
   const [pictureErrorMessage, setPictureErrorMessage] = useState<string | null>(null);
+  const [errors, setErrors] = useState({
+    phoneNumber: false,
+    location: false,
+    cuisine: false,
+    description: false,
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -71,8 +77,26 @@ const ProfilePage: React.FC = () => {
     navigate('/authorization');
   };
 
+  const validateInputs = () => {
+    const phoneNumberValid = profile.phoneNumber === '' || /^[\d+]{1,15}$/.test(profile.phoneNumber);
+    const locationValid = profile.location === '' || /^[a-zA-Z0-9., ]{0,50}$/.test(profile.location);
+    const cuisineValid = profile.cuisine === '' || /^[a-zA-Z, ]{0,35}$/.test(profile.cuisine);
+    const descriptionValid = profile.description.length <= 520;
+
+    setErrors({
+      phoneNumber: !phoneNumberValid,
+      location: !locationValid,
+      cuisine: !cuisineValid,
+      description: !descriptionValid,
+    });
+
+    return phoneNumberValid && locationValid && cuisineValid && descriptionValid;
+  };
+
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!validateInputs()) return;
+
     try {
       const token = localStorage.getItem('token');
       const formData = new FormData();
@@ -140,12 +164,14 @@ const ProfilePage: React.FC = () => {
               onChange={handleChange}
               onFileChange={handleFileChange}
               pictureErrorMessage={pictureErrorMessage}
+              errors={errors}
             />
             <ProfileDescription
               description={profile.description}
               nickname={profile.nickname}
               cuisine={profile.cuisine}
               onChange={handleChange}
+              errors={errors}
             />
             <ProfileContacts handleSignOut={handleSignOut} onUpdateProfile={handleProfileUpdate} />
           </StyledForm>

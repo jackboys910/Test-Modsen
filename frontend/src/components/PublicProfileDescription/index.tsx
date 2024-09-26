@@ -1,6 +1,6 @@
 import React from 'react';
 import { BiSolidDish } from 'react-icons/bi';
-import { ProfileDescriptionWrapper, StyledNickkname, InfoWrapper } from '@components/ProfileDescription/index.styled';
+import { ProfileDescriptionWrapper, StyledNickname, InfoWrapper } from '@components/ProfileDescription/index.styled';
 import { StyledCuisine, StyledAbout, StyledDescription } from './index.styled';
 
 interface IPublicProfileDescriptionProps {
@@ -12,7 +12,7 @@ interface IPublicProfileDescriptionProps {
 const PublicProfileDescription: React.FC<IPublicProfileDescriptionProps> = ({ description, cuisine, nickname }) => {
   return (
     <ProfileDescriptionWrapper>
-      <StyledNickkname>{nickname}</StyledNickkname>
+      <StyledNickname>{nickname}</StyledNickname>
       <InfoWrapper>
         <BiSolidDish color='grey' style={{ marginTop: '5px' }} />
         <StyledCuisine>Favorite cuisine type - {cuisine ? cuisine : 'No information'}</StyledCuisine>

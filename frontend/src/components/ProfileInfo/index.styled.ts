@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FaQuestionCircle } from 'react-icons/fa';
 import { COLORS } from '@constants/styles/mainColors';
 
 export const ProfileInfoWrapper = styled.div`
@@ -67,6 +68,38 @@ export const StyledInfoInput = styled.input`
   //   outline-width: 4px;
   //   outline-color: ${COLORS.COLOR_MAIN_BLUE};
   // }
+`;
+
+export const QuestionIcon = styled(FaQuestionCircle)`
+  cursor: pointer;
+  position: absolute;
+  right: -15px;
+  top: 5px;
+
+  &:hover {
+    color: #4f4f4f;
+  }
+`;
+
+export const Tooltip = styled.div`
+  font-family: 'InterRegular';
+  position: absolute;
+  top: 80%;
+  left: 80%;
+  width: 120px;
+  height: 60px;
+  background-color: white;
+  border: 1px solid grey;
+  border-radius: 5px;
+  padding: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: black;
+  font-size: 12px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
 `;
 
 export const StyledTime = styled.p`

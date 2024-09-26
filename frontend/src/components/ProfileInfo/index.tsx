@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { FaCamera } from 'react-icons/fa';
 import { BsTelephoneFill } from 'react-icons/bs';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -12,6 +12,8 @@ import {
   AboutWrapper,
   DataWrapper,
   StyledInfoInput,
+  QuestionIcon,
+  Tooltip,
   StyledTime,
 } from './index.styled';
 
@@ -24,6 +26,10 @@ interface ProfileInfoProps {
   onChange: (field: string, value: any) => void;
   onFileChange: (file: File) => void;
   pictureErrorMessage: string | null;
+  errors: {
+    phoneNumber: boolean;
+    location: boolean;
+  };
 }
 
 const ProfileInfo: React.FC<ProfileInfoProps> = ({
@@ -35,8 +41,13 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
   onChange,
   onFileChange,
   pictureErrorMessage,
+  errors,
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
+    phoneNumber: false,
+    location: false,
+  });
 
   const handleFileClick = () => {
     fileInputRef.current?.click();
@@ -46,6 +57,10 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
     if (e.target.files && e.target.files[0]) {
       onFileChange(e.target.files[0]);
     }
+  };
+
+  const toggleTooltip = (field: string) => {
+    setShowTooltip((prev) => ({ ...prev, [field]: !prev[field] }));
   };
 
   return (
@@ -68,7 +83,16 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             value={phoneNumber}
             onChange={(e) => onChange('phoneNumber', e.target.value)}
             placeholder='Phone number'
+            style={{ border: errors.phoneNumber ? '2px solid red' : undefined }}
           />
+          <QuestionIcon
+            size={14}
+            onMouseEnter={() => setShowTooltip({ ...showTooltip, phoneNumber: true })}
+            onMouseLeave={() => setShowTooltip({ ...showTooltip, phoneNumber: false })}
+            onClick={() => toggleTooltip('phoneNumber')}
+            style={{ color: errors.phoneNumber ? 'green' : 'grey' }}
+          />
+          {showTooltip.phoneNumber && <Tooltip>Only digits, max 15 characters</Tooltip>}
         </DataWrapper>
         <DataWrapper style={{ position: 'relative' }}>
           <FaLocationDot color='grey' style={{ position: 'absolute', top: '5px' }} />
@@ -78,7 +102,16 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             value={location}
             onChange={(e) => onChange('location', e.target.value)}
             placeholder='Location'
+            style={{ border: errors.location ? '2px solid red' : undefined }}
           />
+          <QuestionIcon
+            size={14}
+            onMouseEnter={() => setShowTooltip({ ...showTooltip, location: true })}
+            onMouseLeave={() => setShowTooltip({ ...showTooltip, location: false })}
+            onClick={() => toggleTooltip('location')}
+            style={{ color: errors.location ? 'green' : 'grey' }}
+          />
+          {showTooltip.location && <Tooltip>English letters, numbers, '.', ',', max 50 characters</Tooltip>}
         </DataWrapper>
         <DataWrapper>
           <LuClock4 color='grey' />
