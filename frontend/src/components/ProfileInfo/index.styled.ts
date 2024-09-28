@@ -85,7 +85,7 @@ export const Tooltip = styled.div`
   font-family: 'InterRegular';
   position: absolute;
   top: 80%;
-  left: 80%;
+  left: 77%;
   width: 120px;
   height: 60px;
   background-color: white;

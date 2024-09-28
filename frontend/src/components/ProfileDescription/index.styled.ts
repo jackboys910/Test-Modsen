@@ -52,8 +52,8 @@ export const QuestionIcon = styled(FaQuestionCircle)`
 export const Tooltip = styled.div`
   font-family: 'InterRegular';
   position: absolute;
-  top: 90%;
-  left: 68%;
+  top: 81%;
+  left: 67.8%;
   width: 120px;
   height: 60px;
   background-color: white;
