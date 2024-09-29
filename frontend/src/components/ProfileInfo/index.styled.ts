@@ -10,7 +10,7 @@ export const ProfileInfoWrapper = styled.div`
 
 export const ImageWrapper = styled.div`
   position: relative;
-  border: 1px solid blue;
+  border: 1px solid grey;
   border-radius: 5px;
   overflow: hidden;
   cursor: pointer;

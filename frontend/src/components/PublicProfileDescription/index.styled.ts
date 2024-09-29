@@ -21,4 +21,5 @@ export const StyledDescription = styled.p`
   text-align: start;
   padding-left: 10px;
   border-left: 1px solid purple;
+  word-wrap: break-word;
 `;

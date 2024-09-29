@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 export const ImageWrapper = styled.div`
   position: relative;
-  border: 1px solid blue;
+  border: 1px solid grey;
   border-radius: 5px;
   overflow: hidden;
 
@@ -14,6 +14,11 @@ export const ImageWrapper = styled.div`
   }
 `;
 
+export const DataWrapper = styled.div`
+  display: flex;
+  gap: 5px;
+`;
+
 export const StyledInformation = styled.p`
   font-family: 'RobotoRegular';
   width: 200px;
@@ -21,4 +26,7 @@ export const StyledInformation = styled.p`
   padding: 5px;
   height: 30px;
   margin-left: 18px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

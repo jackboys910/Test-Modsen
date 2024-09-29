@@ -61,7 +61,7 @@ const ProfileDescription: React.FC<ProfileDescriptionProps> = ({ description, ni
         value={description}
         onChange={(e) => onChange('description', e.target.value)}
         placeholder='Here you can tell about you'
-        style={{ border: errors.description || description.length > 520 ? '2px solid red' : undefined }}
+        // style={{ border: errors.description || description.length > 520 ? '1px solid red' : undefined }}
       />
       <CharCount style={{ color: description.length > 520 ? 'red' : 'grey' }}>{description.length}/520</CharCount>
     </ProfileDescriptionWrapper>

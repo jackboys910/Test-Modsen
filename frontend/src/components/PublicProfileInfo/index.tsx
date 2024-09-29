@@ -4,8 +4,8 @@ import { FaLocationDot } from 'react-icons/fa6';
 import { LuClock4 } from 'react-icons/lu';
 import { GoDotFill } from 'react-icons/go';
 import calculateRelativeTime from '@utils/calculateOnline';
-import { ProfileInfoWrapper, AboutWrapper, DataWrapper, StyledTime } from '@components/ProfileInfo/index.styled';
-import { ImageWrapper, StyledInformation } from './index.styled';
+import { ProfileInfoWrapper, AboutWrapper, StyledTime } from '@components/ProfileInfo/index.styled';
+import { ImageWrapper, StyledInformation, DataWrapper } from './index.styled';
 
 interface IPublicProfileInfoProps {
   profilePicture: string;
@@ -30,7 +30,7 @@ const PublicProfileInfo: React.FC<IPublicProfileInfoProps> = ({ profilePicture, 
         </DataWrapper>
         <DataWrapper style={{ position: 'relative' }}>
           <FaLocationDot color='grey' style={{ position: 'absolute', top: '5px' }} />
-          <StyledInformation>{location ? location : 'No information'}</StyledInformation>
+          <StyledInformation title={location}>{location ? location : 'No information'}</StyledInformation>
         </DataWrapper>
         <DataWrapper>
           <LuClock4 color='grey' />
