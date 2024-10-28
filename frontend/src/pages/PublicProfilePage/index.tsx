@@ -59,7 +59,7 @@ const PublicProfilePage: React.FC = () => {
               lastOnline={profile.lastOnline}
             />
             <PublicProfileDescription description={profile.description} nickname={profile.nickname} cuisine={profile.cuisine} />
-            <PublicProfileContacts />
+            <PublicProfileContacts nickname={profile.nickname} />
           </StyledContainer>
         </ProfileWrapper>
       </BodyWrapper>

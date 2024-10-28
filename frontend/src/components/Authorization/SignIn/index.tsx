@@ -47,6 +47,8 @@ const SignIn: React.FC<SignInProps> = ({ toggleAuthType }) => {
     try {
       const response = await axios.post('http://localhost:3001/login', values);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('nickname', response.data.nickname);
+      localStorage.setItem('userId', response.data.userId);
       setError('');
       resetForm();
       navigate('/profile');

@@ -20,7 +20,7 @@ export const StyledUpdateProfile = styled.button`
   cursor: pointer;
 `;
 
-export const StyledSendMessage = styled.button`
+export const StyledMessages = styled.button`
   background-color: green;
   color: white;
   border: none;

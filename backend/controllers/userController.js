@@ -60,12 +60,18 @@ class UserController {
       if (user && (await bcrypt.compare(password, user.password))) {
         const token = jwt.sign({ userId: user.id }, 'your_jwt_secret')
 
+        const profileResult = await db.query(
+          'SELECT nickname FROM user_profiles WHERE user_ref = $1',
+          [user.id]
+        )
+        const nickname = profileResult.rows[0].nickname
+
         await db.query(
           'UPDATE user_profiles SET last_online = CURRENT_TIMESTAMP WHERE user_ref = $1',
           [user.id]
         )
 
-        res.json({ token })
+        res.json({ token, nickname, userId: user.id })
       } else {
         res.status(401).send('Invalid credentials')
       }

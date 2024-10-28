@@ -41,7 +41,7 @@ export const StyledInfo = styled.input`
 export const QuestionIcon = styled(FaQuestionCircle)`
   cursor: pointer;
   position: absolute;
-  right: 19%;
+  right: 20%;
   top: 5px;
 
   &:hover {
@@ -53,7 +53,7 @@ export const Tooltip = styled.div`
   font-family: 'InterRegular';
   position: absolute;
   top: 81%;
-  left: 67.8%;
+  left: 67%;
   width: 120px;
   height: 60px;
   background-color: white;

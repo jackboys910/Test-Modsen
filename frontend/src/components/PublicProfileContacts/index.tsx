@@ -1,11 +1,27 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ProfileContactsWrapper } from '@components/ProfileContacts/index.styled';
 import { StyledSendMessage } from './index.styled';
 
-const PublicProfileContacts: React.FC = () => {
+interface IPublicProfileContactsProps {
+  nickname: string;
+}
+
+const PublicProfileContacts: React.FC<IPublicProfileContactsProps> = ({ nickname }) => {
+  const navigate = useNavigate();
+  const loggedInUserNickname = localStorage.getItem('nickname');
+
+  const handleSendMessageClick = () => {
+    navigate(`/messanger/${loggedInUserNickname}`, {
+      state: {
+        receiverNickname: nickname,
+      },
+    });
+  };
+
   return (
     <ProfileContactsWrapper>
-      <StyledSendMessage>Send Message</StyledSendMessage>
+      <StyledSendMessage onClick={handleSendMessageClick}>Send Message</StyledSendMessage>
     </ProfileContactsWrapper>
   );
 };

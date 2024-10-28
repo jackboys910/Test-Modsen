@@ -6,6 +6,7 @@ import NotFoundPage from '@pages/NotFoundPage';
 import AuthorizationPage from '@pages/AuthorizationPage';
 import ProfilePage from './ProfilePage';
 import PublicProfilePage from './PublicProfilePage';
+import MessengerPage from './MessengerPage';
 import { GlobalStyles, AppWrapper } from '@components/App.styled';
 
 const AppRouter: React.FC = () => {
@@ -51,6 +52,7 @@ const AppRouter: React.FC = () => {
           <Route path='/authorization' element={<AuthorizationPage />} />
           <Route path='/profile' element={<ProfilePage />} />
           <Route path='/:nickname' element={<PublicProfilePage />} />
+          <Route path='/messanger/:nickname' element={<MessengerPage />} />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </AppWrapper>
