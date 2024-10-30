@@ -73,7 +73,7 @@ export const StyledInfoInput = styled.input`
 export const QuestionIcon = styled(FaQuestionCircle)`
   cursor: pointer;
   position: absolute;
-  right: -15px;
+  right: -17px;
   top: 5px;
 
   &:hover {
