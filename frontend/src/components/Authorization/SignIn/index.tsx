@@ -23,12 +23,7 @@ import { StyledCantFind } from './index.styled';
 // import { auth } from '@utils/firebaseConfig';
 
 const validationSchema = Yup.object({
-  email: Yup.string()
-    .matches(
-      /^[a-zA-Z0-9.-]+@(gmail\.com|mail\.ru|inbox\.ru|bk\.ru|list\.ru|internet\.ru|xmail\.ru|yandex\.ru|yahoo\.com|hotmail\.com|outlook\.com)$/,
-      'Invalid email address',
-    )
-    .required('Required'),
+  email: Yup.string().email('Invalid email address').required('Required'),
   password: Yup.string().required('Required'),
 });
 
