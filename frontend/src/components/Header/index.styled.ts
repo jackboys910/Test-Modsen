@@ -43,6 +43,10 @@ export const ModsenTitle = styled.span`
   color: ${COLORS.COLOR_MODSEN_WHITE};
 `;
 
+export const MessangerWrapper = styled.div`
+  width: 80px;
+`;
+
 export const UserWrapper = styled.div`
   width: 100px;
 `;

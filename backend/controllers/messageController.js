@@ -65,6 +65,26 @@ class MessageController {
     }
   }
 
+  async getConversations(req, res) {
+    const userId = req.user.userId
+
+    try {
+      const result = await db.query(
+        `SELECT DISTINCT ON (u.id) u.id, up.nickname, up.profile_picture
+         FROM messages m
+         JOIN users u ON (u.id = m.sender_id OR u.id = m.receiver_id) AND u.id != $1
+         JOIN user_profiles up ON up.user_ref = u.id
+         WHERE m.sender_id = $1 OR m.receiver_id = $1
+         ORDER BY u.id`,
+        [userId]
+      )
+      res.json(result.rows)
+    } catch (error) {
+      console.error('Error fetching conversations:', error)
+      res.status(500).send(error.message)
+    }
+  }
+
   // async saveMessage(senderId, receiverId, content) {
   //   return db.query(
   //     `INSERT INTO messages (sender_id, receiver_id, content)

@@ -5,10 +5,12 @@ import Footer from '@components/Footer';
 import PublicProfileInfo from '@components/PublicProfileInfo';
 import PublicProfileDescription from '@components/PublicProfileDescription';
 import PublicProfileContacts from '@components/PublicProfileContacts';
-import { BodyWrapper, ProfileWrapper } from '../ProfilePage/index.styled';
+import BurgerMenu from '@components/BurgerMenu';
+import { BodyWrapper, StyledLink, ProfileWrapper } from '../ProfilePage/index.styled';
 import { StyledContainer } from './index.styled';
 
 const PublicProfilePage: React.FC = () => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { nickname } = useParams<{ nickname: string }>();
   const [profile, setProfile] = useState({
     profilePicture: 'defaultUser.png',
@@ -20,6 +22,18 @@ const PublicProfilePage: React.FC = () => {
     nickname: '',
     cuisine: '',
   });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -45,9 +59,11 @@ const PublicProfilePage: React.FC = () => {
     fetchProfile();
   }, [nickname]);
 
+  const isMobile = windowWidth >= 390 && windowWidth <= 768;
+
   return (
     <>
-      <Header />
+      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
       <BodyWrapper>
         <ProfileWrapper>
           <StyledContainer>

@@ -101,6 +101,11 @@ class Server {
       '/users/nickname/:nickname',
       MessageController.getUserIdByNickname
     )
+    this.app.get(
+      '/conversations',
+      AuthMiddleware.authenticateJWT,
+      MessageController.getConversations
+    )
   }
 
   socketEvents() {
