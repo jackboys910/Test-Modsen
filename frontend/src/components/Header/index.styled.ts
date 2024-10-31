@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { COLORS } from '../../constants/styles/mainColors';
 
 export const StyledHeader = styled.header`
@@ -23,6 +24,10 @@ export const HeaderContent = styled.div`
     margin-left: 0;
     margin-right: 30px;
   }
+`;
+
+export const ClickableLogo = styled(Link)`
+  text-decoration: none;
 `;
 
 export const ModsenWrapper = styled.div`

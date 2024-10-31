@@ -4,7 +4,7 @@ import { RiAccountPinCircleLine } from 'react-icons/ri';
 import { TbMessageFilled } from 'react-icons/tb';
 import { ReactComponent as ModsenIcon } from '@assets/icons/modsen.svg';
 import { isAuthenticated } from '@utils/auth';
-import { StyledHeader, HeaderContent, ModsenWrapper, ModsenTitle, MessangerWrapper, UserWrapper } from './index.styled';
+import { StyledHeader, HeaderContent, ClickableLogo, ModsenWrapper, ModsenTitle, MessangerWrapper, UserWrapper } from './index.styled';
 
 interface IHeaderProps {
   children?: React.ReactNode;
@@ -28,10 +28,12 @@ const Header: React.FC<IHeaderProps> = ({ children }) => {
   return (
     <StyledHeader>
       <HeaderContent>
-        <ModsenWrapper>
-          <ModsenIcon />
-          <ModsenTitle>Recipe search</ModsenTitle>
-        </ModsenWrapper>
+        <ClickableLogo to='/'>
+          <ModsenWrapper>
+            <ModsenIcon />
+            <ModsenTitle>Recipe search</ModsenTitle>
+          </ModsenWrapper>
+        </ClickableLogo>
         {children}
       </HeaderContent>
       <MessangerWrapper>

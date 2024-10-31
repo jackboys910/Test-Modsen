@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 
-export const MessengerContainer = styled.div`
+export const MessengerWrapper = styled.div`
+  width: 1080px;
+  height: 510px;
+  margin-top: 100px;
+  border: 1px solid black;
   display: flex;
-  height: 100vh;
 `;
 
 export const ChatList = styled.div`
   width: 300px;
   border-right: 1px solid #ccc;
   overflow-y: auto;
+  height: 510px;
 `;
 
 export const ChatWindow = styled.div`
@@ -27,6 +31,12 @@ export const ChatMessages = styled.div`
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+`;
+
+export const UserNickname = styled.span`
+  position: absolute;
+  top: 19%;
+  left: 23%;
 `;
 
 export const ChatInputContainer = styled.div`
@@ -62,4 +72,6 @@ export const ChatItem = styled.div`
   &:hover {
     background-color: #f0f0f0;
   }
+  position: relative;
+  border-bottom: 1px solid #ccc;
 `;

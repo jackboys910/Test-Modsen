@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import Header from '@components/Header';
+import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
-import { StyledLink } from '@pages/ProfilePage/index.styled';
+import { BodyWrapper, StyledLink } from '@pages/ProfilePage/index.styled';
 import {
-  MessengerContainer,
+  MessengerWrapper,
   ChatList,
   ChatWindow,
   ChatHeader,
   ChatMessages,
+  UserNickname,
   ChatInputContainer,
   ChatInput,
   SendButton,
@@ -71,30 +73,30 @@ const MessengerPage: React.FC = () => {
     };
   }, [loggedInUserId]);
 
-  useEffect(() => {
-    const fetchConversations = async () => {
-      const token = localStorage.getItem('token');
-      try {
-        const response = await fetch('http://localhost:3001/conversations', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (response.ok) {
-          const data = await response.json();
-          setChats(data);
-          if (receiverNickname) {
-            const chat = data.find((c: IChat) => c.nickname === receiverNickname);
-            setActiveChat(chat || { id: 0, nickname: receiverNickname, profile_picture: '' });
-          }
-        } else {
-          console.error('Failed to fetch conversations:', response.statusText);
+  const fetchConversations = async () => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch('http://localhost:3001/conversations', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setChats(data);
+        if (receiverNickname) {
+          const chat = data.find((c: IChat) => c.nickname === receiverNickname);
+          setActiveChat(chat || { id: 0, nickname: receiverNickname, profile_picture: '' });
         }
-      } catch (error) {
-        console.error('Error fetching conversations:', error);
+      } else {
+        console.error('Failed to fetch conversations:', response.statusText);
       }
-    };
+    } catch (error) {
+      console.error('Error fetching conversations:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchConversations();
   }, [receiverNickname]);
 
@@ -210,9 +212,12 @@ const MessengerPage: React.FC = () => {
 
         setMessages((prevMessages) => [...prevMessages, { sender_id: loggedInUserId, content }]);
         setNewMessage('');
-        if (activeChat.id === 0) {
-          setChats((prevChats) => [...prevChats, activeChat]);
-        }
+
+        await fetchConversations();
+
+        // if (activeChat.id === 0 && !chats.some((chat) => chat.nickname === activeChat.nickname)) {
+        //   setChats((prevChats) => [...prevChats, activeChat]);
+        // }
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -237,35 +242,38 @@ const MessengerPage: React.FC = () => {
     // </div>
     <>
       <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
-      <MessengerContainer>
-        <ChatList>
-          {chats.map((chat) => (
-            <ChatItem key={chat.id} onClick={() => setActiveChat(chat)}>
-              <img src={`/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='30' />
-              <span>{chat.nickname}</span>
-            </ChatItem>
-          ))}
-        </ChatList>
-        <ChatWindow>
-          {activeChat && (
-            <>
-              <ChatHeader>Chat with {activeChat.nickname}</ChatHeader>
-              <ChatMessages>
-                {messages.map((msg, index) => (
-                  <div key={index}>
-                    <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong>
-                    {msg.content}
-                  </div>
-                ))}
-              </ChatMessages>
-              <ChatInputContainer>
-                <ChatInput type='text' value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
-                <SendButton onClick={() => sendMessage(newMessage)}>Send</SendButton>
-              </ChatInputContainer>
-            </>
-          )}
-        </ChatWindow>
-      </MessengerContainer>
+      <BodyWrapper>
+        <MessengerWrapper>
+          <ChatList>
+            {chats.map((chat) => (
+              <ChatItem key={chat.id} onClick={() => setActiveChat(chat)}>
+                <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
+                <UserNickname>{chat.nickname}</UserNickname>
+              </ChatItem>
+            ))}
+          </ChatList>
+          <ChatWindow>
+            {activeChat && (
+              <>
+                <ChatHeader>Chat with {activeChat.nickname}</ChatHeader>
+                <ChatMessages>
+                  {messages.map((msg, index) => (
+                    <div key={index}>
+                      <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong>
+                      {msg.content}
+                    </div>
+                  ))}
+                </ChatMessages>
+                <ChatInputContainer>
+                  <ChatInput type='text' value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
+                  <SendButton onClick={() => sendMessage(newMessage)}>Send</SendButton>
+                </ChatInputContainer>
+              </>
+            )}
+          </ChatWindow>
+        </MessengerWrapper>
+      </BodyWrapper>
+      <Footer />
     </>
   );
 };
