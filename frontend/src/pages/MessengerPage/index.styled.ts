@@ -6,13 +6,71 @@ export const MessengerWrapper = styled.div`
   margin-top: 100px;
   border: 1px solid black;
   display: flex;
+  overflow: hidden;
 `;
 
 export const ChatList = styled.div`
+  // width: 300px;
+  // border-right: 1px solid #ccc;
+  // overflow-y: hidden;
+  // height: 510px;
+  // position: relative;
+
+  // &:hover {
+  //   overflow-y: auto;
+  // }
+
+  // &::-webkit-scrollbar {
+  //   width: 4px;
+  //   position: absolute;
+  //   right: 0;
+  // }
+
+  // &::-webkit-scrollbar-track {
+  //   background: transparent;
+  //   border-radius: 10px;
+  // }
+
+  // &::-webkit-scrollbar-thumb {
+  //   background-color: #ccc;
+  //   border-radius: 10px;
+  //   transition:
+  //     background-color 0.3s ease,
+  //     opacity 0.3s ease;
+  //   opacity: 0;
+  // }
+
+  // &:hover::-webkit-scrollbar-thumb {
+  //   opacity: 1;
+  // }
+
+  // &::-webkit-scrollbar-thumb:hover {
+  //   background-color: #888;
+  // }
+
   width: 300px;
   border-right: 1px solid #ccc;
   overflow-y: auto;
   height: 510px;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+  }
 `;
 
 export const ChatWindow = styled.div`
@@ -37,6 +95,14 @@ export const UserNickname = styled.span`
   position: absolute;
   top: 19%;
   left: 23%;
+`;
+
+export const LastMessageTime = styled.span`
+  position: absolute;
+  top: 19%;
+  right: 2%;
+  color: #aba9a9;
+  font-size: 14px;
 `;
 
 export const ChatInputContainer = styled.div`

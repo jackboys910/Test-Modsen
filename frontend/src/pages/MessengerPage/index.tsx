@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import formatMessageTime from '@utils/formatMessageTime';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
@@ -12,6 +13,7 @@ import {
   ChatHeader,
   ChatMessages,
   UserNickname,
+  LastMessageTime,
   ChatInputContainer,
   ChatInput,
   SendButton,
@@ -29,6 +31,7 @@ interface IChat {
   id: number;
   nickname: string;
   profile_picture: string;
+  last_message_time: string;
 }
 
 const MessengerPage: React.FC = () => {
@@ -86,7 +89,7 @@ const MessengerPage: React.FC = () => {
         setChats(data);
         if (receiverNickname) {
           const chat = data.find((c: IChat) => c.nickname === receiverNickname);
-          setActiveChat(chat || { id: 0, nickname: receiverNickname, profile_picture: '' });
+          setActiveChat(chat || { id: 0, nickname: receiverNickname, profile_picture: '', last_message_time: '' });
         }
       } else {
         console.error('Failed to fetch conversations:', response.statusText);
@@ -249,6 +252,7 @@ const MessengerPage: React.FC = () => {
               <ChatItem key={chat.id} onClick={() => setActiveChat(chat)}>
                 <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
                 <UserNickname>{chat.nickname}</UserNickname>
+                <LastMessageTime>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
               </ChatItem>
             ))}
           </ChatList>

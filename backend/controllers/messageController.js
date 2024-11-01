@@ -68,14 +68,26 @@ class MessageController {
   async getConversations(req, res) {
     const userId = req.user.userId
 
+    // try {
+    //   const result = await db.query(
+    //     `SELECT DISTINCT ON (u.id) u.id, up.nickname, up.profile_picture
+    //      FROM messages m
+    //      JOIN users u ON (u.id = m.sender_id OR u.id = m.receiver_id) AND u.id != $1
+    //      JOIN user_profiles up ON up.user_ref = u.id
+    //      WHERE m.sender_id = $1 OR m.receiver_id = $1
+    //      ORDER BY u.id`,
+    //     [userId]
+    //   )
     try {
       const result = await db.query(
-        `SELECT DISTINCT ON (u.id) u.id, up.nickname, up.profile_picture
+        `SELECT u.id, up.nickname, up.profile_picture,
+                MAX(m.sent_at) AS last_message_time
          FROM messages m
          JOIN users u ON (u.id = m.sender_id OR u.id = m.receiver_id) AND u.id != $1
          JOIN user_profiles up ON up.user_ref = u.id
          WHERE m.sender_id = $1 OR m.receiver_id = $1
-         ORDER BY u.id`,
+         GROUP BY u.id, up.nickname, up.profile_picture
+         ORDER BY last_message_time DESC`,
         [userId]
       )
       res.json(result.rows)

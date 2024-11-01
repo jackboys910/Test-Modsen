@@ -384,6 +384,10 @@ export const StyledNickname = styled.p`
   font-weight: 300;
   margin: 0;
   color: white;
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const StyledLink = styled(Link)`

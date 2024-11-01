@@ -33,6 +33,7 @@ const validationSchema = Yup.object({
     .required('Required'),
   nickname: Yup.string()
     .matches(/^[a-zA-Z0-9.,\-:]+$/, 'Nickname can only contain letters, numbers, dots, commas, hyphens, and colons.')
+    .max(15, 'Nickname cannot exceed 15 characters')
     .test('no-banned-words', 'Nickname contains inappropriate language', (value) =>
       value ? !bannedWords.some((word) => value.toLowerCase().includes(word)) : true,
     )

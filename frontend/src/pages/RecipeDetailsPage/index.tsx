@@ -272,7 +272,7 @@ const RecipeDetailsPage: React.FC = () => {
                             e.currentTarget.src = 'http://localhost:3001/assets/images/defaultUser.png';
                           }}
                         />
-                        <StyledNickname>{user.nickname}</StyledNickname>
+                        <StyledNickname title={user.nickname}>{user.nickname}</StyledNickname>
                       </Link>
                     </UserListItem>
                   ))}
