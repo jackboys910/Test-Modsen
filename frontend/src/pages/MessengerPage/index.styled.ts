@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { MdOutlineVerifiedUser } from 'react-icons/md';
 
 export const MessengerWrapper = styled.div`
   width: 1080px;
@@ -95,6 +96,10 @@ export const UserNickname = styled.span`
   position: absolute;
   top: 19%;
   left: 23%;
+`;
+
+export const VerifiedIcon = styled(MdOutlineVerifiedUser)`
+  position: absolute;
 `;
 
 export const LastMessageTime = styled.span`

@@ -70,14 +70,21 @@ class MessageController {
 
     // try {
     //   const result = await db.query(
-    //     `SELECT DISTINCT ON (u.id) u.id, up.nickname, up.profile_picture
+    //     `SELECT u.id, up.nickname, up.profile_picture,
+    //             MAX(m.sent_at) AS last_message_time
     //      FROM messages m
     //      JOIN users u ON (u.id = m.sender_id OR u.id = m.receiver_id) AND u.id != $1
     //      JOIN user_profiles up ON up.user_ref = u.id
     //      WHERE m.sender_id = $1 OR m.receiver_id = $1
-    //      ORDER BY u.id`,
+    //      GROUP BY u.id, up.nickname, up.profile_picture
+    //      ORDER BY last_message_time DESC`,
     //     [userId]
     //   )
+    //   res.json(result.rows)
+    // } catch (error) {
+    //   console.error('Error fetching conversations:', error)
+    //   res.status(500).send(error.message)
+    // }
     try {
       const result = await db.query(
         `SELECT u.id, up.nickname, up.profile_picture,
@@ -85,8 +92,14 @@ class MessageController {
          FROM messages m
          JOIN users u ON (u.id = m.sender_id OR u.id = m.receiver_id) AND u.id != $1
          JOIN user_profiles up ON up.user_ref = u.id
-         WHERE m.sender_id = $1 OR m.receiver_id = $1
+         WHERE (m.sender_id = $1 OR m.receiver_id = $1) AND m.sender_id != m.receiver_id
          GROUP BY u.id, up.nickname, up.profile_picture
+         UNION
+         SELECT $1 AS id, 'Saved Messages' AS nickname, 'scale_1200-round.png' AS profile_picture, 
+                MAX(m.sent_at) AS last_message_time
+         FROM messages m
+         WHERE m.sender_id = $1 AND m.receiver_id = $1
+         GROUP BY m.sender_id, m.receiver_id
          ORDER BY last_message_time DESC`,
         [userId]
       )

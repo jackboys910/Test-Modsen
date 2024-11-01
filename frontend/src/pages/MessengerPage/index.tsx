@@ -13,6 +13,7 @@ import {
   ChatHeader,
   ChatMessages,
   UserNickname,
+  VerifiedIcon,
   LastMessageTime,
   ChatInputContainer,
   ChatInput,
@@ -164,9 +165,7 @@ const MessengerPage: React.FC = () => {
   };
 
   const fetchMessages = async (chat: IChat) => {
-    // const receiverId = await fetchReceiverId();
-    // if (!receiverId) return;
-    if (chat.id === 0) return;
+    // if (chat.id === 0) return;
     const token = localStorage.getItem('token');
     try {
       const response = await fetch(`http://localhost:3001/messages/${chat.id}`, {
@@ -192,10 +191,7 @@ const MessengerPage: React.FC = () => {
   const sendMessage = async (content: string) => {
     if (content.trim() && activeChat) {
       const token = localStorage.getItem('token');
-      // const message: IMessage = {
-      //   senderId: loggedInUserId || '',
-      //   content,
-      // };
+      const receiverNickname = activeChat.nickname === 'Saved Messages' ? localStorage.getItem('nickname') : activeChat.nickname;
 
       try {
         await fetch(`http://localhost:3001/sendMessage`, {
@@ -204,12 +200,12 @@ const MessengerPage: React.FC = () => {
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ receiverNickname: activeChat.nickname, content }),
+          body: JSON.stringify({ receiverNickname, content }),
         });
 
         socket.emit('sendMessage', {
           senderId: loggedInUserId,
-          receiverNickname: activeChat.nickname,
+          receiverNickname,
           content,
         });
 
@@ -217,10 +213,6 @@ const MessengerPage: React.FC = () => {
         setNewMessage('');
 
         await fetchConversations();
-
-        // if (activeChat.id === 0 && !chats.some((chat) => chat.nickname === activeChat.nickname)) {
-        //   setChats((prevChats) => [...prevChats, activeChat]);
-        // }
       } catch (error) {
         console.error('Error sending message:', error);
       }
@@ -230,19 +222,6 @@ const MessengerPage: React.FC = () => {
   const isMobile = windowWidth >= 390 && windowWidth <= 768;
 
   return (
-    // <div>
-    //   <h1>Chat with {receiverNickname}</h1>
-    //   <div>
-    //     {messages.map((msg, index) => (
-    //       <div key={index}>
-    //         <strong>{msg.sender_id === loggedInUserId ? 'You' : receiverNickname}: </strong>
-    //         {msg.content}
-    //       </div>
-    //     ))}
-    //   </div>
-    //   <input type='text' value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
-    //   <button onClick={() => sendMessage(newMessage)}>Send</button>
-    // </div>
     <>
       <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
       <BodyWrapper>
@@ -251,7 +230,10 @@ const MessengerPage: React.FC = () => {
             {chats.map((chat) => (
               <ChatItem key={chat.id} onClick={() => setActiveChat(chat)}>
                 <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
-                <UserNickname>{chat.nickname}</UserNickname>
+                <UserNickname>
+                  {chat.nickname}
+                  {chat.nickname === 'Saved Messages' && chat.id === loggedInUserId && <VerifiedIcon color='green' />}
+                </UserNickname>
                 <LastMessageTime>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
               </ChatItem>
             ))}

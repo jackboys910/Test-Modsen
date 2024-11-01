@@ -14,6 +14,7 @@ export const StyledNickname = styled.h2`
   height: 50px;
   display: block;
   margin: 0;
+  width: 100%;
 `;
 
 export const InfoWrapper = styled.div`

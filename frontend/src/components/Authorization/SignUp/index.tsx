@@ -19,6 +19,7 @@ import {
 import { SuccessMessage, ErrorMessage } from './index.styled';
 
 const bannedWords = ['fuck', 'bastard', 'bitch'];
+const reservedNames = ['saved', 'messages'];
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -32,11 +33,12 @@ const validationSchema = Yup.object({
     .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
     .required('Required'),
   nickname: Yup.string()
-    .matches(/^[a-zA-Z0-9.,\-:]+$/, 'Nickname can only contain letters, numbers, dots, commas, hyphens, and colons.')
+    .matches(/^[a-zA-Z0-9.,\-: ]+$/, 'Nickname can only contain letters, numbers, dots, commas, hyphens, and colons.')
     .max(15, 'Nickname cannot exceed 15 characters')
     .test('no-banned-words', 'Nickname contains inappropriate language', (value) =>
       value ? !bannedWords.some((word) => value.toLowerCase().includes(word)) : true,
     )
+    .test('no-banned-words', 'Reserved name', (value) => (value ? !reservedNames.some((word) => value.toLowerCase().includes(word)) : true))
     .required('Required'),
 });
 
