@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import formatMessageTime from '@utils/formatMessageTime';
+import formatLastOnline from '@utils/formatLastOnline';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
@@ -33,6 +34,7 @@ interface IChat {
   nickname: string;
   profile_picture: string;
   last_message_time: string;
+  last_online: string | null;
 }
 
 const MessengerPage: React.FC = () => {
@@ -90,7 +92,7 @@ const MessengerPage: React.FC = () => {
         setChats(data);
         if (receiverNickname) {
           const chat = data.find((c: IChat) => c.nickname === receiverNickname);
-          setActiveChat(chat || { id: 0, nickname: receiverNickname, profile_picture: '', last_message_time: '' });
+          setActiveChat(chat || { id: 0, nickname: receiverNickname, profile_picture: '', last_message_time: '', last_online: null });
         }
       } else {
         console.error('Failed to fetch conversations:', response.statusText);
@@ -228,20 +230,25 @@ const MessengerPage: React.FC = () => {
         <MessengerWrapper>
           <ChatList>
             {chats.map((chat) => (
-              <ChatItem key={chat.id} onClick={() => setActiveChat(chat)}>
+              <ChatItem key={chat.id} onClick={() => setActiveChat(chat)} $isActive={activeChat?.id === chat.id}>
                 <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
                 <UserNickname>
                   {chat.nickname}
-                  {chat.nickname === 'Saved Messages' && chat.id === loggedInUserId && <VerifiedIcon color='green' />}
+                  {chat.nickname === 'Saved Messages' && chat.id === loggedInUserId && (
+                    <VerifiedIcon color={activeChat?.id === chat.id ? 'white' : 'green'} />
+                  )}
                 </UserNickname>
-                <LastMessageTime>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
+                <LastMessageTime $isActive={activeChat?.id === chat.id}>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
               </ChatItem>
             ))}
           </ChatList>
           <ChatWindow>
             {activeChat && (
               <>
-                <ChatHeader>Chat with {activeChat.nickname}</ChatHeader>
+                <ChatHeader>
+                  <div>{activeChat.nickname}</div>
+                  {activeChat && activeChat.nickname !== 'Saved Messages' && <div>{formatLastOnline(activeChat.last_online)}</div>}
+                </ChatHeader>
                 <ChatMessages>
                   {messages.map((msg, index) => (
                     <div key={index}>

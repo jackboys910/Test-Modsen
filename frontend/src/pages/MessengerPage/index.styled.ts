@@ -90,6 +90,7 @@ export const ChatMessages = styled.div`
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+  background-image: url('http://localhost:3001/assets/images/background-chat-1.png');
 `;
 
 export const UserNickname = styled.span`
@@ -102,11 +103,11 @@ export const VerifiedIcon = styled(MdOutlineVerifiedUser)`
   position: absolute;
 `;
 
-export const LastMessageTime = styled.span`
+export const LastMessageTime = styled.span<{ $isActive: boolean }>`
   position: absolute;
   top: 19%;
   right: 2%;
-  color: #aba9a9;
+  color: ${({ $isActive }) => ($isActive ? 'white' : '#aba9a9')};
   font-size: 14px;
 `;
 
@@ -137,11 +138,15 @@ export const SendButton = styled.button`
   }
 `;
 
-export const ChatItem = styled.div`
+export const ChatItem = styled.div<{ $isActive: boolean }>`
+  font-family: 'RobotoRegular';
+  font-size: 15px;
   padding: 10px;
   cursor: pointer;
+  background-color: ${({ $isActive }) => ($isActive ? '#47a0ff' : 'transparent')};
+  color: ${({ $isActive }) => ($isActive ? 'white' : 'inherit')};
   &:hover {
-    background-color: #f0f0f0;
+    background-color: ${({ $isActive }) => ($isActive ? 'none' : '#f0f0f0')};
   }
   position: relative;
   border-bottom: 1px solid #ccc;
