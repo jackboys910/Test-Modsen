@@ -109,9 +109,9 @@ class MessageController {
                   ELSE up.profile_picture 
                 END AS profile_picture, 
                 up.last_online,
-                MAX(m.sent_at) AS last_message_time
+                COALESCE(MAX(m.sent_at), NULL) AS last_message_time
          FROM users u
-         LEFT JOIN user_profiles up ON up.user_ref = u.id
+         JOIN user_profiles up ON up.user_ref = u.id
          LEFT JOIN messages m ON (m.sender_id = u.id OR m.receiver_id = u.id)
          AND (m.sender_id = $2 OR m.receiver_id = $2)
          WHERE (up.nickname ILIKE $1 OR (u.id = $2 AND 'Saved Messages' ILIKE $1))
@@ -174,6 +174,12 @@ class MessageController {
       const uniqueResults = [
         ...new Map(combinedResults.map((item) => [item.id, item])).values(),
       ]
+
+      uniqueResults.sort((a, b) => {
+        if (!a.last_message_time) return 1
+        if (!b.last_message_time) return -1
+        return new Date(b.last_message_time) - new Date(a.last_message_time)
+      })
 
       res.json(uniqueResults)
     } catch (error) {
