@@ -239,9 +239,13 @@ const MessengerPage: React.FC = () => {
               ...chat,
               nickname: 'Saved Messages',
               profile_picture: 'scale_1200-round.png',
+              last_message_time: chat.last_message_time || '',
             };
           }
-          return chat;
+          return {
+            ...chat,
+            last_message_time: chat.last_message_time || '',
+          };
         });
         setChats(formattedData);
       } else {

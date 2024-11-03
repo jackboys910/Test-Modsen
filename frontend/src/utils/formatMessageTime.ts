@@ -11,7 +11,7 @@ const formatMessageTime = (dateString: string | null) => {
   if (isToday(date)) {
     return format(date, 'HH:mm');
   }
-  if (isThisWeek(date)) {
+  if (isThisWeek(date, { weekStartsOn: 1 })) {
     return format(date, 'EEE HH:mm');
   }
   return format(date, 'dd.MM.yyyy');

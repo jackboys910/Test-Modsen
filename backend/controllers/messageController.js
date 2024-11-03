@@ -108,11 +108,15 @@ class MessageController {
                   WHEN u.id = $2 THEN 'scale_1200-round.png' 
                   ELSE up.profile_picture 
                 END AS profile_picture, 
-                up.last_online
+                up.last_online,
+                MAX(m.sent_at) AS last_message_time
          FROM users u
-         JOIN user_profiles up ON up.user_ref = u.id
+         LEFT JOIN user_profiles up ON up.user_ref = u.id
+         LEFT JOIN messages m ON (m.sender_id = u.id OR m.receiver_id = u.id)
+         AND (m.sender_id = $2 OR m.receiver_id = $2)
          WHERE (up.nickname ILIKE $1 OR (u.id = $2 AND 'Saved Messages' ILIKE $1))
-         AND u.id != $2`,
+         AND u.id != $2
+         GROUP BY u.id, up.nickname, up.profile_picture, up.last_online`,
         [`${query}%`, userId]
       )
 
@@ -128,16 +132,18 @@ class MessageController {
                     ELSE up.nickname 
                   END AS nickname, 
                   CASE 
-                    WHEN u.id = $1 THEN 'default_saved_messages.png' 
+                    WHEN u.id = $1 THEN 'scale_1200-round.png' 
                     ELSE up.profile_picture 
                   END AS profile_picture, 
-                  up.last_online
+                  up.last_online,
+                  MAX(m.sent_at) AS last_message_time
            FROM messages m
            JOIN users u ON u.id = m.sender_id OR u.id = m.receiver_id
            JOIN user_profiles up ON up.user_ref = u.id
            WHERE ((m.sender_id = $1 OR m.receiver_id = $1) OR (m.sender_id = $1 AND m.receiver_id = $1))
            AND (to_tsvector(m.content) @@ to_tsquery($2) OR up.nickname ILIKE $3 OR (u.id = $1 AND 'Saved Messages' ILIKE $3))
-           AND (u.id != $1 OR (m.sender_id = $1 AND m.receiver_id = $1))`,
+           AND (u.id != $1 OR (m.sender_id = $1 AND m.receiver_id = $1))
+           GROUP BY u.id, up.nickname, up.profile_picture, up.last_online`,
           [userId, searchTerm, `${query}%`]
         )
       } else {
@@ -148,16 +154,18 @@ class MessageController {
                     ELSE up.nickname 
                   END AS nickname, 
                   CASE 
-                    WHEN u.id = $1 THEN 'default_saved_messages.png' 
+                    WHEN u.id = $1 THEN 'scale_1200-round.png' 
                     ELSE up.profile_picture 
                   END AS profile_picture, 
-                  up.last_online
+                  up.last_online,
+                  MAX(m.sent_at) AS last_message_time
            FROM messages m
            JOIN users u ON u.id = m.sender_id OR u.id = m.receiver_id
            JOIN user_profiles up ON up.user_ref = u.id
            WHERE ((m.sender_id = $1 OR m.receiver_id = $1) OR (m.sender_id = $1 AND m.receiver_id = $1))
            AND (m.content ILIKE $2 OR up.nickname ILIKE $3 OR (u.id = $1 AND 'Saved Messages' ILIKE $3))
-           AND (u.id != $1 OR (m.sender_id = $1 AND m.receiver_id = $1))`,
+           AND (u.id != $1 OR (m.sender_id = $1 AND m.receiver_id = $1))
+           GROUP BY u.id, up.nickname, up.profile_picture, up.last_online`,
           [userId, `%${query}%`, `${query}%`]
         )
       }
