@@ -106,6 +106,11 @@ class Server {
       AuthMiddleware.authenticateJWT,
       MessageController.getConversations
     )
+    this.app.get(
+      '/search',
+      AuthMiddleware.authenticateJWT,
+      MessageController.search
+    )
   }
 
   socketEvents() {

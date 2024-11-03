@@ -9,6 +9,7 @@ import BurgerMenu from '@components/BurgerMenu';
 import { BodyWrapper, StyledLink } from '@pages/ProfilePage/index.styled';
 import {
   MessengerWrapper,
+  SearchInput,
   ChatList,
   ChatWindow,
   ChatHeader,
@@ -46,6 +47,7 @@ const MessengerPage: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
   const [chats, setChats] = useState<IChat[]>([]);
   const [activeChat, setActiveChat] = useState<IChat | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const loggedInUserId = Number(localStorage.getItem('userId'));
 
   useEffect(() => {
@@ -221,6 +223,43 @@ const MessengerPage: React.FC = () => {
     }
   };
 
+  const handleSearch = async (query: string) => {
+    const token = localStorage.getItem('token');
+    try {
+      const response = await fetch(`http://localhost:3001/search?query=${query}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const formattedData = data.map((chat: IChat) => {
+          if (chat.id === loggedInUserId) {
+            return {
+              ...chat,
+              nickname: 'Saved Messages',
+              profile_picture: 'scale_1200-round.png',
+            };
+          }
+          return chat;
+        });
+        setChats(formattedData);
+      } else {
+        console.error('Failed to search:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error searching:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch(searchQuery);
+    } else {
+      fetchConversations();
+    }
+  }, [searchQuery]);
+
   const isMobile = windowWidth >= 390 && windowWidth <= 768;
 
   return (
@@ -228,20 +267,23 @@ const MessengerPage: React.FC = () => {
       <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
       <BodyWrapper>
         <MessengerWrapper>
-          <ChatList>
-            {chats.map((chat) => (
-              <ChatItem key={chat.id} onClick={() => setActiveChat(chat)} $isActive={activeChat?.id === chat.id}>
-                <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
-                <UserNickname>
-                  {chat.nickname}
-                  {chat.nickname === 'Saved Messages' && chat.id === loggedInUserId && (
-                    <VerifiedIcon color={activeChat?.id === chat.id ? 'white' : 'green'} />
-                  )}
-                </UserNickname>
-                <LastMessageTime $isActive={activeChat?.id === chat.id}>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
-              </ChatItem>
-            ))}
-          </ChatList>
+          <div>
+            <SearchInput type='text' placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            <ChatList>
+              {chats.map((chat) => (
+                <ChatItem key={chat.id} onClick={() => setActiveChat(chat)} $isActive={activeChat?.id === chat.id}>
+                  <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
+                  <UserNickname>
+                    {chat.nickname}
+                    {chat.nickname === 'Saved Messages' && chat.id === loggedInUserId && (
+                      <VerifiedIcon color={activeChat?.id === chat.id ? 'white' : 'green'} />
+                    )}
+                  </UserNickname>
+                  <LastMessageTime $isActive={activeChat?.id === chat.id}>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
+                </ChatItem>
+              ))}
+            </ChatList>
+          </div>
           <ChatWindow>
             {activeChat && (
               <>

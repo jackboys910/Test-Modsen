@@ -10,6 +10,37 @@ export const MessengerWrapper = styled.div`
   overflow: hidden;
 `;
 
+// export const SearchInput = styled.input`
+//   width: 100%;
+//   padding: 10px;
+//   margin-bottom: 10px;
+//   border-radius: 20px;
+//   border: 1px solid #ccc;
+//   background-color: #f0f0f0;
+//   color: #333;
+//   transition: background-color 0.3s ease;
+
+//   &:focus {
+//     background-color: white;
+//     outline: none;
+//   }
+// `;
+
+export const SearchInput = styled.input`
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  background-color: #f0f0f0;
+  color: #555;
+  transition: background-color 0.3s ease;
+
+  &:focus {
+    background-color: #fff;
+    outline: none;
+  }
+`;
+
 export const ChatList = styled.div`
   // width: 300px;
   // border-right: 1px solid #ccc;

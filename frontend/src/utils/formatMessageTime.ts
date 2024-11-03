@@ -1,7 +1,13 @@
 import { format, isToday, isThisWeek } from 'date-fns';
 
-const formatMessageTime = (dateString: string) => {
+const formatMessageTime = (dateString: string | null) => {
+  if (!dateString) return '';
   const date = new Date(dateString);
+
+  if (isNaN(date.getTime())) {
+    return '';
+  }
+
   if (isToday(date)) {
     return format(date, 'HH:mm');
   }
