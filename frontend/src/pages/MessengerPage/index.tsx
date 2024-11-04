@@ -16,6 +16,7 @@ import {
   ChatMessages,
   UserNickname,
   VerifiedIcon,
+  LastMessageContent,
   LastMessageTime,
   ChatInputContainer,
   ChatInput,
@@ -35,8 +36,22 @@ interface IChat {
   nickname: string;
   profile_picture: string;
   last_message_time: string;
+  last_message_content: string;
   last_online: string | null;
 }
+
+const processChatData = (data: IChat[]): IChat[] => {
+  const chatMap = new Map<number, IChat>();
+
+  data.forEach((chat: IChat) => {
+    const existingChat = chatMap.get(chat.id);
+    if (!existingChat || new Date(chat.last_message_time) > new Date(existingChat.last_message_time)) {
+      chatMap.set(chat.id, chat);
+    }
+  });
+
+  return Array.from(chatMap.values());
+};
 
 const MessengerPage: React.FC = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -91,10 +106,20 @@ const MessengerPage: React.FC = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        setChats(data);
+        const uniqueChats = processChatData(data);
+        setChats(uniqueChats);
         if (receiverNickname) {
           const chat = data.find((c: IChat) => c.nickname === receiverNickname);
-          setActiveChat(chat || { id: 0, nickname: receiverNickname, profile_picture: '', last_message_time: '', last_online: null });
+          setActiveChat(
+            chat || {
+              id: 0,
+              nickname: receiverNickname,
+              profile_picture: '',
+              last_message_time: '',
+              last_online: null,
+              last_message_content: '',
+            },
+          );
         }
       } else {
         console.error('Failed to fetch conversations:', response.statusText);
@@ -107,48 +132,6 @@ const MessengerPage: React.FC = () => {
   useEffect(() => {
     fetchConversations();
   }, [receiverNickname]);
-
-  // useEffect(() => {
-  //   const fetchReceiverId = async () => {
-  //     const token = localStorage.getItem('token');
-  //     try {
-  //       const response = await fetch(`http://localhost:3001/users/nickname/${receiverNickname}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         return data.userId;
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching receiver ID:', error);
-  //     }
-  //     return null;
-  //   };
-
-  //   const fetchMessages = async () => {
-  //     const receiverId = await fetchReceiverId();
-  //     if (!receiverId) return;
-
-  //     const token = localStorage.getItem('token');
-  //     try {
-  //       const response = await fetch(`http://localhost:3001/messages/${receiverId}`, {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       });
-  //       if (response.ok) {
-  //         const data = await response.json();
-  //         setMessages(data);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error fetching messages:', error);
-  //     }
-  //   };
-
-  //   fetchMessages();
-  // }, [receiverNickname]);
 
   const fetchReceiverId = async () => {
     const token = localStorage.getItem('token');
@@ -240,11 +223,13 @@ const MessengerPage: React.FC = () => {
               nickname: 'Saved Messages',
               profile_picture: 'scale_1200-round.png',
               last_message_time: chat.last_message_time || '',
+              last_message_content: chat.last_message_content || '',
             };
           }
           return {
             ...chat,
             last_message_time: chat.last_message_time || '',
+            last_message_content: chat.last_message_content || '',
           };
         });
         setChats(formattedData);
@@ -274,8 +259,12 @@ const MessengerPage: React.FC = () => {
           <div>
             <SearchInput type='text' placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
             <ChatList>
-              {chats.map((chat) => (
-                <ChatItem key={chat.id} onClick={() => setActiveChat(chat)} $isActive={activeChat?.id === chat.id}>
+              {chats.map((chat, index) => (
+                <ChatItem
+                  key={`${chat.id}-${chat.nickname}-${index}`}
+                  onClick={() => setActiveChat(chat)}
+                  $isActive={activeChat?.id === chat.id}
+                >
                   <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
                   <UserNickname>
                     {chat.nickname}
@@ -283,6 +272,7 @@ const MessengerPage: React.FC = () => {
                       <VerifiedIcon color={activeChat?.id === chat.id ? 'white' : 'green'} />
                     )}
                   </UserNickname>
+                  <LastMessageContent $isActive={activeChat?.id === chat.id}>{chat.last_message_content}</LastMessageContent>
                   <LastMessageTime $isActive={activeChat?.id === chat.id}>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
                 </ChatItem>
               ))}

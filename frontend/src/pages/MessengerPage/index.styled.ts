@@ -134,6 +134,14 @@ export const VerifiedIcon = styled(MdOutlineVerifiedUser)`
   position: absolute;
 `;
 
+export const LastMessageContent = styled.span<{ $isActive: boolean }>`
+  position: absolute;
+  top: 55%;
+  left: 23%;
+  color: ${({ $isActive }) => ($isActive ? 'white' : '#aba9a9')};
+  font-size: 14px;
+`;
+
 export const LastMessageTime = styled.span<{ $isActive: boolean }>`
   position: absolute;
   top: 19%;

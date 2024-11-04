@@ -36,12 +36,6 @@ class MessageController {
 
       const receiverId = receiverResult.rows[0].user_ref
 
-      // await db.query(
-      //   `INSERT INTO messages (sender_id, receiver_id, content)
-      //    VALUES ($1, $2, $3)`,
-      //   [userId, receiverId, content]
-      // )
-
       res.sendStatus(200)
     } catch (error) {
       res.status(500).send(error.message)
@@ -71,18 +65,18 @@ class MessageController {
     try {
       const result = await db.query(
         `SELECT u.id, up.nickname, up.profile_picture, up.last_online,
-                MAX(m.sent_at) AS last_message_time
+                m.content AS last_message_content, MAX(m.sent_at) AS last_message_time
          FROM messages m
          JOIN users u ON (u.id = m.sender_id OR u.id = m.receiver_id) AND u.id != $1
          JOIN user_profiles up ON up.user_ref = u.id
          WHERE (m.sender_id = $1 OR m.receiver_id = $1) AND m.sender_id != m.receiver_id
-         GROUP BY u.id, up.nickname, up.profile_picture, up.last_online
+         GROUP BY u.id, up.nickname, up.profile_picture, up.last_online, m.content
          UNION
          SELECT $1 AS id, 'Saved Messages' AS nickname, 'scale_1200-round.png' AS profile_picture, 
-                NULL AS last_online, MAX(m.sent_at) AS last_message_time
+                NULL AS last_online, m.content AS last_message_content, MAX(m.sent_at) AS last_message_time
          FROM messages m
          WHERE m.sender_id = $1 AND m.receiver_id = $1
-         GROUP BY m.sender_id, m.receiver_id
+         GROUP BY m.content, m.sender_id, m.receiver_id
          ORDER BY last_message_time DESC`,
         [userId]
       )
@@ -109,14 +103,15 @@ class MessageController {
                   ELSE up.profile_picture 
                 END AS profile_picture, 
                 up.last_online,
-                COALESCE(MAX(m.sent_at), NULL) AS last_message_time
+                COALESCE(MAX(m.sent_at), NULL) AS last_message_time,
+              COALESCE(m.content, '') AS last_message_content
          FROM users u
          JOIN user_profiles up ON up.user_ref = u.id
          LEFT JOIN messages m ON (m.sender_id = u.id OR m.receiver_id = u.id)
          AND (m.sender_id = $2 OR m.receiver_id = $2)
          WHERE (up.nickname ILIKE $1 OR (u.id = $2 AND 'Saved Messages' ILIKE $1))
          AND u.id != $2
-         GROUP BY u.id, up.nickname, up.profile_picture, up.last_online`,
+         GROUP BY u.id, up.nickname, up.profile_picture, up.last_online, m.content`,
         [`${query}%`, userId]
       )
 
@@ -126,7 +121,7 @@ class MessageController {
       if (words.length === 1) {
         const searchTerm = `${query}:*`
         messagesResult = await db.query(
-          `SELECT DISTINCT u.id, 
+          `SELECT DISTINCT ON (u.id) u.id, 
                   CASE 
                     WHEN u.id = $1 THEN 'Saved Messages' 
                     ELSE up.nickname 
@@ -136,19 +131,21 @@ class MessageController {
                     ELSE up.profile_picture 
                   END AS profile_picture, 
                   up.last_online,
-                  MAX(m.sent_at) AS last_message_time
+                  m.sent_at AS last_message_time,
+                  m.content AS last_message_content
            FROM messages m
            JOIN users u ON u.id = m.sender_id OR u.id = m.receiver_id
            JOIN user_profiles up ON up.user_ref = u.id
            WHERE ((m.sender_id = $1 OR m.receiver_id = $1) OR (m.sender_id = $1 AND m.receiver_id = $1))
            AND (to_tsvector(m.content) @@ to_tsquery($2) OR up.nickname ILIKE $3 OR (u.id = $1 AND 'Saved Messages' ILIKE $3))
            AND (u.id != $1 OR (m.sender_id = $1 AND m.receiver_id = $1))
-           GROUP BY u.id, up.nickname, up.profile_picture, up.last_online`,
+           GROUP BY u.id, up.nickname, up.profile_picture, up.last_online, m.sent_at, m.content
+           ORDER BY u.id, m.sent_at DESC`,
           [userId, searchTerm, `${query}%`]
         )
       } else {
         messagesResult = await db.query(
-          `SELECT DISTINCT u.id, 
+          `SELECT DISTINCT ON (u.id) u.id, 
                   CASE 
                     WHEN u.id = $1 THEN 'Saved Messages' 
                     ELSE up.nickname 
@@ -158,14 +155,16 @@ class MessageController {
                     ELSE up.profile_picture 
                   END AS profile_picture, 
                   up.last_online,
-                  MAX(m.sent_at) AS last_message_time
+                  m.sent_at AS last_message_time,
+                  m.content AS last_message_content
            FROM messages m
            JOIN users u ON u.id = m.sender_id OR u.id = m.receiver_id
            JOIN user_profiles up ON up.user_ref = u.id
            WHERE ((m.sender_id = $1 OR m.receiver_id = $1) OR (m.sender_id = $1 AND m.receiver_id = $1))
            AND (m.content ILIKE $2 OR up.nickname ILIKE $3 OR (u.id = $1 AND 'Saved Messages' ILIKE $3))
            AND (u.id != $1 OR (m.sender_id = $1 AND m.receiver_id = $1))
-           GROUP BY u.id, up.nickname, up.profile_picture, up.last_online`,
+           GROUP BY u.id, up.nickname, up.profile_picture, up.last_online, m.sent_at, m.content
+           ORDER BY u.id, m.sent_at DESC`,
           [userId, `%${query}%`, `${query}%`]
         )
       }
@@ -186,14 +185,6 @@ class MessageController {
       res.status(500).json({ error: error.message })
     }
   }
-
-  // async saveMessage(senderId, receiverId, content) {
-  //   return db.query(
-  //     `INSERT INTO messages (sender_id, receiver_id, content)
-  //      VALUES ($1, $2, $3)`,
-  //     [senderId, receiverId, content]
-  //   )
-  // }
 }
 
 module.exports = new MessageController()
