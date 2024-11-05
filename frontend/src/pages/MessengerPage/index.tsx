@@ -11,7 +11,6 @@ import SearchInputWithClear from '@components/SearchInputWithClear';
 import { BodyWrapper, StyledLink } from '@pages/ProfilePage/index.styled';
 import {
   MessengerWrapper,
-  SearchInput,
   ChatList,
   ChatWindow,
   StartMessage,
@@ -70,6 +69,7 @@ const MessengerPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   const chatInputRef = useRef<HTMLInputElement>(null);
+  const chatMessagesRef = useRef<HTMLDivElement>(null);
   const loggedInUserId = Number(localStorage.getItem('userId'));
 
   useEffect(() => {
@@ -96,6 +96,8 @@ const MessengerPage: React.FC = () => {
       if (formattedMessage.sender_id !== loggedInUserId) {
         setMessages((prevMessages) => [...prevMessages, formattedMessage]);
       }
+
+      fetchConversations();
     });
 
     return () => {
@@ -257,6 +259,12 @@ const MessengerPage: React.FC = () => {
   }, [searchQuery]);
 
   useEffect(() => {
+    if (chatMessagesRef.current) {
+      chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
+    }
+  }, [messages, activeChat]);
+
+  useEffect(() => {
     if (activeChat && chatInputRef.current) {
       chatInputRef.current.focus();
     }
@@ -280,7 +288,7 @@ const MessengerPage: React.FC = () => {
                   $isActive={activeChat?.id === chat.id}
                 >
                   <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
-                  <UserNickname>
+                  <UserNickname $isSavedMessages={chat.id === loggedInUserId}>
                     {chat.nickname}
                     {chat.nickname === 'Saved Messages' && chat.id === loggedInUserId && (
                       <VerifiedIcon color={activeChat?.id === chat.id ? 'white' : 'green'} />
@@ -300,7 +308,7 @@ const MessengerPage: React.FC = () => {
                   <ChatUserNickname>{activeChat.nickname}</ChatUserNickname>
                   {activeChat && activeChat.nickname !== 'Saved Messages' && <div>{formatLastOnline(activeChat.last_online)}</div>}
                 </ChatHeader>
-                <ChatMessages>
+                <ChatMessages ref={chatMessagesRef}>
                   {messages.map((msg, index) => (
                     <MessageWrapper key={index} $fromSelf={msg.sender_id === loggedInUserId}>
                       {/* <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong> */}
