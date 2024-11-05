@@ -12,8 +12,10 @@ import {
   SearchInput,
   ChatList,
   ChatWindow,
+  StartMessage,
   ChatHeader,
   ChatMessages,
+  MessageWrapper,
   UserNickname,
   VerifiedIcon,
   LastMessageContent,
@@ -278,7 +280,8 @@ const MessengerPage: React.FC = () => {
               ))}
             </ChatList>
           </div>
-          <ChatWindow>
+          <ChatWindow $isActive={!!activeChat}>
+            {!activeChat && <StartMessage>Select a chat to start messaging</StartMessage>}
             {activeChat && (
               <>
                 <ChatHeader>
@@ -287,10 +290,10 @@ const MessengerPage: React.FC = () => {
                 </ChatHeader>
                 <ChatMessages>
                   {messages.map((msg, index) => (
-                    <div key={index}>
-                      <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong>
+                    <MessageWrapper key={index} fromSelf={msg.sender_id === loggedInUserId}>
+                      {/* <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong> */}
                       {msg.content}
-                    </div>
+                    </MessageWrapper>
                   ))}
                 </ChatMessages>
                 <ChatInputContainer>

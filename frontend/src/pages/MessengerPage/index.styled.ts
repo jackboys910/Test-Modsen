@@ -105,10 +105,23 @@ export const ChatList = styled.div`
   }
 `;
 
-export const ChatWindow = styled.div`
+export const ChatWindow = styled.div<{ $isActive: boolean }>`
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: ${({ $isActive }) => ($isActive ? 'flex-start' : 'center')};
+  align-items: ${({ $isActive }) => ($isActive ? 'stretch' : 'center')};
+  background: ${({ $isActive }) => ($isActive ? 'none' : `url('http://localhost:3001/assets/images/background-chat-1.png') center/cover`)};
+  text-align: ${({ $isActive }) => ($isActive ? 'left' : 'center')};
+`;
+
+export const StartMessage = styled.div`
+  background-color: rgba(87, 87, 87, 0.4);
+  width: 300px;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  text-align: center;
 `;
 
 export const ChatHeader = styled.div`
@@ -121,13 +134,34 @@ export const ChatMessages = styled.div`
   flex: 1;
   padding: 10px;
   overflow-y: auto;
+  display: flex;
+  flex-direction: column;
   background-image: url('http://localhost:3001/assets/images/background-chat-1.png');
+
+  div {
+    max-width: 465px;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+`;
+
+export const MessageWrapper = styled.div<{ fromSelf: boolean }>`
+  max-width: 70%;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 15px;
+  background-color: ${({ fromSelf }) => (fromSelf ? '#d4f5d4' : '#e0e0e0')};
+  align-self: ${({ fromSelf }) => (fromSelf ? 'flex-end' : 'flex-start')};
 `;
 
 export const UserNickname = styled.span`
   position: absolute;
   top: 19%;
   left: 23%;
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const VerifiedIcon = styled(MdOutlineVerifiedUser)`
@@ -140,6 +174,10 @@ export const LastMessageContent = styled.span<{ $isActive: boolean }>`
   left: 23%;
   color: ${({ $isActive }) => ($isActive ? 'white' : '#aba9a9')};
   font-size: 14px;
+  max-width: 225px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const LastMessageTime = styled.span<{ $isActive: boolean }>`
