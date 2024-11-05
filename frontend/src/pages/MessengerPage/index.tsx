@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { MdSend } from 'react-icons/md';
 import formatMessageTime from '@utils/formatMessageTime';
 import formatLastOnline from '@utils/formatLastOnline';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
+import SearchInputWithClear from '@components/SearchInputWithClear';
 import { BodyWrapper, StyledLink } from '@pages/ProfilePage/index.styled';
 import {
   MessengerWrapper,
@@ -14,6 +16,7 @@ import {
   ChatWindow,
   StartMessage,
   ChatHeader,
+  ChatUserNickname,
   ChatMessages,
   MessageWrapper,
   UserNickname,
@@ -65,6 +68,8 @@ const MessengerPage: React.FC = () => {
   const [chats, setChats] = useState<IChat[]>([]);
   const [activeChat, setActiveChat] = useState<IChat | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const chatInputRef = useRef<HTMLInputElement>(null);
   const loggedInUserId = Number(localStorage.getItem('userId'));
 
   useEffect(() => {
@@ -251,6 +256,12 @@ const MessengerPage: React.FC = () => {
     }
   }, [searchQuery]);
 
+  useEffect(() => {
+    if (activeChat && chatInputRef.current) {
+      chatInputRef.current.focus();
+    }
+  }, [activeChat]);
+
   const isMobile = windowWidth >= 390 && windowWidth <= 768;
 
   return (
@@ -259,7 +270,8 @@ const MessengerPage: React.FC = () => {
       <BodyWrapper>
         <MessengerWrapper>
           <div>
-            <SearchInput type='text' placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+            {/* <SearchInput type='text' placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /> */}
+            <SearchInputWithClear value={searchQuery} onChange={setSearchQuery} />
             <ChatList>
               {chats.map((chat, index) => (
                 <ChatItem
@@ -285,20 +297,28 @@ const MessengerPage: React.FC = () => {
             {activeChat && (
               <>
                 <ChatHeader>
-                  <div>{activeChat.nickname}</div>
+                  <ChatUserNickname>{activeChat.nickname}</ChatUserNickname>
                   {activeChat && activeChat.nickname !== 'Saved Messages' && <div>{formatLastOnline(activeChat.last_online)}</div>}
                 </ChatHeader>
                 <ChatMessages>
                   {messages.map((msg, index) => (
-                    <MessageWrapper key={index} fromSelf={msg.sender_id === loggedInUserId}>
+                    <MessageWrapper key={index} $fromSelf={msg.sender_id === loggedInUserId}>
                       {/* <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong> */}
                       {msg.content}
                     </MessageWrapper>
                   ))}
                 </ChatMessages>
                 <ChatInputContainer>
-                  <ChatInput type='text' value={newMessage} onChange={(e) => setNewMessage(e.target.value)} />
-                  <SendButton onClick={() => sendMessage(newMessage)}>Send</SendButton>
+                  <ChatInput
+                    ref={chatInputRef}
+                    type='text'
+                    placeholder='Write a message...'
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                  />
+                  <SendButton onClick={() => sendMessage(newMessage)}>
+                    <MdSend color='#38b9d6' size={25} />
+                  </SendButton>
                 </ChatInputContainer>
               </>
             )}

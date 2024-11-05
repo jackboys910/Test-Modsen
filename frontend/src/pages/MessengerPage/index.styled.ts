@@ -106,6 +106,8 @@ export const ChatList = styled.div`
 `;
 
 export const ChatWindow = styled.div<{ $isActive: boolean }>`
+  font-family: 'RobotoRegular';
+  font-size: 13px;
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -128,6 +130,12 @@ export const ChatHeader = styled.div`
   padding: 10px;
   background-color: #f5f5f5;
   border-bottom: 1px solid #ccc;
+  height: 58px;
+`;
+
+export const ChatUserNickname = styled.div`
+  font-size: 16px;
+  margin-bottom: 3px;
 `;
 
 export const ChatMessages = styled.div`
@@ -143,15 +151,34 @@ export const ChatMessages = styled.div`
     overflow-wrap: break-word;
     word-break: break-word;
   }
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: grey;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+  }
 `;
 
-export const MessageWrapper = styled.div<{ fromSelf: boolean }>`
+export const MessageWrapper = styled.div<{ $fromSelf: boolean }>`
   max-width: 70%;
   margin: 5px 0;
   padding: 10px;
   border-radius: 15px;
-  background-color: ${({ fromSelf }) => (fromSelf ? '#d4f5d4' : '#e0e0e0')};
-  align-self: ${({ fromSelf }) => (fromSelf ? 'flex-end' : 'flex-start')};
+  background-color: ${({ $fromSelf }) => ($fromSelf ? '#d4f5d4' : '#e0e0e0')};
+  align-self: ${({ $fromSelf }) => ($fromSelf ? 'flex-end' : 'flex-start')};
 `;
 
 export const UserNickname = styled.span`
@@ -192,27 +219,29 @@ export const ChatInputContainer = styled.div`
   padding: 10px;
   border-top: 1px solid #ccc;
   display: flex;
+  height: 55px;
+  position: relative;
 `;
 
 export const ChatInput = styled.input`
+  font-family: 'RobotoRegular';
   flex: 1;
   padding: 10px;
   margin-right: 10px;
-  border: 1px solid #ccc;
+  border: none;
   border-radius: 5px;
+  outline: none;
 `;
 
 export const SendButton = styled.button`
   padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
+  background-color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
+  position: absolute;
+  right: 0;
+  bottom: 3%;
 `;
 
 export const ChatItem = styled.div<{ $isActive: boolean }>`
