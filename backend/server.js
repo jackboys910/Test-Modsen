@@ -138,18 +138,23 @@ class Server {
             const receiverId = receiverResult.rows[0].user_ref
 
             // await MessageController.saveMessage(senderId, receiverId, content)
-            await db.query(
-              `INSERT INTO messages (sender_id, receiver_id, content) VALUES ($1, $2, $3)`,
+            const result = await db.query(
+              `INSERT INTO messages (sender_id, receiver_id, content, sent_at) VALUES ($1, $2, $3, NOW()) RETURNING sent_at`,
               [senderId, receiverId, content]
             )
+
+            const sentAt = result.rows[0].sent_at
+
             if (receiverId && senderId) {
               this.io.to(receiverId.toString()).emit('receiveMessage', {
                 senderId,
                 content,
+                sent_at: sentAt,
               })
               this.io.to(senderId.toString()).emit('receiveMessage', {
                 senderId,
                 content,
+                sent_at: sentAt,
               })
             } else {
               console.error('Invalid senderId or receiverId')
