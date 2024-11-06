@@ -2,7 +2,9 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import { MdSend } from 'react-icons/md';
+import formatLastMessageTime from '@utils/formatLastMessageTime';
 import formatMessageTime from '@utils/formatMessageTime';
+import getDateSeparator from '@utils/getDateSeparator';
 import formatLastOnline from '@utils/formatLastOnline';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
@@ -11,14 +13,19 @@ import SearchInputWithClear from '@components/SearchInputWithClear';
 import { BodyWrapper, StyledLink } from '@pages/ProfilePage/index.styled';
 import {
   MessengerWrapper,
+  UsersWindow,
   ChatList,
   ChatWindow,
   StartMessage,
   ChatHeader,
   ChatUserNickname,
   ChatMessages,
+  MessageSeparator,
   MessageWrapper,
+  MessageTime,
   UserNickname,
+  StyledNicknameLink,
+  StyledLastOnline,
   VerifiedIcon,
   LastMessageContent,
   LastMessageTime,
@@ -33,6 +40,7 @@ const socket = io('http://localhost:3001');
 interface IMessage {
   sender_id: number;
   content: string;
+  sent_at: string;
 }
 
 interface IChat {
@@ -91,6 +99,7 @@ const MessengerPage: React.FC = () => {
       const formattedMessage: IMessage = {
         sender_id: message.senderId ?? message.sender_id,
         content: message.content,
+        sent_at: message.sent_at,
       };
 
       if (formattedMessage.sender_id !== loggedInUserId) {
@@ -205,7 +214,7 @@ const MessengerPage: React.FC = () => {
           content,
         });
 
-        setMessages((prevMessages) => [...prevMessages, { sender_id: loggedInUserId, content }]);
+        setMessages((prevMessages) => [...prevMessages, { sender_id: loggedInUserId, content, sent_at: new Date().toISOString() }]);
         setNewMessage('');
 
         await fetchConversations();
@@ -277,7 +286,7 @@ const MessengerPage: React.FC = () => {
       <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
       <BodyWrapper>
         <MessengerWrapper>
-          <div>
+          <UsersWindow>
             {/* <SearchInput type='text' placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /> */}
             <SearchInputWithClear value={searchQuery} onChange={setSearchQuery} />
             <ChatList>
@@ -295,26 +304,43 @@ const MessengerPage: React.FC = () => {
                     )}
                   </UserNickname>
                   <LastMessageContent $isActive={activeChat?.id === chat.id}>{chat.last_message_content}</LastMessageContent>
-                  <LastMessageTime $isActive={activeChat?.id === chat.id}>{formatMessageTime(chat.last_message_time)}</LastMessageTime>
+                  <LastMessageTime $isActive={activeChat?.id === chat.id}>{formatLastMessageTime(chat.last_message_time)}</LastMessageTime>
                 </ChatItem>
               ))}
             </ChatList>
-          </div>
+          </UsersWindow>
           <ChatWindow $isActive={!!activeChat}>
             {!activeChat && <StartMessage>Select a chat to start messaging</StartMessage>}
             {activeChat && (
               <>
                 <ChatHeader>
-                  <ChatUserNickname>{activeChat.nickname}</ChatUserNickname>
-                  {activeChat && activeChat.nickname !== 'Saved Messages' && <div>{formatLastOnline(activeChat.last_online)}</div>}
+                  <ChatUserNickname>
+                    <StyledNicknameLink to={activeChat.nickname === 'Saved Messages' ? '/profile' : `/${activeChat.nickname}`}>
+                      {activeChat.nickname}
+                    </StyledNicknameLink>
+                  </ChatUserNickname>
+                  {activeChat && activeChat.nickname !== 'Saved Messages' && (
+                    <StyledLastOnline>{formatLastOnline(activeChat.last_online)}</StyledLastOnline>
+                  )}
                 </ChatHeader>
                 <ChatMessages ref={chatMessagesRef}>
-                  {messages.map((msg, index) => (
-                    <MessageWrapper key={index} $fromSelf={msg.sender_id === loggedInUserId}>
-                      {/* <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong> */}
-                      {msg.content}
-                    </MessageWrapper>
-                  ))}
+                  {messages.map((msg, index) => {
+                    // <MessageWrapper key={index} $fromSelf={msg.sender_id === loggedInUserId}>
+                    //   {/* <strong>{msg.sender_id === loggedInUserId ? 'You' : activeChat.nickname}: </strong> */}
+                    //   {msg.content}
+                    // </MessageWrapper>
+                    const dateSeparator = getDateSeparator(msg.sent_at, messages[index - 1]?.sent_at);
+
+                    return (
+                      <React.Fragment key={index}>
+                        {dateSeparator && <MessageSeparator>{dateSeparator}</MessageSeparator>}
+                        <MessageWrapper $fromSelf={msg.sender_id === loggedInUserId}>
+                          {msg.content}
+                          <MessageTime>{formatMessageTime(msg.sent_at)}</MessageTime>
+                        </MessageWrapper>
+                      </React.Fragment>
+                    );
+                  })}
                 </ChatMessages>
                 <ChatInputContainer>
                   <ChatInput

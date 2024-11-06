@@ -33,6 +33,11 @@ export const StyledUpdateProfile = styled.button`
   height: 30px;
   width: 120px;
   border-radius: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #d3d3d3;
+  }
 `;
 
 export const StyledMessages = styled.button`

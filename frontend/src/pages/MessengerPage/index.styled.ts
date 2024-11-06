@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { MdOutlineVerifiedUser } from 'react-icons/md';
 
 export const MessengerWrapper = styled.div`
@@ -8,6 +9,34 @@ export const MessengerWrapper = styled.div`
   border: 1px solid black;
   display: flex;
   overflow: hidden;
+
+  @media (max-width: 1200px) {
+    width: 1000px;
+  }
+
+  @media (max-width: 1100px) {
+    width: 900px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 800px;
+  }
+`;
+
+export const UsersWindow = styled.div`
+  width: 300px;
+`;
+
+export const DateHeader = styled.div`
+  font-family: 'RobotoRegular';
+  font-size: 14px;
+  margin: 10px 0;
+  padding: 5px 10px;
+  background-color: #f5f5f5;
+  color: #555;
+  border-radius: 10px;
+  text-align: center;
+  align-self: center;
 `;
 
 export const ChatList = styled.div`
@@ -141,13 +170,30 @@ export const ChatMessages = styled.div`
   }
 `;
 
+export const MessageSeparator = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0 15px 0;
+  font-size: 14px;
+`;
+
 export const MessageWrapper = styled.div<{ $fromSelf: boolean }>`
   max-width: 70%;
   margin: 5px 0;
-  padding: 10px;
+  padding: 10px 50px 10px 10px;
   border-radius: 15px;
   background-color: ${({ $fromSelf }) => ($fromSelf ? '#d4f5d4' : '#e0e0e0')};
   align-self: ${({ $fromSelf }) => ($fromSelf ? 'flex-end' : 'flex-start')};
+  position: relative;
+`;
+
+export const MessageTime = styled.span`
+  font-size: 11px;
+  position: absolute;
+  bottom: 3px;
+  right: 10px;
+  color: #5c5c5c;
 `;
 
 export const UserNickname = styled.span<{ $isSavedMessages: boolean }>`
@@ -158,6 +204,19 @@ export const UserNickname = styled.span<{ $isSavedMessages: boolean }>`
   white-space: ${({ $isSavedMessages }) => ($isSavedMessages ? undefined : 'nowrap')};
   overflow: ${({ $isSavedMessages }) => ($isSavedMessages ? undefined : 'hidden')};
   text-overflow: ${({ $isSavedMessages }) => ($isSavedMessages ? undefined : 'ellipsis')};
+`;
+
+export const StyledNicknameLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
+export const StyledLastOnline = styled.div`
+  color: #9e9e9e;
 `;
 
 export const VerifiedIcon = styled(MdOutlineVerifiedUser)`
