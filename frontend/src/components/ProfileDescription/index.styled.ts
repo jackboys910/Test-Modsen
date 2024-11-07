@@ -37,6 +37,14 @@ export const StyledInfo = styled.input`
   border: 2px solid grey;
   height: 30px;
   width: 200px;
+
+  @media (max-width: 1100px) {
+    width: 170px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 145px;
+  }
 `;
 
 export const QuestionIcon = styled(FaQuestionCircle)`
@@ -47,6 +55,18 @@ export const QuestionIcon = styled(FaQuestionCircle)`
 
   &:hover {
     color: #4f4f4f;
+  }
+
+  @media (max-width: 1200px) {
+    right: 13%;
+  }
+
+  @media (max-width: 1100px) {
+    right: 9.5%;
+  }
+
+  @media (max-width: 1000px) {
+    right: 4%;
   }
 `;
 
@@ -85,6 +105,25 @@ export const StyledDescription = styled.textarea`
   height: 250px;
   resize: none;
   text-align: start;
+
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #888;
+  }
 `;
 
 export const CharCount = styled.div`

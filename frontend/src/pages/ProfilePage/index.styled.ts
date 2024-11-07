@@ -27,6 +27,18 @@ export const ProfileWrapper = styled.div`
   height: 510px;
   margin-top: 100px;
   border: 1px solid black;
+
+  @media (max-width: 1200px) {
+    width: 1000px;
+  }
+
+  @media (max-width: 1100px) {
+    width: 900px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 800px;
+  }
 `;
 
 export const StyledForm = styled.form`

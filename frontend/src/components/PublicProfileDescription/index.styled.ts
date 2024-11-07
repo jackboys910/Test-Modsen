@@ -22,4 +22,13 @@ export const StyledDescription = styled.p`
   padding-left: 10px;
   border-left: 1px solid purple;
   word-wrap: break-word;
+
+  @media (max-width: 1100px) {
+    height: 220px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 1000px) {
+    overflow: hidden;
+  }
 `;

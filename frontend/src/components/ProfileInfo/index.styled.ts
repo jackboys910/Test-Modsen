@@ -68,6 +68,14 @@ export const StyledInfoInput = styled.input`
   //   outline-width: 4px;
   //   outline-color: ${COLORS.COLOR_MAIN_BLUE};
   // }
+
+  @media (max-width: 1100px) {
+    width: 170px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 145px;
+  }
 `;
 
 export const QuestionIcon = styled(FaQuestionCircle)`
@@ -78,6 +86,10 @@ export const QuestionIcon = styled(FaQuestionCircle)`
 
   &:hover {
     color: #4f4f4f;
+  }
+
+  @media (max-width: 1100px) {
+    right: -9px;
   }
 `;
 

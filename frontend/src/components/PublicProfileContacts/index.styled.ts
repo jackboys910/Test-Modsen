@@ -14,4 +14,16 @@ export const StyledSendMessage = styled.button`
   &:hover {
     background-color: #00571d;
   }
+
+  @media (max-width: 1200px) {
+    width: 220px;
+  }
+
+  @media (max-width: 1100px) {
+    width: 200px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 180px;
+  }
 `;

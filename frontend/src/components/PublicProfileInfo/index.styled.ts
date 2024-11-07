@@ -29,4 +29,12 @@ export const StyledInformation = styled.p`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 1100px) {
+    width: 180px;
+  }
+
+  @media (max-width: 1000px) {
+    width: 150px;
+  }
 `;
