@@ -1,7 +1,6 @@
 import React from 'react';
 import { BiSolidDish } from 'react-icons/bi';
-import { ProfileDescriptionWrapper, StyledNickname, InfoWrapper } from '@components/ProfileDescription/index.styled';
-import { StyledCuisine, StyledAbout, StyledDescription } from './index.styled';
+import { ProfileDescriptionWrapper, StyledNickname, InfoWrapper, StyledCuisine, StyledAbout, StyledDescription } from './index.styled';
 
 interface IPublicProfileDescriptionProps {
   description: string;

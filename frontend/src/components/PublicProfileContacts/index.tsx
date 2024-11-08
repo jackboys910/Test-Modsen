@@ -1,7 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ProfileContactsWrapper } from '@components/ProfileContacts/index.styled';
-import { StyledSendMessage } from './index.styled';
+import { PublicProfileContactsWrapper, StyledSendMessage } from './index.styled';
 
 interface IPublicProfileContactsProps {
   nickname: string;
@@ -20,9 +19,9 @@ const PublicProfileContacts: React.FC<IPublicProfileContactsProps> = ({ nickname
   };
 
   return (
-    <ProfileContactsWrapper>
+    <PublicProfileContactsWrapper>
       <StyledSendMessage onClick={handleSendMessageClick}>Send Message</StyledSendMessage>
-    </ProfileContactsWrapper>
+    </PublicProfileContactsWrapper>
   );
 };
 

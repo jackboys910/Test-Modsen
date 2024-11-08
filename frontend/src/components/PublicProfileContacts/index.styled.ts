@@ -1,5 +1,21 @@
 import styled from 'styled-components';
 
+export const PublicProfileContactsWrapper = styled.div`
+  width: 25%;
+  padding: 10px;
+  background-color: #f0f0f0;
+  position: relative;
+
+  @media (max-width: 900px) {
+    width: 350px;
+    height: 100px;
+    position: absolute;
+    top: 1300px;
+    margin-left: -10px;
+    padding: 10px 10px 10px 85px;
+  }
+`;
+
 export const StyledSendMessage = styled.button`
   background-color: green;
   color: white;

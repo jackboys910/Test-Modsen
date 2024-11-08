@@ -8,6 +8,10 @@ export const BodyWrapper = styled.main`
   height: 1000px;
   margin: 0;
   align-items: center;
+
+  @media (max-width: 900px) {
+    height: 1400px;
+  }
 `;
 
 export const StyledLink = styled(Link)`
@@ -39,10 +43,22 @@ export const ProfileWrapper = styled.div`
   @media (max-width: 1000px) {
     width: 800px;
   }
+
+  @media (max-width: 900px) {
+    border: none;
+    display: flex;
+    justify-content: center;
+    height: 1000px;
+  }
 `;
 
 export const StyledForm = styled.form`
   display: flex;
   height: 100%;
   gap: 20px;
+
+  @media (max-width: 900px) {
+    flex-direction: column;
+    gap: 5px;
+  }
 `;

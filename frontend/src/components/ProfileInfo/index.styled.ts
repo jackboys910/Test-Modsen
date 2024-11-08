@@ -6,6 +6,10 @@ export const ProfileInfoWrapper = styled.div`
   width: 25%;
   padding: 10px;
   position: relative;
+
+  @media (max-width: 900px) {
+    width: 378px;
+  }
 `;
 
 export const ImageWrapper = styled.div`
@@ -47,6 +51,11 @@ export const AboutWrapper = styled.div`
   position: absolute;
   top: 320px;
   left: 15px;
+
+  @media (max-width: 900px) {
+    top: 450px;
+    left: 10px;
+  }
 `;
 
 export const DataWrapper = styled.div`
@@ -76,6 +85,10 @@ export const StyledInfoInput = styled.input`
   @media (max-width: 1000px) {
     width: 145px;
   }
+
+  @media (max-width: 900px) {
+    width: 310px;
+  }
 `;
 
 export const QuestionIcon = styled(FaQuestionCircle)`
@@ -90,6 +103,10 @@ export const QuestionIcon = styled(FaQuestionCircle)`
 
   @media (max-width: 1100px) {
     right: -9px;
+  }
+
+  @media (max-width: 900px) {
+    right: -18px;
   }
 `;
 

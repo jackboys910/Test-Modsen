@@ -6,6 +6,14 @@ export const ProfileContactsWrapper = styled.div`
   padding: 10px;
   background-color: #f0f0f0;
   position: relative;
+
+  @media (max-width: 900px) {
+    width: 350px;
+    height: 100px;
+    position: absolute;
+    top: 1300px;
+    margin-left: 10px;
+  }
 `;
 
 // export const StyledSignOut = styled.button`

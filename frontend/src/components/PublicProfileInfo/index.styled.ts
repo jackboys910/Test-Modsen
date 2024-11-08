@@ -37,4 +37,8 @@ export const StyledInformation = styled.p`
   @media (max-width: 1000px) {
     width: 150px;
   }
+
+  @media (max-width: 900px) {
+    width: 320px;
+  }
 `;
