@@ -17,6 +17,7 @@ import {
   IngredientsTitle,
   ProductsTitle,
   ProductsSection,
+  MarksWrapper,
   RecipeTitle,
   Data,
   LinkWrapper,
@@ -207,7 +208,7 @@ const RecipeDetailsPage: React.FC = () => {
   return (
     <div>
       <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
-      <BodyWrapper>
+      <BodyWrapper $ingredientsCount={recipe.ingredientLines.length}>
         <RecipeWrapper>
           {isMobile && (
             <ImageWrapper>
@@ -254,7 +255,7 @@ const RecipeDetailsPage: React.FC = () => {
                   .map((ingredient: IIngredient, index: number) => <img key={index} src={ingredient.image} alt={ingredient.text} />)}
             </ProductsSection>
             {recipe && (
-              <>
+              <MarksWrapper $ingredientsCount={recipe.ingredientLines.length}>
                 {token && (
                   <StyledMarkButton onClick={handleMarkAsTried} disabled={hasTried} $hasTried={hasTried}>
                     {hasTried ? `You've tried this!` : `Mark as Tried`}
@@ -277,7 +278,7 @@ const RecipeDetailsPage: React.FC = () => {
                     </UserListItem>
                   ))}
                 </UsersList>
-              </>
+              </MarksWrapper>
             )}
             <LinkWrapper>
               <a href={recipe.url} target='_blank' rel='noopener noreferrer'>

@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom';
 import { COLORS } from '@constants/styles/mainColors';
 import { resolution } from '@constants/resolutions';
 
-function calculateHeight(ingredientsCount: number) {
-  const baseHeight = 1500;
+function calculateHeight(ingredientsCount: number, baseHeight: number): number {
   const reductionPerIngredient = 220;
   const maxVisibleIngredients = 5;
   const visibleIngredients = Math.min(ingredientsCount, maxVisibleIngredients);
   return baseHeight - reductionPerIngredient * (maxVisibleIngredients - visibleIngredients);
 }
 
-export const BodyWrapper = styled.main`
+export const BodyWrapper = styled.main<{ $ingredientsCount: number }>`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -23,7 +22,7 @@ export const BodyWrapper = styled.main`
   }
 
   @media (${resolution.mobile}) {
-    height: 2300px;
+    height: ${({ $ingredientsCount }) => `${calculateHeight($ingredientsCount, 2550)}px`};
   }
 `;
 
@@ -65,7 +64,7 @@ export const InfoWrapper = styled.div<{ $ingredientsCount: number }>`
   @media (${resolution.mobile}) {
     width: 100%;
     padding: 20px;
-    height: ${({ $ingredientsCount }) => calculateHeight($ingredientsCount)}px;
+    height: ${({ $ingredientsCount }) => calculateHeight($ingredientsCount, 1900)}px;
     flex-shrink: 0;
   }
 `;
@@ -141,6 +140,11 @@ export const TypeSectionPart = styled.div`
 
 export const StarRatingWrapper = styled.div`
   margin-top: 40px;
+
+  @media (${resolution.mobile}) {
+    position: relative;
+    top: 50px;
+  }
 `;
 
 export const IngredientsSection = styled.div`
@@ -271,6 +275,13 @@ export const ProductsSection = styled.div`
     img:nth-child(2n) {
       margin-right: 0;
     }
+  }
+`;
+
+export const MarksWrapper = styled.div<{ $ingredientsCount: number }>`
+  @media (${resolution.mobile}) {
+    position: relative;
+    top: ${({ $ingredientsCount }) => `${calculateHeight($ingredientsCount, 850)}px`};
   }
 `;
 
