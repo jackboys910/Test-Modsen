@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@components/Header';
+import BurgerMenu from '@components/BurgerMenu';
 import Footer from '@components/Footer';
 import InputForm from '@components/InputForm';
 import FilterList from '@components/FilterList';
@@ -15,6 +16,19 @@ const HomePage: React.FC = () => {
   const [dishTypeFilter, setDishTypeFilter] = useState('');
   const [searchQuery, setSearchQuery] = useState('chicken');
   const [triggerSearch, setTriggerSearch] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -38,9 +52,11 @@ const HomePage: React.FC = () => {
     handleFilterChange('dishType', filter);
   };
 
+  const isMobile = windowWidth >= 390 && windowWidth <= 768;
+
   return (
     <>
-      <Header />
+      <Header>{isMobile && <BurgerMenu />}</Header>
       <BodyWrapper>
         <MainTitle>Discover Recipe & Delicious Food</MainTitle>
         <InputForm onSearch={handleSearch} />

@@ -12,6 +12,21 @@ interface IHeaderProps {
 
 const Header: React.FC<IHeaderProps> = ({ children }) => {
   const [loggedInUserNickname, setLoggedInUserNickname] = useState<string | null>(localStorage.getItem('nickname'));
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const isMobile = windowWidth >= 390 && windowWidth <= 768;
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -36,18 +51,22 @@ const Header: React.FC<IHeaderProps> = ({ children }) => {
         </ClickableLogo>
         {children}
       </HeaderContent>
-      <MessangerWrapper>
-        {isAuthenticated() && (
-          <Link to={`/messanger/${loggedInUserNickname}`}>
-            <TbMessageFilled size={45} color='white' />
-          </Link>
-        )}
-      </MessangerWrapper>
-      <UserWrapper>
-        <Link to={isAuthenticated() ? '/profile' : '/authorization'}>
-          <RiAccountPinCircleLine size={45} color='white' />
-        </Link>
-      </UserWrapper>
+      {!isMobile && (
+        <>
+          <MessangerWrapper>
+            {isAuthenticated() && (
+              <Link to={`/messanger/${loggedInUserNickname}`}>
+                <TbMessageFilled size={45} color='white' />
+              </Link>
+            )}
+          </MessangerWrapper>
+          <UserWrapper>
+            <Link to={isAuthenticated() ? '/profile' : '/authorization'}>
+              <RiAccountPinCircleLine size={45} color='white' />
+            </Link>
+          </UserWrapper>
+        </>
+      )}
     </StyledHeader>
   );
 };

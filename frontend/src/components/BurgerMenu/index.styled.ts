@@ -8,7 +8,7 @@ export const Menu = styled.div<{ $isOpen: boolean }>`
   left: 5px;
   background-color: ${COLORS.COLOR_MAIN_BLUE};
   width: 150px;
-  height: 100px;
+  height: 160px;
   text-align: center;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@ export const Menu = styled.div<{ $isOpen: boolean }>`
   overflow: hidden;
 
   @media (max-width: 630px) {
-    width: 100px;
+    width: 110px;
   }
 `;
 
