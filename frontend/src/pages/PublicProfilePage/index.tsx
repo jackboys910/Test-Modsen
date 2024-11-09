@@ -24,6 +24,8 @@ const PublicProfilePage: React.FC = () => {
   });
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };

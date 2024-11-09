@@ -22,7 +22,7 @@ export const BodyWrapper = styled.main<{ $ingredientsCount: number }>`
   }
 
   @media (${resolution.mobile}) {
-    height: ${({ $ingredientsCount }) => `${calculateHeight($ingredientsCount, 2550)}px`};
+    height: ${({ $ingredientsCount }) => `${calculateHeight($ingredientsCount, 2650)}px`};
   }
 `;
 
@@ -64,7 +64,7 @@ export const InfoWrapper = styled.div<{ $ingredientsCount: number }>`
   @media (${resolution.mobile}) {
     width: 100%;
     padding: 20px;
-    height: ${({ $ingredientsCount }) => calculateHeight($ingredientsCount, 1900)}px;
+    height: ${({ $ingredientsCount }) => calculateHeight($ingredientsCount, 2000)}px;
     flex-shrink: 0;
   }
 `;

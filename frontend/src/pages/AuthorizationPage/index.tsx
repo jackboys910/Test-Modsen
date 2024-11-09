@@ -11,6 +11,8 @@ const AuthorizationPage: React.FC = () => {
   const [showSignIn, setShowSignIn] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };

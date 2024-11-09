@@ -21,10 +21,20 @@ export const MessengerWrapper = styled.div`
   @media (max-width: 1000px) {
     width: 800px;
   }
+
+  @media (max-width: 850px) {
+    width: 90%;
+    flex-direction: column;
+  }
 `;
 
-export const UsersWindow = styled.div`
+export const UsersWindow = styled.div<{ $isActive: boolean }>`
   width: 300px;
+
+  @media (max-width: 850px) {
+    width: 100%;
+    display: ${({ $isActive }) => ($isActive ? 'none' : 'block')};
+  }
 `;
 
 export const DateHeader = styled.div`
@@ -40,44 +50,6 @@ export const DateHeader = styled.div`
 `;
 
 export const ChatList = styled.div`
-  // width: 300px;
-  // border-right: 1px solid #ccc;
-  // overflow-y: hidden;
-  // height: 510px;
-  // position: relative;
-
-  // &:hover {
-  //   overflow-y: auto;
-  // }
-
-  // &::-webkit-scrollbar {
-  //   width: 4px;
-  //   position: absolute;
-  //   right: 0;
-  // }
-
-  // &::-webkit-scrollbar-track {
-  //   background: transparent;
-  //   border-radius: 10px;
-  // }
-
-  // &::-webkit-scrollbar-thumb {
-  //   background-color: #ccc;
-  //   border-radius: 10px;
-  //   transition:
-  //     background-color 0.3s ease,
-  //     opacity 0.3s ease;
-  //   opacity: 0;
-  // }
-
-  // &:hover::-webkit-scrollbar-thumb {
-  //   opacity: 1;
-  // }
-
-  // &::-webkit-scrollbar-thumb:hover {
-  //   background-color: #888;
-  // }
-
   width: 300px;
   border-right: 1px solid #ccc;
   overflow-y: auto;
@@ -101,6 +73,11 @@ export const ChatList = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background-color: #888;
   }
+
+  @media (max-width: 850px) {
+    width: 100%;
+    height: calc(55vh - 68px);
+  }
 `;
 
 export const ChatWindow = styled.div<{ $isActive: boolean }>`
@@ -113,6 +90,11 @@ export const ChatWindow = styled.div<{ $isActive: boolean }>`
   align-items: ${({ $isActive }) => ($isActive ? 'stretch' : 'center')};
   background: ${({ $isActive }) => ($isActive ? 'none' : `url('http://localhost:3001/assets/images/background-chat-1.png') center/cover`)};
   text-align: ${({ $isActive }) => ($isActive ? 'left' : 'center')};
+
+  @media (max-width: 850px) {
+    width: 100%;
+    display: ${({ $isActive }) => ($isActive ? 'flex' : 'none')};
+  }
 `;
 
 export const StartMessage = styled.div`
@@ -129,6 +111,12 @@ export const ChatHeader = styled.div`
   background-color: #f5f5f5;
   border-bottom: 1px solid #ccc;
   height: 58px;
+
+  @media (max-width: 850px) {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
 `;
 
 export const ChatUserNickname = styled.div`
@@ -168,6 +156,11 @@ export const ChatMessages = styled.div`
   &::-webkit-scrollbar-thumb:hover {
     background-color: #888;
   }
+
+  @media (max-width: 850px) {
+    height: calc(41.2vh);
+    flex: none;
+  }
 `;
 
 export const MessageSeparator = styled.span`
@@ -204,6 +197,30 @@ export const UserNickname = styled.span<{ $isSavedMessages: boolean }>`
   white-space: ${({ $isSavedMessages }) => ($isSavedMessages ? undefined : 'nowrap')};
   overflow: ${({ $isSavedMessages }) => ($isSavedMessages ? undefined : 'hidden')};
   text-overflow: ${({ $isSavedMessages }) => ($isSavedMessages ? undefined : 'ellipsis')};
+
+  @media (max-width: 850px) {
+    left: 10.25%;
+  }
+
+  @media (max-width: 750px) {
+    left: 12%;
+  }
+
+  @media (max-width: 650px) {
+    left: 13.75%;
+  }
+
+  @media (max-width: 550px) {
+    left: 16%;
+  }
+
+  @media (max-width: 500px) {
+    left: 18%;
+  }
+
+  @media (max-width: 450px) {
+    left: 20%;
+  }
 `;
 
 export const StyledNicknameLink = styled(Link)`
@@ -233,6 +250,30 @@ export const LastMessageContent = styled.span<{ $isActive: boolean }>`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 850px) {
+    left: 10.25%;
+  }
+
+  @media (max-width: 750px) {
+    left: 12%;
+  }
+
+  @media (max-width: 650px) {
+    left: 13.75%;
+  }
+
+  @media (max-width: 550px) {
+    left: 16%;
+  }
+
+  @media (max-width: 500px) {
+    left: 18%;
+  }
+
+  @media (max-width: 450px) {
+    left: 20%;
+  }
 `;
 
 export const LastMessageTime = styled.span<{ $isActive: boolean }>`

@@ -66,6 +66,8 @@ const RecipeDetailsPage: React.FC = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const storedRecipe = localStorage.getItem('selectedRecipe');
     if (storedRecipe) {
       const parsedRecipe: IRecipe = JSON.parse(storedRecipe);

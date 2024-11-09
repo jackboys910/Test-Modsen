@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import { MdSend } from 'react-icons/md';
+import { IoMdArrowRoundBack } from 'react-icons/io';
 import formatLastMessageTime from '@utils/formatLastMessageTime';
 import formatMessageTime from '@utils/formatMessageTime';
 import getDateSeparator from '@utils/getDateSeparator';
@@ -75,12 +76,15 @@ const MessengerPage: React.FC = () => {
   const [chats, setChats] = useState<IChat[]>([]);
   const [activeChat, setActiveChat] = useState<IChat | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showChatWindow, setShowChatWindow] = useState(false);
 
   const chatInputRef = useRef<HTMLInputElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
   const loggedInUserId = Number(localStorage.getItem('userId'));
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
@@ -259,6 +263,15 @@ const MessengerPage: React.FC = () => {
     }
   };
 
+  const handleChatSelect = (chat: IChat) => {
+    setActiveChat(chat);
+    setShowChatWindow(true);
+  };
+
+  const handleBackArrowClick = () => {
+    setShowChatWindow(false);
+  };
+
   useEffect(() => {
     if (searchQuery) {
       handleSearch(searchQuery);
@@ -286,14 +299,14 @@ const MessengerPage: React.FC = () => {
       <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
       <BodyWrapper>
         <MessengerWrapper>
-          <UsersWindow>
+          <UsersWindow $isActive={showChatWindow}>
             {/* <SearchInput type='text' placeholder='Search' value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /> */}
             <SearchInputWithClear value={searchQuery} onChange={setSearchQuery} />
             <ChatList>
               {chats.map((chat, index) => (
                 <ChatItem
                   key={`${chat.id}-${chat.nickname}-${index}`}
-                  onClick={() => setActiveChat(chat)}
+                  onClick={() => handleChatSelect(chat)}
                   $isActive={activeChat?.id === chat.id}
                 >
                   <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
@@ -309,7 +322,7 @@ const MessengerPage: React.FC = () => {
               ))}
             </ChatList>
           </UsersWindow>
-          <ChatWindow $isActive={!!activeChat}>
+          <ChatWindow $isActive={showChatWindow}>
             {!activeChat && <StartMessage>Select a chat to start messaging</StartMessage>}
             {activeChat && (
               <>
@@ -321,6 +334,13 @@ const MessengerPage: React.FC = () => {
                   </ChatUserNickname>
                   {activeChat && activeChat.nickname !== 'Saved Messages' && (
                     <StyledLastOnline>{formatLastOnline(activeChat.last_online)}</StyledLastOnline>
+                  )}
+                  {windowWidth <= 850 && (
+                    <IoMdArrowRoundBack
+                      size={24}
+                      onClick={handleBackArrowClick}
+                      style={{ cursor: 'pointer', marginRight: '10px', position: 'absolute', right: '0', top: '5px' }}
+                    />
                   )}
                 </ChatHeader>
                 <ChatMessages ref={chatMessagesRef}>

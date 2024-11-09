@@ -19,6 +19,8 @@ const HomePage: React.FC = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };

@@ -32,6 +32,8 @@ const ProfilePage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };

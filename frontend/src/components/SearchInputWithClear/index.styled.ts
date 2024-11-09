@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { FiUsers } from 'react-icons/fi';
 
 export const SearchWrapper = styled.div`
   position: relative;
@@ -6,6 +7,17 @@ export const SearchWrapper = styled.div`
   align-items: center;
   justify-content: flex-end;
   margin-right: 5px;
+
+  @media (max-width: 850px) {
+    justify-content: flex-start;
+    margin-left: 20px;
+  }
+`;
+
+export const UsersIcon = styled(FiUsers)`
+  width: 25px;
+  height: 25px;
+  flex-shrink: 0;
 `;
 
 export const SearchInput = styled.input`
@@ -21,6 +33,10 @@ export const SearchInput = styled.input`
   &:focus {
     background-color: #fff;
     outline: none;
+  }
+
+  @media (max-width: 850px) {
+    width: 680px;
   }
 `;
 
@@ -42,5 +58,13 @@ export const ClearButton = styled.button`
     opacity: 1;
     transform: translateY(0);
     pointer-events: all;
+  }
+
+  @media (max-width: 850px) {
+    right: 3%;
+  }
+
+  @media (max-width: 500px) {
+    right: 4%;
   }
 `;
