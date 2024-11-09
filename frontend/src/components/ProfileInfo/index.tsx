@@ -68,7 +68,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
       <ImageWrapper onClick={handleFileClick}>
         <img src={`http://localhost:3001/assets/images/${profilePicture}`} alt='Profile' />
         <CameraIcon>
-          <FaCamera color='white' size={24} />
+          <FaCamera color='grey' size={24} />
         </CameraIcon>
         <HiddenFileInput ref={fileInputRef} type='file' name='profilePicture' accept='image/*' onChange={handleFileChange} />
       </ImageWrapper>
