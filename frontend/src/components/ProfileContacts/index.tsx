@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ProfileContactsWrapper, StyledSignOutButton, StyledUpdateProfile, StyledMessages } from './index.styled';
+import { ProfileContactsWrapper, StyledSignOutButton, StyledUpdateProfile } from './index.styled';
 
 interface ProfileContactsProps {
   onUpdateProfile: (e: React.FormEvent) => void;

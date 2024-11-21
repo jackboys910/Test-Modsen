@@ -16,7 +16,7 @@ class Server {
     this.server = http.createServer(this.app)
     this.io = new SocketServer(this.server, {
       cors: {
-        origin: 'http://localhost:8080',
+        origin: '*',
         methods: ['GET', 'POST'],
       },
     })
@@ -172,7 +172,7 @@ class Server {
   }
 
   start() {
-    this.server.listen(this.port, () => {
+    this.server.listen(this.port, '0.0.0.0', () => {
       console.log(`Server running on port ${this.port}`)
     })
   }

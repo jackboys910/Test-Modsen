@@ -47,13 +47,3 @@ export const StyledUpdateProfile = styled.button`
     background-color: #d3d3d3;
   }
 `;
-
-export const StyledMessages = styled.button`
-  background-color: green;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  width: 150px;
-  height: 50px;
-  cursor: pointer;
-`;

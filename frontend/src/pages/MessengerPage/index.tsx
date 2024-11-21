@@ -118,6 +118,14 @@ const MessengerPage: React.FC = () => {
     };
   }, [loggedInUserId]);
 
+  useEffect(() => {
+    if (receiverNickname && receiverNickname !== loggedInUserId) {
+      setSearchQuery(receiverNickname);
+      handleSearch(receiverNickname);
+      setShowChatWindow(true);
+    }
+  }, [receiverNickname]);
+
   const fetchConversations = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -309,7 +317,12 @@ const MessengerPage: React.FC = () => {
                   onClick={() => handleChatSelect(chat)}
                   $isActive={activeChat?.id === chat.id}
                 >
-                  <img src={`http://localhost:3001/assets/images/${chat.profile_picture}`} alt={chat.nickname} width='50' />
+                  <img
+                    style={{ borderRadius: '25px' }}
+                    src={`http://localhost:3001/assets/images/${chat.profile_picture}`}
+                    alt={chat.nickname}
+                    width='50'
+                  />
                   <UserNickname $isSavedMessages={chat.id === loggedInUserId}>
                     {chat.nickname}
                     {chat.nickname === 'Saved Messages' && chat.id === loggedInUserId && (
