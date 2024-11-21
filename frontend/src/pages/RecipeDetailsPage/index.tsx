@@ -269,6 +269,7 @@ const RecipeDetailsPage: React.FC = () => {
                     <UserListItem key={index}>
                       <Link to={`/${user.nickname}`}>
                         <StyledUserImage
+                          style={{ borderRadius: '50px' }}
                           src={`http://localhost:3001/assets/images/${user.profilePicture}`}
                           alt={user.nickname}
                           onError={(e) => {
