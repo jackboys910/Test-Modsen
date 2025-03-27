@@ -32,19 +32,18 @@ export const HiddenFileInput = styled.input`
 `;
 
 export const CameraIcon = styled.div`
-    position: absolute;
-    bottom: 8px;
-    right: 8px;
-    background-color: rgba(0, 0, 0, 0.6)
-    color: white;
-    border-radius: 50%;
-    padding: 5px;
-    display: none;
-    cursor: pointer;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  color: white;
+  border-radius: 50%;
+  padding: 5px;
+  display: none;
+  cursor: pointer;
 
-    ${ImageWrapper}:hover & {
-        display: block;
-    }
+  ${ImageWrapper}:hover & {
+    display: block;
+  }
 `;
 
 export const AboutWrapper = styled.div`
@@ -71,12 +70,6 @@ export const StyledInfoInput = styled.input`
   border: 2px solid grey;
   height: 30px;
   margin-left: 20px;
-
-  // &:focus {
-  //   outline-style: solid;
-  //   outline-width: 4px;
-  //   outline-color: ${COLORS.COLOR_MAIN_BLUE};
-  // }
 
   @media (max-width: 1100px) {
     width: 170px;

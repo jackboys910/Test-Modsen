@@ -157,6 +157,11 @@ export const StyledDescription = styled.textarea`
     background-color: #888;
   }
 
+  @-moz-document url-prefix() {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+  }
+
   @media (max-width: 900px) {
     position: absolute;
     top: 960px;

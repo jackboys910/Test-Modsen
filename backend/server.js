@@ -10,6 +10,7 @@ const UploadMiddleware = require('./middlewares/upload')
 const AudioUploadMiddleware = require('./middlewares/audioUpload')
 const UserController = require('./controllers/userController')
 const MessageController = require('./controllers/messageController')
+const FeedbackController = require('./controllers/feedbackController')
 
 class Server {
   constructor() {
@@ -121,6 +122,11 @@ class Server {
       '/search',
       AuthMiddleware.authenticateJWT,
       MessageController.search
+    )
+    this.app.post(
+      '/submitFeedback',
+      AuthMiddleware.authenticateJWT,
+      FeedbackController.submitFeedback
     )
   }
 

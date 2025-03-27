@@ -16,16 +16,6 @@ export const ProfileContactsWrapper = styled.div`
   }
 `;
 
-// export const StyledSignOut = styled.button`
-//   background-color: red;
-//   color: white;
-//   border: none;
-//   border-radius: 10px;
-//   width: 150px;
-//   height: 50px;
-//   cursor: pointer;
-// `;
-
 export const StyledSignOutButton = styled(IoMdExit)`
   cursor: pointer;
   width: 30px;
@@ -45,5 +35,22 @@ export const StyledUpdateProfile = styled.button`
 
   &:hover {
     background-color: #d3d3d3;
+  }
+`;
+
+export const StyledFeedbackButton = styled.button`
+  cursor: pointer;
+  height: 30px;
+  width: 120px;
+  margin-top: 10px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #d3d3d3;
+  }
+
+  @media (max-width: 900px) {
+    margin-left: 10px;
   }
 `;

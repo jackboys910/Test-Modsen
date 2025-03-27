@@ -175,7 +175,7 @@ const ProfilePage: React.FC = () => {
               onChange={handleChange}
               errors={errors}
             />
-            <ProfileContacts handleSignOut={handleSignOut} onUpdateProfile={handleProfileUpdate} nickname={profile.nickname} />
+            <ProfileContacts handleSignOut={handleSignOut} onUpdateProfile={handleProfileUpdate} />
           </StyledForm>
         </ProfileWrapper>
       </BodyWrapper>
