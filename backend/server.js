@@ -7,6 +7,7 @@ const path = require('path')
 const db = require('./config/database')
 const AuthMiddleware = require('./middlewares/auth')
 const UploadMiddleware = require('./middlewares/upload')
+const AudioUploadMiddleware = require('./middlewares/audioUpload')
 const UserController = require('./controllers/userController')
 const MessageController = require('./controllers/messageController')
 
@@ -33,6 +34,10 @@ class Server {
     this.app.use(
       '/assets/images',
       express.static(path.join(__dirname, 'uploads'))
+    )
+    this.app.use(
+      '/assets/audio',
+      express.static(path.join(__dirname, 'uploads/audio'))
     )
   }
 
@@ -96,6 +101,12 @@ class Server {
       '/sendMessage',
       AuthMiddleware.authenticateJWT,
       MessageController.sendMessage
+    )
+    this.app.post(
+      '/uploadAudio',
+      AuthMiddleware.authenticateJWT,
+      AudioUploadMiddleware.single('audio'),
+      MessageController.uploadAudio
     )
     this.app.get(
       '/users/nickname/:nickname',

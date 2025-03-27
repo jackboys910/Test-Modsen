@@ -7,7 +7,7 @@ class MessageController {
 
     try {
       const result = await db.query(
-        `SELECT sender_id, content, sent_at FROM messages
+        `SELECT sender_id, content, sent_at, is_audio FROM messages
          WHERE (sender_id = $1 AND receiver_id = $2)
          OR (sender_id = $2 AND receiver_id = $1)
          ORDER BY sent_at`,
@@ -39,6 +39,39 @@ class MessageController {
       res.sendStatus(200)
     } catch (error) {
       res.status(500).send(error.message)
+    }
+  }
+
+  async uploadAudio(req, res) {
+    const { userId } = req.user
+    const { receiverNickname } = req.body
+
+    try {
+      const receiverResult = await db.query(
+        `SELECT user_ref FROM user_profiles WHERE nickname = $1`,
+        [receiverNickname]
+      )
+
+      if (receiverResult.rows.length === 0) {
+        return res.status(404).send('Receiver not found')
+      }
+
+      const receiverId = receiverResult.rows[0].user_ref
+
+      const audioFilename = req.file.filename
+
+      await db.query(
+        `INSERT INTO messages (sender_id, receiver_id, content, sent_at, is_audio) VALUES ($1, $2, $3, NOW(), TRUE)`,
+        [userId, receiverId, audioFilename]
+      )
+
+      res.status(200).json({
+        message: 'Audio uploaded successfully',
+        audioFilename,
+      })
+    } catch (error) {
+      console.error('Error saving audio message:', error)
+      res.status(500).send('Failed to save audio message')
     }
   }
 

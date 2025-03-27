@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import { FaMicrophone } from 'react-icons/fa';
+import { PiRecordDuotone } from 'react-icons/pi';
+import { AiOutlineClose } from 'react-icons/ai';
 import { MdSend } from 'react-icons/md';
 import { IoMdArrowRoundBack } from 'react-icons/io';
 import formatLastMessageTime from '@utils/formatLastMessageTime';
@@ -11,6 +14,7 @@ import Header from '@components/Header';
 import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
 import SearchInputWithClear from '@components/SearchInputWithClear';
+import Timer from '@components/Timer';
 import { BodyWrapper, StyledLink } from '@pages/ProfilePage/index.styled';
 import {
   MessengerWrapper,
@@ -32,7 +36,10 @@ import {
   LastMessageTime,
   ChatInputContainer,
   ChatInput,
+  RecordingStatusText,
+  RecordingButton,
   SendButton,
+  StyledAudio,
   ChatItem,
 } from './index.styled';
 
@@ -42,6 +49,7 @@ interface IMessage {
   sender_id: number;
   content: string;
   sent_at: string;
+  is_audio?: boolean;
 }
 
 interface IChat {
@@ -77,7 +85,11 @@ const MessengerPage: React.FC = () => {
   const [activeChat, setActiveChat] = useState<IChat | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [showChatWindow, setShowChatWindow] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [recordingStatus, setRecordingStatus] = useState('');
 
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const recordedChunks = useRef<Blob[]>([]);
   const chatInputRef = useRef<HTMLInputElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
   const loggedInUserId = Number(localStorage.getItem('userId'));
@@ -162,24 +174,6 @@ const MessengerPage: React.FC = () => {
   useEffect(() => {
     fetchConversations();
   }, [receiverNickname]);
-
-  const fetchReceiverId = async () => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await fetch(`http://localhost:3001/users/nickname/${receiverNickname}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (response.ok) {
-        const data = await response.json();
-        return data.userId;
-      }
-    } catch (error) {
-      console.error('Error fetching receiver ID:', error);
-    }
-    return null;
-  };
 
   const fetchMessages = async (chat: IChat) => {
     // if (chat.id === 0) return;
@@ -280,6 +274,88 @@ const MessengerPage: React.FC = () => {
     setShowChatWindow(false);
   };
 
+  const handleStartRecording = async () => {
+    recordedChunks.current = [];
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      mediaRecorder.current = new MediaRecorder(stream);
+
+      mediaRecorder.current.ondataavailable = (event) => {
+        recordedChunks.current.push(event.data);
+      };
+
+      mediaRecorder.current.onstop = () => {
+        if (recordedChunks.current.length > 0) {
+          const audioBlob = new Blob(recordedChunks.current, { type: 'audio/webm' });
+          recordedChunks.current = [];
+          uploadAudio(audioBlob);
+        }
+      };
+
+      mediaRecorder.current.start();
+      setRecordingStatus('Recording voice message...');
+      setIsRecording(true);
+    } catch (error) {
+      console.error('Error during audio recording:', error);
+      alert('Could not access microphone. Please check your browser settings.');
+    }
+  };
+
+  const handleStopRecording = () => {
+    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
+      mediaRecorder.current.stop();
+    }
+    setRecordingStatus('');
+    setIsRecording(false);
+  };
+
+  const handleCancelRecording = () => {
+    if (mediaRecorder.current && mediaRecorder.current.state !== 'inactive') {
+      mediaRecorder.current.onstop = null;
+      mediaRecorder.current.stop();
+    }
+    setRecordingStatus('');
+    setIsRecording(false);
+    recordedChunks.current = [];
+  };
+
+  const uploadAudio = async (audioBlob: Blob) => {
+    const formData = new FormData();
+    formData.append('audio', audioBlob, 'audio.webm');
+    formData.append('receiverNickname', activeChat?.nickname || '');
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch('http://localhost:3001/uploadAudio', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            sender_id: loggedInUserId,
+            content: data.audioFilename,
+            sent_at: new Date().toISOString(),
+            is_audio: true,
+          },
+        ]);
+
+        fetchConversations();
+      } else {
+        console.error('Failed to upload audio');
+      }
+    } catch (error) {
+      console.error('Error uploading audio:', error);
+    }
+  };
+
   useEffect(() => {
     if (searchQuery) {
       handleSearch(searchQuery);
@@ -299,6 +375,35 @@ const MessengerPage: React.FC = () => {
       chatInputRef.current.focus();
     }
   }, [activeChat]);
+
+  const renderSendButton = () => {
+    if (newMessage.trim().length > 0) {
+      return (
+        <SendButton onClick={() => sendMessage(newMessage)}>
+          <MdSend color='#38b9d6' size={25} />
+        </SendButton>
+      );
+    }
+
+    if (isRecording) {
+      return (
+        <>
+          <RecordingButton onClick={handleStopRecording} style={{ right: '55px' }}>
+            <PiRecordDuotone color='red' size={25} />
+          </RecordingButton>
+          <RecordingButton onClick={handleCancelRecording}>
+            <AiOutlineClose color='grey' size={25} />
+          </RecordingButton>
+        </>
+      );
+    }
+
+    return (
+      <SendButton onClick={handleStartRecording}>
+        <FaMicrophone color='#38b9d6' size={25} />
+      </SendButton>
+    );
+  };
 
   const isMobile = windowWidth >= 390 && windowWidth <= 768;
 
@@ -367,25 +472,40 @@ const MessengerPage: React.FC = () => {
                     return (
                       <React.Fragment key={index}>
                         {dateSeparator && <MessageSeparator>{dateSeparator}</MessageSeparator>}
-                        <MessageWrapper $fromSelf={msg.sender_id === loggedInUserId}>
-                          {msg.content}
-                          <MessageTime>{formatMessageTime(msg.sent_at)}</MessageTime>
-                        </MessageWrapper>
+                        {msg.is_audio ? (
+                          <MessageWrapper $fromSelf={msg.sender_id === loggedInUserId}>
+                            <StyledAudio controls>
+                              <source src={`http://localhost:3001/assets/audio/${msg.content}`} type='audio/webm' />
+                              Your browser does not support the audio element.
+                            </StyledAudio>
+                            <MessageTime>{formatMessageTime(msg.sent_at)}</MessageTime>
+                          </MessageWrapper>
+                        ) : (
+                          <MessageWrapper $fromSelf={msg.sender_id === loggedInUserId}>
+                            {msg.content}
+                            <MessageTime>{formatMessageTime(msg.sent_at)}</MessageTime>
+                          </MessageWrapper>
+                        )}
                       </React.Fragment>
                     );
                   })}
                 </ChatMessages>
                 <ChatInputContainer>
-                  <ChatInput
-                    ref={chatInputRef}
-                    type='text'
-                    placeholder='Write a message...'
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                  />
-                  <SendButton onClick={() => sendMessage(newMessage)}>
-                    <MdSend color='#38b9d6' size={25} />
-                  </SendButton>
+                  {recordingStatus ? (
+                    <RecordingStatusText>
+                      {`${recordingStatus} `}
+                      <Timer isActive={isRecording} />
+                    </RecordingStatusText>
+                  ) : (
+                    <ChatInput
+                      ref={chatInputRef}
+                      type='text'
+                      placeholder='Write a message...'
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                  )}
+                  {renderSendButton()}
                 </ChatInputContainer>
               </>
             )}

@@ -74,6 +74,11 @@ export const ChatList = styled.div`
     background-color: #888;
   }
 
+  @-moz-document url-prefix() {
+    scrollbar-width: thin;
+    scrollbar-color: #ccc transparent;
+  }
+
   @media (max-width: 850px) {
     width: 100%;
     height: calc(55vh - 68px);
@@ -138,24 +143,8 @@ export const ChatMessages = styled.div`
     word-break: break-word;
   }
 
-  &::-webkit-scrollbar {
-    width: 3px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background-color: grey;
-    border-radius: 10px;
-    transition: background-color 0.3s ease;
-  }
-
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #888;
-  }
+  scrollbar-width: thin;
+  scrollbar-color: grey transparent;
 
   @media (max-width: 850px) {
     height: calc(41.2vh);
@@ -302,6 +291,12 @@ export const ChatInput = styled.input`
   outline: none;
 `;
 
+export const RecordingStatusText = styled.p`
+  font-family: 'PoppinsMedium';
+  position: relative;
+  bottom: 5px;
+`;
+
 export const SendButton = styled.button`
   padding: 10px 20px;
   background-color: white;
@@ -311,6 +306,32 @@ export const SendButton = styled.button`
   position: absolute;
   right: 0;
   bottom: 3%;
+`;
+
+export const RecordingButton = styled.button`
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  bottom: 2%;
+  height: 50px;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const StyledAudio = styled.audio`
+  width: 300px;
+  height: 40px;
+  border-radius: 5px;
+  outline: none;
+
+  @-moz-document url-prefix() {
+    background-color: #e0e0e0;
+  }
 `;
 
 export const ChatItem = styled.div<{ $isActive: boolean }>`
