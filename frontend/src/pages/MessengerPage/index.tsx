@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import io from 'socket.io-client';
 import { FaMicrophone } from 'react-icons/fa';
@@ -93,6 +93,10 @@ const MessengerPage: React.FC = () => {
   const chatMessagesRef = useRef<HTMLDivElement>(null);
   const loggedInUserId = Number(localStorage.getItem('userId'));
 
+  useLayoutEffect(() => {
+    fetchConversations();
+  }, [receiverNickname]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
@@ -169,10 +173,6 @@ const MessengerPage: React.FC = () => {
       console.error('Error fetching conversations:', error);
     }
   };
-
-  useEffect(() => {
-    fetchConversations();
-  }, [receiverNickname]);
 
   const fetchMessages = async (chat: IChat) => {
     // if (chat.id === 0) return;

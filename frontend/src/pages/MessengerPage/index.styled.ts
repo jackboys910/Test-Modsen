@@ -25,6 +25,10 @@ export const MessengerWrapper = styled.div`
   @media (max-width: 850px) {
     width: 90%;
     flex-direction: column;
+
+    @supports (-webkit-appearance: none) and (not (-moz-appearance: none)) {
+      height: auto;
+    }
   }
 `;
 
