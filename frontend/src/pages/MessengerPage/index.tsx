@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import io from 'socket.io-client';
 import { FaMicrophone } from 'react-icons/fa';
 import { PiRecordDuotone } from 'react-icons/pi';
@@ -76,7 +76,6 @@ const processChatData = (data: IChat[]): IChat[] => {
 
 const MessengerPage: React.FC = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const { nickname } = useParams<{ nickname: string }>();
   const location = useLocation();
   const { receiverNickname } = location.state || {};
   const [messages, setMessages] = useState<IMessage[]>([]);

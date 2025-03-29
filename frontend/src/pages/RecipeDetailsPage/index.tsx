@@ -78,67 +78,6 @@ const RecipeDetailsPage: React.FC = () => {
   useEffect(() => {
     if (!recipe) return;
 
-    const fetchUsersWhoTried = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${encodeURIComponent(recipe.uri)}`);
-        if (!response.ok) throw new Error('Failed to fetch users');
-        const data = await response.json();
-        const formattedData = data.map((user: any) => ({
-          nickname: user.nickname,
-          profilePicture: user.profile_picture || 'defaultUser.png',
-        }));
-        setUsersWhoTried(formattedData);
-      } catch (error) {
-        console.error('Error fetching users who tried:', error);
-      }
-    };
-
-    const checkIfUserTried = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      try {
-        const response = await fetch(`http://localhost:3001/hasUserTriedRecipe/${encodeURIComponent(recipe.uri)}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setHasTried(data.hasTried);
-      } catch (error) {
-        console.error('Error checking if user tried recipe:', error);
-      }
-    };
-
-    const fetchUserRating = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) return;
-
-      try {
-        const response = await fetch(`http://localhost:3001/getUserRating/${encodeURIComponent(recipe.uri)}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setUserRating(data.rating);
-      } catch (error) {
-        console.error('Error fetching user rating:', error);
-      }
-    };
-
-    const fetchRecipeRatingInfo = async () => {
-      try {
-        const response = await fetch(`http://localhost:3001/recipeRatingInfo/${encodeURIComponent(recipe.uri)}`);
-        if (!response.ok) throw new Error('Failed to fetch recipe rating info');
-        const data = await response.json();
-        setAverageRating(data.averageRating);
-        setRatingCount(data.ratingCount);
-      } catch (error) {
-        console.error('Error fetching recipe rating info:', error);
-      }
-    };
-
     fetchUsersWhoTried();
     checkIfUserTried();
     fetchUserRating();
@@ -156,6 +95,71 @@ const RecipeDetailsPage: React.FC = () => {
     };
   }, []);
 
+  const fetchUsersWhoTried = async () => {
+    if (!recipe) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/usersWhoTriedRecipe/${encodeURIComponent(recipe.uri)}`);
+      if (!response.ok) throw new Error('Failed to fetch users');
+      const data = await response.json();
+      const formattedData = data.map((user: any) => ({
+        nickname: user.nickname,
+        profilePicture: user.profile_picture || 'defaultUser.png',
+      }));
+      setUsersWhoTried(formattedData);
+    } catch (error) {
+      console.error('Error fetching users who tried:', error);
+    }
+  };
+
+  const checkIfUserTried = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !recipe) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/hasUserTriedRecipe/${encodeURIComponent(recipe.uri)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setHasTried(data.hasTried);
+    } catch (error) {
+      console.error('Error checking if user tried recipe:', error);
+    }
+  };
+
+  const fetchUserRating = async () => {
+    const token = localStorage.getItem('token');
+    if (!token || !recipe) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/getUserRating/${encodeURIComponent(recipe.uri)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+      setUserRating(data.rating);
+    } catch (error) {
+      console.error('Error fetching user rating:', error);
+    }
+  };
+
+  const fetchRecipeRatingInfo = async () => {
+    if (!recipe) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/recipeRatingInfo/${encodeURIComponent(recipe.uri)}`);
+      if (!response.ok) throw new Error('Failed to fetch recipe rating info');
+      const data = await response.json();
+      setAverageRating(data.averageRating);
+      setRatingCount(data.ratingCount);
+    } catch (error) {
+      console.error('Error fetching recipe rating info:', error);
+    }
+  };
+
   const handleMarkAsTried = async () => {
     const token = localStorage.getItem('token');
     if (!token || !recipe) return;
@@ -172,6 +176,7 @@ const RecipeDetailsPage: React.FC = () => {
       if (!response.ok) throw new Error('Failed to mark as tried');
 
       setHasTried(true);
+      await fetchUsersWhoTried();
     } catch (error) {
       console.error('Error marking as tried:', error);
     }
@@ -194,6 +199,8 @@ const RecipeDetailsPage: React.FC = () => {
       if (!response.ok) throw new Error('Failed to rate recipe');
 
       setUserRating(rating);
+
+      await fetchRecipeRatingInfo();
     } catch (error) {
       console.error('Error rating recipe:', error);
     }

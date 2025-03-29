@@ -28,6 +28,8 @@ module.exports = (env, argv) => {
     },
     devServer: {
       historyApiFallback: true,
+      port: 8080,
+      open: true,
     },
     module: {
       rules: [
