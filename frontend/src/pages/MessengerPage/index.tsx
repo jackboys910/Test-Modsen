@@ -121,17 +121,19 @@ const MessengerPage: React.FC = () => {
         sent_at: message.sent_at,
       };
 
-      if (formattedMessage.sender_id !== loggedInUserId) {
+      if (activeChat && (formattedMessage.sender_id === activeChat.id || formattedMessage.sender_id === loggedInUserId)) {
         setMessages((prevMessages) => [...prevMessages, formattedMessage]);
       }
 
-      fetchConversations();
+      if (activeChat) {
+        fetchConversations();
+      }
     });
 
     return () => {
       socket.off('receiveMessage');
     };
-  }, [loggedInUserId]);
+  }, [loggedInUserId, activeChat]);
 
   useEffect(() => {
     if (receiverNickname && receiverNickname !== loggedInUserId) {
@@ -219,7 +221,7 @@ const MessengerPage: React.FC = () => {
           content,
         });
 
-        setMessages((prevMessages) => [...prevMessages, { sender_id: loggedInUserId, content, sent_at: new Date().toISOString() }]);
+        // setMessages((prevMessages) => [...prevMessages, { sender_id: loggedInUserId, content, sent_at: new Date().toISOString() }]);
         setNewMessage('');
 
         await fetchConversations();
