@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from '@components/Header';
 import BurgerMenu from '@components/BurgerMenu';
 import Footer from '@components/Footer';
@@ -8,8 +9,19 @@ import RecipeList from '@components/RecipeList';
 import ErrorBoundary from '@components/ErrorBoundary';
 import { BodyWrapper, FiltersWrapper, MainTitle, SectionWrapper, BorderLine, SectionTitle } from './index.styled';
 
-const dietOptions = ['Balanced', 'High-fiber', 'High-protein', 'Low-carb'];
-const dishTypeOptions = ['Bread', 'Drinks', 'Desserts', 'Salad'];
+const dietOptions = [
+  { key: 'Balanced', value: 'Balanced' },
+  { key: 'HighFiber', value: 'High-fiber' },
+  { key: 'HighProtein', value: 'High-protein' },
+  { key: 'LowCarb', value: 'Low-carb' },
+];
+
+const dishTypeOptions = [
+  { key: 'Bread', value: 'Bread' },
+  { key: 'Drinks', value: 'Drinks' },
+  { key: 'Desserts', value: 'Desserts' },
+  { key: 'Salad', value: 'Salad' },
+];
 
 const HomePage: React.FC = () => {
   const [dietFilter, setDietFilter] = useState('');
@@ -17,6 +29,7 @@ const HomePage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('chicken');
   const [triggerSearch, setTriggerSearch] = useState(false);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -47,11 +60,13 @@ const HomePage: React.FC = () => {
   };
 
   const handleDietFilterChange = (filter: string) => {
-    handleFilterChange('diet', filter);
+    const selectedOption = dietOptions.find((option) => option.value === filter);
+    handleFilterChange('diet', selectedOption ? selectedOption.value : '');
   };
 
   const handleDishTypeFilterChange = (filter: string) => {
-    handleFilterChange('dishType', filter);
+    const selectedOption = dishTypeOptions.find((option) => option.value === filter);
+    handleFilterChange('dishType', selectedOption ? selectedOption.value : '');
   };
 
   const isMobile = windowWidth >= 390 && windowWidth <= 768;
@@ -60,15 +75,29 @@ const HomePage: React.FC = () => {
     <>
       <Header>{isMobile && <BurgerMenu />}</Header>
       <BodyWrapper>
-        <MainTitle>Discover Recipe & Delicious Food</MainTitle>
+        <MainTitle>{t('recipeListTitle')}</MainTitle>
         <InputForm onSearch={handleSearch} />
         <FiltersWrapper>
-          <FilterList title='Select by diet' options={dietOptions} onSelect={handleDietFilterChange} />
-          <FilterList title='Select by dish type' options={dishTypeOptions} onSelect={handleDishTypeFilterChange} />
+          <FilterList
+            title={t('selectByDiet')}
+            options={dietOptions.map((option) => ({
+              ...option,
+              label: t(`selectByDiet${option.key}`),
+            }))}
+            onSelect={handleDietFilterChange}
+          />
+          <FilterList
+            title={t('selectByDishType')}
+            options={dishTypeOptions.map((option) => ({
+              ...option,
+              label: t(`selectByDishType${option.key}`),
+            }))}
+            onSelect={handleDishTypeFilterChange}
+          />
         </FiltersWrapper>
         <SectionWrapper>
           <BorderLine />
-          <SectionTitle>Founded dishes</SectionTitle>
+          <SectionTitle>{t('searchedDishes')}</SectionTitle>
         </SectionWrapper>
         <ErrorBoundary>
           <RecipeList searchQuery={searchQuery} dietFilter={dietFilter} dishTypeFilter={dishTypeFilter} triggerSearch={triggerSearch} />

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FaCamera } from 'react-icons/fa';
 import { BsTelephoneFill } from 'react-icons/bs';
 import { FaLocationDot } from 'react-icons/fa6';
@@ -48,6 +49,7 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
     phoneNumber: false,
     location: false,
   });
+  const { t, i18n } = useTranslation();
 
   const handleFileClick = () => {
     fileInputRef.current?.click();
@@ -82,17 +84,18 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             name='phoneNumber'
             value={phoneNumber}
             onChange={(e) => onChange('phoneNumber', e.target.value)}
-            placeholder='Phone number'
+            placeholder={t('phoneNumber')}
             style={{ border: errors.phoneNumber ? '2px solid red' : undefined }}
           />
           <QuestionIcon
             size={14}
+            lang={i18n.language}
             onMouseEnter={() => setShowTooltip({ ...showTooltip, phoneNumber: true })}
             onMouseLeave={() => setShowTooltip({ ...showTooltip, phoneNumber: false })}
             onClick={() => toggleTooltip('phoneNumber')}
             style={{ color: errors.phoneNumber ? 'green' : 'grey' }}
           />
-          {showTooltip.phoneNumber && <Tooltip>Only digits, max 15 characters</Tooltip>}
+          {showTooltip.phoneNumber && <Tooltip>{t('phoneNumberDescription')}</Tooltip>}
         </DataWrapper>
         <DataWrapper style={{ position: 'relative' }}>
           <FaLocationDot color='grey' style={{ position: 'absolute', top: '5px' }} />
@@ -101,25 +104,29 @@ const ProfileInfo: React.FC<ProfileInfoProps> = ({
             name='location'
             value={location}
             onChange={(e) => onChange('location', e.target.value)}
-            placeholder='Location'
+            placeholder={t('location')}
             style={{ border: errors.location ? '2px solid red' : undefined }}
           />
           <QuestionIcon
             size={14}
+            lang={i18n.language}
             onMouseEnter={() => setShowTooltip({ ...showTooltip, location: true })}
             onMouseLeave={() => setShowTooltip({ ...showTooltip, location: false })}
             onClick={() => toggleTooltip('location')}
             style={{ color: errors.location ? 'green' : 'grey' }}
           />
-          {showTooltip.location && <Tooltip>English letters, numbers, '.', ',', max 50 characters</Tooltip>}
+          {showTooltip.location && <Tooltip>{t('locationDescription')}</Tooltip>}
         </DataWrapper>
         <DataWrapper>
           <LuClock4 color='grey' />
-          <StyledTime>Registered since: {registeredAt}</StyledTime>
+          <StyledTime>
+            {t('registeredSince')}
+            {registeredAt}
+          </StyledTime>
         </DataWrapper>
         <DataWrapper>
           {lastOnline !== 'Online' ? <GoDotFill color='grey' /> : <GoDotFill color='green' />}
-          <StyledTime>{lastOnline !== 'Online' ? 'Last online: ' + lastOnline : lastOnline}</StyledTime>
+          <StyledTime>{lastOnline !== 'Online' ? t('offline') + lastOnline : t('online')}</StyledTime>
         </DataWrapper>
       </AboutWrapper>
     </ProfileInfoWrapper>

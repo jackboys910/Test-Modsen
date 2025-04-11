@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import BurgerMenu from '@components/BurgerMenu';
@@ -64,6 +65,7 @@ const RecipeDetailsPage: React.FC = () => {
   const [averageRating, setAverageRating] = useState<number | null>(null);
   const [ratingCount, setRatingCount] = useState<number>(0);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -216,7 +218,7 @@ const RecipeDetailsPage: React.FC = () => {
 
   return (
     <div>
-      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
+      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>{t('home')}</StyledLink>}</Header>
       <BodyWrapper $ingredientsCount={recipe.ingredientLines.length}>
         <RecipeWrapper>
           {isMobile && (
@@ -225,23 +227,29 @@ const RecipeDetailsPage: React.FC = () => {
             </ImageWrapper>
           )}
           <InfoWrapper $ingredientsCount={recipe.ingredientLines.length}>
-            <MealSection>Meal type - {recipe.mealType[0]}</MealSection>
+            <MealSection>
+              {t('mealType')}
+              {recipe.mealType[0]}
+            </MealSection>
             <RecipeTitle>{recipe.label}</RecipeTitle>
             <TypeSection>
               <TypeSectionPart>
                 <LightningIcon />
-                <Data>{`${recipe.calories.toFixed(0)} Calories`}</Data>
+                <Data>{`${recipe.calories.toFixed(0)} ${t('calories')}`}</Data>
               </TypeSectionPart>
               <TypeSectionPart>
                 <MedalIcon />
-                <Data>Cuisine Type - {lastCuisineWord.charAt(0).toUpperCase() + lastCuisineWord.slice(1)}</Data>
+                <Data>
+                  {t('cuisineType')}
+                  {lastCuisineWord.charAt(0).toUpperCase() + lastCuisineWord.slice(1)}
+                </Data>
               </TypeSectionPart>
             </TypeSection>
             <StarRatingWrapper>
               {token && <StarRating rating={userRating} onRate={handleStarClick} averageRating={averageRating} ratingCount={ratingCount} />}
             </StarRatingWrapper>
             <IngredientsSection>
-              <IngredientsTitle>Ingredients</IngredientsTitle>
+              <IngredientsTitle>{t('ingredients')}</IngredientsTitle>
               <ul>
                 {recipe.ingredientLines.slice(0, 5).map((ingredient: string, index: number) => (
                   <li key={index}>
@@ -256,7 +264,7 @@ const RecipeDetailsPage: React.FC = () => {
                 ))}
               </ul>
             </IngredientsSection>
-            {!isMobile && <ProductsTitle>Products</ProductsTitle>}
+            {!isMobile && <ProductsTitle>{t('products')}</ProductsTitle>}
             <ProductsSection>
               {!isMobile &&
                 recipe.ingredients
@@ -267,10 +275,10 @@ const RecipeDetailsPage: React.FC = () => {
               <MarksWrapper $ingredientsCount={recipe.ingredientLines.length}>
                 {token && (
                   <StyledMarkButton onClick={handleMarkAsTried} disabled={hasTried} $hasTried={hasTried}>
-                    {hasTried ? `You've tried this!` : `Mark as Tried`}
+                    {hasTried ? t('alreadyTried') : t('markAsTried')}
                   </StyledMarkButton>
                 )}
-                <StyledUsersMessage>Users who tried this recipe:</StyledUsersMessage>
+                <StyledUsersMessage>{t('usersWhoTriedRecipe')}</StyledUsersMessage>
                 <UsersList>
                   {usersWhoTried.map((user, index) => (
                     <UserListItem key={index}>
@@ -292,7 +300,7 @@ const RecipeDetailsPage: React.FC = () => {
             )}
             <LinkWrapper>
               <a href={recipe.url} target='_blank' rel='noopener noreferrer'>
-                Recipe link
+                {t('recipeLink')}
               </a>
             </LinkWrapper>
           </InfoWrapper>

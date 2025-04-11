@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import i18n from '../../../i18n';
 import calculateRelativeTime from '@utils/calculateOnline';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
@@ -29,6 +31,7 @@ const ProfilePage: React.FC = () => {
     cuisine: false,
     description: false,
   });
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,6 +79,8 @@ const ProfilePage: React.FC = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('language');
+    i18n.changeLanguage('en');
     navigate('/authorization');
   };
 
@@ -144,7 +149,7 @@ const ProfilePage: React.FC = () => {
   const handleFileChange = (file: File) => {
     const validFileTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
     if (!validFileTypes.includes(file.type)) {
-      setPictureErrorMessage('Supported file types are: jpeg, jpg, png, gif');
+      setPictureErrorMessage(t('supportedFileTypes'));
       return;
     }
     setNewProfilePicture(file);
@@ -153,7 +158,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <>
-      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
+      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>{t('home')}</StyledLink>}</Header>
       <BodyWrapper>
         <ProfileWrapper>
           <StyledForm onSubmit={handleProfileUpdate}>

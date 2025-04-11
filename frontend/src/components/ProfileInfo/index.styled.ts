@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { FaQuestionCircle } from 'react-icons/fa';
-import { COLORS } from '@constants/styles/mainColors';
 
 export const ProfileInfoWrapper = styled.div`
   width: 25%;
@@ -95,6 +94,10 @@ export const QuestionIcon = styled(FaQuestionCircle)`
   }
 
   @media (max-width: 1100px) {
+    right: ${({ lang }) => (lang === 'ru' ? '-17px' : '-9px')};
+  }
+
+  @media (max-width: 1000px) {
     right: -9px;
   }
 

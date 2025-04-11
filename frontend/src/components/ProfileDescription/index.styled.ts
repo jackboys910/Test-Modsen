@@ -73,7 +73,7 @@ export const StyledInfo = styled.input`
 export const QuestionIcon = styled(FaQuestionCircle)`
   cursor: pointer;
   position: absolute;
-  right: 20.3%;
+  right: ${({ lang }) => (lang === 'ru' ? '19.7%' : '20.3%')};
   top: 5px;
 
   &:hover {
@@ -81,7 +81,7 @@ export const QuestionIcon = styled(FaQuestionCircle)`
   }
 
   @media (max-width: 1200px) {
-    right: 13%;
+    right: ${({ lang }) => (lang === 'ru' ? '12.5%' : '13%')};
   }
 
   @media (max-width: 1100px) {
@@ -93,7 +93,7 @@ export const QuestionIcon = styled(FaQuestionCircle)`
   }
 
   @media (max-width: 900px) {
-    right: 2px;
+    right: ${({ lang }) => (lang === 'ru' ? '0' : '2px')};
   }
 `;
 

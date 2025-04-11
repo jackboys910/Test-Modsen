@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BiSolidDish } from 'react-icons/bi';
 import {
   ProfileDescriptionWrapper,
@@ -28,6 +29,7 @@ const ProfileDescription: React.FC<ProfileDescriptionProps> = ({ description, ni
   const [showTooltip, setShowTooltip] = useState<{ [key: string]: boolean }>({
     cuisine: false,
   });
+  const { t, i18n } = useTranslation();
 
   const toggleTooltip = (field: string) => {
     setShowTooltip((prev) => ({ ...prev, [field]: !prev[field] }));
@@ -38,29 +40,30 @@ const ProfileDescription: React.FC<ProfileDescriptionProps> = ({ description, ni
       <StyledNickname>{nickname}</StyledNickname>
       <InfoWrapper>
         <BiSolidDish color='grey' style={{ marginTop: '5px' }} />
-        <StyledCuisine>Favorite cuisine type - </StyledCuisine>
+        <StyledCuisine>{t('favoriteCuisineType')}</StyledCuisine>
         <StyledInfo
           name='cuisine'
           value={cuisine}
           onChange={(e) => onChange('cuisine', e.target.value)}
-          placeholder='Your favorite cuisine type'
+          placeholder={t('yourFavoriteCuisineType')}
           style={{ border: errors.cuisine ? '2px solid red' : undefined }}
         />
         <QuestionIcon
           size={14}
+          lang={i18n.language}
           onMouseEnter={() => setShowTooltip({ ...showTooltip, cuisine: true })}
           onMouseLeave={() => setShowTooltip({ ...showTooltip, cuisine: false })}
           onClick={() => toggleTooltip('cuisine')}
           style={{ color: errors.cuisine ? 'green' : 'grey' }}
         />
-        {showTooltip.cuisine && <Tooltip>English letters, ',', '.', max 35 characters</Tooltip>}
+        {showTooltip.cuisine && <Tooltip lang={i18n.language}>{t('yourFavoriteCuisineTypeDescription')}</Tooltip>}
       </InfoWrapper>
-      <StyledAbout>About you</StyledAbout>
+      <StyledAbout>{t('aboutYou')}</StyledAbout>
       <StyledDescription
         name='description'
         value={description}
         onChange={(e) => onChange('description', e.target.value)}
-        placeholder='Here you can tell about you'
+        placeholder={t('aboutYouPlaceholder')}
         // style={{ border: errors.description || description.length > 520 ? '1px solid red' : undefined }}
       />
       <CharCount style={{ color: description.length > 520 ? 'red' : 'grey' }}>{description.length}/520</CharCount>

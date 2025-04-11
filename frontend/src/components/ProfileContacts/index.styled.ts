@@ -29,7 +29,7 @@ export const StyledSignOutButton = styled(IoMdExit)`
 export const StyledUpdateProfile = styled.button`
   cursor: pointer;
   height: 30px;
-  width: 120px;
+  width: 140px;
   border-radius: 10px;
   transition: background-color 0.3s ease;
 
@@ -41,7 +41,7 @@ export const StyledUpdateProfile = styled.button`
 export const StyledFeedbackButton = styled.button`
   cursor: pointer;
   height: 30px;
-  width: 120px;
+  width: 140px;
   margin-top: 10px;
   border-radius: 10px;
   transition: background-color 0.3s ease;
@@ -53,4 +53,14 @@ export const StyledFeedbackButton = styled.button`
   @media (max-width: 900px) {
     margin-left: 10px;
   }
+`;
+
+export const LanguageSelect = styled.select`
+  margin-top: 10px;
+  padding: 5px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  width: 140px;
 `;

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -18,13 +19,6 @@ import {
   SuccessMessage,
 } from './index.styled';
 
-const validationSchema = Yup.object({
-  description: Yup.string()
-    .min(5, 'Description must be at least 5 characters.')
-    .max(300, 'Description cannot exceed 300 characters.')
-    .required('Description is required.'),
-});
-
 interface IFeedbackModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -34,6 +28,14 @@ const FeedbackModal: React.FC<IFeedbackModalProps> = ({ isOpen, onClose }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [selectedRating, setSelectedRating] = useState<number | null>(null);
+  const { t } = useTranslation();
+
+  const validationSchema = Yup.object({
+    description: Yup.string()
+      .min(5, t('error.minDescriptionFeedback'))
+      .max(300, t('error.maxDescriptionFeedback'))
+      .required(t('error.requiredDescriptionFeedback')),
+  });
 
   const formik = useFormik({
     initialValues: {
@@ -95,10 +97,10 @@ const FeedbackModal: React.FC<IFeedbackModalProps> = ({ isOpen, onClose }) => {
         <CloseButton onClick={onClose}>&times;</CloseButton>
         {!isSubmitted ? (
           <>
-            <TitleText>Leave Feedback</TitleText>
+            <TitleText>{t('feedbackModalTitle')}</TitleText>
             <HorizontalLine />
             <RatingContainer>
-              <RatingText>Rating:</RatingText>
+              <RatingText>{t('ratingModal')}</RatingText>
               {[1, 2, 3, 4, 5].map((option) => (
                 <RatingOption key={option} $selected={selectedRating === option} onClick={() => handleRatingClick(option)}>
                   {option}
@@ -106,7 +108,7 @@ const FeedbackModal: React.FC<IFeedbackModalProps> = ({ isOpen, onClose }) => {
               ))}
             </RatingContainer>
             <DescriptionContainer>
-              <DescriptionText>Description:</DescriptionText>
+              <DescriptionText>{t('descriptionModal')}</DescriptionText>
               <StyledTextarea
                 name='description'
                 value={formik.values.description}
@@ -121,13 +123,13 @@ const FeedbackModal: React.FC<IFeedbackModalProps> = ({ isOpen, onClose }) => {
               onClick={formik.handleSubmit as unknown as () => void}
               disabled={isSubmitting || formik.values.description.length < 5}
             >
-              {isSubmitting ? 'Submitting...' : 'Submit Feedback'}
+              {isSubmitting ? t('sumbittingModal') : t('submitModal')}
             </SubmitButton>
           </>
         ) : (
           <SuccessMessage>
-            <p>Thank you for your feedback! 😊</p>
-            <p>We will consider your suggestions to improve the site.</p>
+            <p>{t('successfulFeedbackTitle')} 😊</p>
+            <p>{t('successfulFeedbackDescription')}</p>
           </SuccessMessage>
         )}
       </Modal>

@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import io from 'socket.io-client';
 import { FaMicrophone } from 'react-icons/fa';
 import { PiRecordDuotone } from 'react-icons/pi';
@@ -92,6 +93,7 @@ const MessengerPage: React.FC = () => {
   const chatInputRef = useRef<HTMLInputElement>(null);
   const chatMessagesRef = useRef<HTMLDivElement>(null);
   const loggedInUserId = Number(localStorage.getItem('userId'));
+  const { t } = useTranslation();
 
   useLayoutEffect(() => {
     fetchConversations();
@@ -294,7 +296,7 @@ const MessengerPage: React.FC = () => {
       };
 
       mediaRecorder.current.start();
-      setRecordingStatus('Recording voice message...');
+      setRecordingStatus(t('recordingAudio'));
       setIsRecording(true);
     } catch (error) {
       console.error('Error during audio recording:', error);
@@ -410,7 +412,7 @@ const MessengerPage: React.FC = () => {
 
   return (
     <>
-      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
+      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>{t('home')}</StyledLink>}</Header>
       <BodyWrapper>
         <MessengerWrapper>
           <UsersWindow $isActive={showChatWindow}>
@@ -442,7 +444,7 @@ const MessengerPage: React.FC = () => {
             </ChatList>
           </UsersWindow>
           <ChatWindow $isActive={showChatWindow}>
-            {!activeChat && <StartMessage>Select a chat to start messaging</StartMessage>}
+            {!activeChat && <StartMessage>{t('startMessaging')}</StartMessage>}
             {activeChat && (
               <>
                 <ChatHeader>
@@ -477,7 +479,7 @@ const MessengerPage: React.FC = () => {
                           <MessageWrapper $fromSelf={msg.sender_id === loggedInUserId}>
                             <StyledAudio controls>
                               <source src={`http://localhost:3001/assets/audio/${msg.content}`} type='audio/webm' />
-                              Your browser does not support the audio element.
+                              {t('notSupportingAudio')}
                             </StyledAudio>
                             <MessageTime>{formatMessageTime(msg.sent_at)}</MessageTime>
                           </MessageWrapper>
@@ -501,7 +503,7 @@ const MessengerPage: React.FC = () => {
                     <ChatInput
                       ref={chatInputRef}
                       type='text'
-                      placeholder='Write a message...'
+                      placeholder={t('writeMessage')}
                       value={newMessage}
                       onChange={(e) => setNewMessage(e.target.value)}
                     />

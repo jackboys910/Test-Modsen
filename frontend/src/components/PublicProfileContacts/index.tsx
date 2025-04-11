@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { PublicProfileContactsWrapper, StyledSendMessage } from './index.styled';
 
 interface IPublicProfileContactsProps {
@@ -9,6 +10,7 @@ interface IPublicProfileContactsProps {
 const PublicProfileContacts: React.FC<IPublicProfileContactsProps> = ({ nickname }) => {
   const navigate = useNavigate();
   const loggedInUserNickname = localStorage.getItem('nickname');
+  const { t } = useTranslation();
 
   const handleSendMessageClick = () => {
     navigate(`/messanger/${loggedInUserNickname}`, {
@@ -20,7 +22,7 @@ const PublicProfileContacts: React.FC<IPublicProfileContactsProps> = ({ nickname
 
   return (
     <PublicProfileContactsWrapper>
-      <StyledSendMessage onClick={handleSendMessageClick}>Send Message</StyledSendMessage>
+      <StyledSendMessage onClick={handleSendMessageClick}>{t('sendMessage')}</StyledSendMessage>
     </PublicProfileContactsWrapper>
   );
 };

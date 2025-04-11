@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { BsTelephoneFill } from 'react-icons/bs';
 import { FaLocationDot } from 'react-icons/fa6';
 import { LuClock4 } from 'react-icons/lu';
@@ -16,6 +17,8 @@ interface IPublicProfileInfoProps {
 }
 
 const PublicProfileInfo: React.FC<IPublicProfileInfoProps> = ({ profilePicture, phoneNumber, location, registeredAt, lastOnline }) => {
+  const { t } = useTranslation();
+
   const relativeLastOnline = calculateRelativeTime(lastOnline);
 
   return (
@@ -26,19 +29,22 @@ const PublicProfileInfo: React.FC<IPublicProfileInfoProps> = ({ profilePicture, 
       <AboutWrapper>
         <DataWrapper style={{ position: 'relative' }}>
           <BsTelephoneFill color='grey' style={{ position: 'absolute', top: '5px' }} />
-          <StyledInformation>{phoneNumber ? phoneNumber : 'No information'}</StyledInformation>
+          <StyledInformation>{phoneNumber ? phoneNumber : t('noInformation')}</StyledInformation>
         </DataWrapper>
         <DataWrapper style={{ position: 'relative' }}>
           <FaLocationDot color='grey' style={{ position: 'absolute', top: '5px' }} />
-          <StyledInformation title={location}>{location ? location : 'No information'}</StyledInformation>
+          <StyledInformation title={location}>{location ? location : t('noInformation')}</StyledInformation>
         </DataWrapper>
         <DataWrapper>
           <LuClock4 color='grey' />
-          <StyledTime>Registered since: {registeredAt}</StyledTime>
+          <StyledTime>
+            {t('registeredSince')}
+            {registeredAt}
+          </StyledTime>
         </DataWrapper>
         <DataWrapper>
           {relativeLastOnline !== 'Online' ? <GoDotFill color='grey' /> : <GoDotFill color='green' />}
-          <StyledTime>{relativeLastOnline !== 'Online' ? 'Last online: ' + relativeLastOnline : relativeLastOnline}</StyledTime>
+          <StyledTime>{relativeLastOnline !== 'Online' ? t('offline') + relativeLastOnline : t('online')}</StyledTime>
         </DataWrapper>
       </AboutWrapper>
     </ProfileInfoWrapper>

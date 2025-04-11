@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import RecipeItem from '@components/RecipeItem';
 import Loader from '@components/Loader';
 import { ListWrapper, LoadMoreButton, NoButtonWrapper, NoRecipes } from './index.styled';
@@ -33,6 +34,7 @@ const RecipeList: React.FC<IRecipeListProps> = ({ searchQuery, dietFilter, dishT
   const [recipes, setRecipes] = useState<IRecipe[]>([]);
   const [nextUrl, setNextUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const fetchRecipes = async (url: string) => {
@@ -94,11 +96,11 @@ const RecipeList: React.FC<IRecipeListProps> = ({ searchQuery, dietFilter, dishT
                 onClick={handleRecipeItemClick(recipe, index)}
               />
             ))
-          : !loading && <NoRecipes>No recipes found. Try a different search.</NoRecipes>}
+          : !loading && <NoRecipes>{t('noDishesFound')}</NoRecipes>}
       </ListWrapper>
       {recipes.length > 0 && nextUrl ? (
         <LoadMoreButton onClick={handleFetchRecipes(nextUrl)} disabled={loading}>
-          Show more
+          {t('showMore')}
         </LoadMoreButton>
       ) : (
         <NoButtonWrapper />

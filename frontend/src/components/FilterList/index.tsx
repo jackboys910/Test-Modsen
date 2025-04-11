@@ -3,7 +3,11 @@ import { Section, Header, Content, Item } from './index.styled';
 
 interface IFilterListProps {
   title: string;
-  options: string[];
+  options: {
+    key: string;
+    value: string;
+    label: string;
+  }[];
   onSelect: (filter: string) => void;
 }
 
@@ -38,8 +42,8 @@ const FilterList: React.FC<IFilterListProps> = ({ title, options, onSelect }) =>
       <Header onClick={handleToggle}>{title}</Header>
       <Content $isOpen={isOpen}>
         {options.map((option) => (
-          <Item key={option} onClick={handleItemClick(option)} className={selectedOption === option ? 'selected' : ''}>
-            {option}
+          <Item key={option.key} onClick={handleItemClick(option.value)} className={selectedOption === option.value ? 'selected' : ''}>
+            {option.label}
           </Item>
         ))}
       </Content>

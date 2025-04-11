@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Header from '@components/Header';
 import Footer from '@components/Footer';
 import PublicProfileInfo from '@components/PublicProfileInfo';
@@ -22,6 +23,7 @@ const PublicProfilePage: React.FC = () => {
     nickname: '',
     cuisine: '',
   });
+  const { t } = useTranslation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -65,7 +67,7 @@ const PublicProfilePage: React.FC = () => {
 
   return (
     <>
-      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>Home</StyledLink>}</Header>
+      <Header>{isMobile ? <BurgerMenu /> : <StyledLink to='/'>{t('home')}</StyledLink>}</Header>
       <BodyWrapper>
         <ProfileWrapper>
           <StyledContainer>
